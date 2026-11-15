@@ -19,6 +19,7 @@ public class WorkspaceApplication
     
     public string? BrowserProfile { get; set; }
     public string? BrowserTabsJson { get; set; }
+    public string? FolderViewPath { get; set; }
 
     public WindowPlacement? Placement { get; set; }
 
@@ -37,6 +38,7 @@ public class WorkspaceApplication
             IsEnabled = IsEnabled,
             BrowserProfile = BrowserProfile,
             BrowserTabsJson = BrowserTabsJson,
+            FolderViewPath = FolderViewPath,
             Placement = Placement?.Clone()
         };
     }

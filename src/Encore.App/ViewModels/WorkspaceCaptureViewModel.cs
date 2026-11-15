@@ -18,6 +18,9 @@ public partial class CapturableWindowItemViewModel : ObservableObject
     public string? BrowserProfile => Application.BrowserProfile;
     public bool HasBrowserProfile => !string.IsNullOrEmpty(Application.BrowserProfile);
 
+    public string? FolderViewPath => Application.FolderViewPath;
+    public bool HasFolderViewPath => !string.IsNullOrEmpty(Application.FolderViewPath);
+
     public int TabCount
     {
         get

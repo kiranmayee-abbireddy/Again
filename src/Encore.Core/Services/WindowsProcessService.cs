@@ -11,6 +11,8 @@ public interface IWindowsProcessService
     bool IsProcessRunning(string processName, string? executablePath = null);
     IReadOnlyList<Process> GetRunningProcessesByName(string processName);
     string? GetProcessExecutablePath(int processId);
+    string? GetProcessCommandLine(int processId);
+    string? ExtractLaunchArguments(string executablePath, string? commandLine);
 }
 
 public class WindowsProcessService : IWindowsProcessService
@@ -126,5 +128,54 @@ public class WindowsProcessService : IWindowsProcessService
         {
             return null;
         }
+    }
+
+    public string? GetProcessCommandLine(int processId)
+    {
+        try
+        {
+            using var searcher = new System.Management.ManagementObjectSearcher(
+                $"SELECT CommandLine FROM Win32_Process WHERE ProcessId = {processId}");
+            using var objects = searcher.Get();
+            foreach (System.Management.ManagementObject obj in objects)
+            {
+                var cmd = obj["CommandLine"]?.ToString();
+                if (!string.IsNullOrWhiteSpace(cmd))
+                {
+                    return cmd;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger?.LogDebug(ex, "Could not query CommandLine for PID {Pid}", processId);
+        }
+        return null;
+    }
+
+    public string? ExtractLaunchArguments(string executablePath, string? commandLine)
+    {
+        if (string.IsNullOrWhiteSpace(commandLine)) return null;
+
+        string trimmed = commandLine.Trim();
+        if (trimmed.StartsWith("\""))
+        {
+            int quoteEnd = trimmed.IndexOf('\"', 1);
+            if (quoteEnd > 0)
+            {
+                string args = trimmed.Substring(quoteEnd + 1).Trim();
+                return string.IsNullOrWhiteSpace(args) ? null : args;
+            }
+        }
+        else
+        {
+            int spaceIdx = trimmed.IndexOf(' ');
+            if (spaceIdx > 0)
+            {
+                string args = trimmed.Substring(spaceIdx + 1).Trim();
+                return string.IsNullOrWhiteSpace(args) ? null : args;
+            }
+        }
+        return null;
     }
 }

@@ -354,9 +354,35 @@ public class WindowsWindowService : IWindowsWindowService
             var title = GetWindowTitle(hWnd);
             int score = 0;
 
-            if (!string.IsNullOrEmpty(expectedTitle) && title.Contains(expectedTitle, StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrEmpty(expectedTitle))
             {
-                score = 100;
+                if (title.Contains(expectedTitle, StringComparison.OrdinalIgnoreCase) ||
+                    expectedTitle.Contains(title, StringComparison.OrdinalIgnoreCase))
+                {
+                    score = 100;
+                }
+                else
+                {
+                    var cleanExpected = expectedTitle
+                        .Replace(" — File Explorer", "")
+                        .Replace(" - File Explorer", "")
+                        .Replace(" — Google Chrome", "")
+                        .Replace(" - Google Chrome", "")
+                        .Replace(" — Microsoft​ Edge", "")
+                        .Replace(" - Microsoft Edge", "")
+                        .Trim();
+
+                    if (!string.IsNullOrEmpty(cleanExpected) &&
+                        (title.Contains(cleanExpected, StringComparison.OrdinalIgnoreCase) ||
+                         cleanExpected.Contains(title, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        score = 95;
+                    }
+                }
+            }
+            else if (className == "CabinetWClass")
+            {
+                score = 85; // Explorer folder window
             }
             else if (className == "Chrome_WidgetWin_1")
             {

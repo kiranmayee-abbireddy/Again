@@ -63,6 +63,7 @@ public partial class App : System.Windows.Application
         services.AddSingleton<IWindowsProcessService, WindowsProcessService>();
         services.AddSingleton<IWindowsWindowService, WindowsWindowService>();
         services.AddSingleton<IChromiumBrowserService, ChromiumBrowserService>();
+        services.AddSingleton<IWindowsExplorerService, WindowsExplorerService>();
         services.AddSingleton<IShortcutManagementService, WindowsShortcutService>();
         services.AddSingleton<ISystemTrayManager, SystemTrayManager>();
 

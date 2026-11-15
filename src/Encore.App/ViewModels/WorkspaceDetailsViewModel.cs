@@ -19,6 +19,9 @@ public partial class WorkspaceAppItemViewModel : ObservableObject
     public string? BrowserProfile => Model.BrowserProfile;
     public bool HasBrowserProfile => !string.IsNullOrEmpty(Model.BrowserProfile);
 
+    public string? FolderViewPath => Model.FolderViewPath;
+    public bool HasFolderViewPath => !string.IsNullOrEmpty(Model.FolderViewPath);
+
     public int TabCount
     {
         get

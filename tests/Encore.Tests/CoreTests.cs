@@ -399,12 +399,13 @@ public class MultiProcessWindowServiceTests
         var monService = new WindowsMonitorService();
         var winService = new WindowsWindowService(procService, monService);
         var browserService = new ChromiumBrowserService();
+        var explorerService = new WindowsExplorerService();
         string tempDb = Path.Combine(Path.GetTempPath(), $"test_capture_{Guid.NewGuid():N}.db");
         var repo = new SqliteWorkspaceRepository(tempDb);
 
         try
         {
-            var captureService = new WorkspaceCaptureService(winService, browserService, repo);
+            var captureService = new WorkspaceCaptureService(winService, browserService, explorerService, procService, repo);
             var apps = await captureService.CaptureCurrentWindowsAsync();
             Assert.NotNull(apps);
 
@@ -413,6 +414,83 @@ public class MultiProcessWindowServiceTests
             {
                 Assert.True(!string.IsNullOrEmpty(chromeApp.BrowserProfile) || !string.IsNullOrEmpty(chromeApp.LaunchArguments));
             }
+        }
+        finally
+        {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
+            if (File.Exists(tempDb)) File.Delete(tempDb);
+        }
+    }
+
+    [Fact]
+    public void WindowsExplorerService_IsExplorer_IdentifiesProcessAndClass()
+    {
+        var service = new WindowsExplorerService();
+        Assert.True(service.IsExplorer("explorer", "CabinetWClass", @"C:\Windows\explorer.exe"));
+        Assert.True(service.IsExplorer("other", "CabinetWClass", ""));
+        Assert.True(service.IsExplorer("explorer", "", ""));
+        Assert.True(service.IsExplorer("", "", @"C:\Windows\explorer.exe"));
+        Assert.False(service.IsExplorer("notepad", "Notepad", @"C:\Windows\notepad.exe"));
+    }
+
+    [Fact]
+    public void WindowsExplorerService_FormatLaunchArguments_WorksCorrectly()
+    {
+        var service = new WindowsExplorerService();
+        Assert.Equal("\"D:\\projects\\Encore\"", service.FormatLaunchArguments(@"D:\projects\Encore"));
+        Assert.Equal(string.Empty, service.FormatLaunchArguments("Home"));
+        Assert.Equal(string.Empty, service.FormatLaunchArguments(""));
+    }
+
+    [Fact]
+    public void WindowsProcessService_ExtractLaunchArguments_ExtractsCorrectArgs()
+    {
+        var service = new WindowsProcessService();
+        string exe = @"C:\Program Files\Microsoft VS Code\Code.exe";
+        string cmdLine = "\"C:\\Program Files\\Microsoft VS Code\\Code.exe\" --goto \"D:\\projects\\Encore\\src\\Program.cs:10\"";
+
+        string? args = service.ExtractLaunchArguments(exe, cmdLine);
+        Assert.NotNull(args);
+        Assert.Contains("--goto", args);
+        Assert.Contains("Program.cs:10", args);
+    }
+
+    [Fact]
+    public async Task Sqlite_SaveAndRetrieve_FolderViewPath_Preserved()
+    {
+        string tempDb = Path.Combine(Path.GetTempPath(), $"encore_folder_test_{Guid.NewGuid():N}.db");
+        var repo = new SqliteWorkspaceRepository(tempDb);
+
+        try
+        {
+            var ws = new Workspace
+            {
+                Name = "File Explorer Work Setup",
+                Category = "Work",
+                Applications = new List<WorkspaceApplication>
+                {
+                    new()
+                    {
+                        ExecutablePath = @"C:\Windows\explorer.exe",
+                        ProcessName = "explorer",
+                        WindowTitle = "Encore — File Explorer",
+                        FolderViewPath = @"D:\projects\Encore",
+                        LaunchArguments = "\"D:\\projects\\Encore\"",
+                        Placement = new WindowPlacement { X = 50, Y = 50, Width = 1200, Height = 800, WindowState = "Normal" }
+                    }
+                }
+            };
+
+            await repo.SaveWorkspaceAsync(ws);
+
+            var loaded = await repo.GetWorkspaceByIdAsync(ws.Id);
+            Assert.NotNull(loaded);
+            Assert.Single(loaded.Applications);
+
+            var app = loaded.Applications[0];
+            Assert.Equal(@"D:\projects\Encore", app.FolderViewPath);
+            Assert.Equal("\"D:\\projects\\Encore\"", app.LaunchArguments);
+            Assert.Equal("Encore — File Explorer", app.WindowTitle);
         }
         finally
         {

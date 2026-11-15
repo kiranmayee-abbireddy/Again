@@ -128,14 +128,32 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
 
                 // Step 2: Check if already running AND has an active matching top-level window
                 bool isProcessRunning = _processService.IsProcessRunning(app.ProcessName, app.ExecutablePath);
-                var existingHwnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, app.WindowTitle);
+
+                bool isExplorer = app.ProcessName.Equals("explorer", StringComparison.OrdinalIgnoreCase) || 
+                                  (!string.IsNullOrEmpty(app.ExecutablePath) && Path.GetFileName(app.ExecutablePath).Equals("explorer.exe", StringComparison.OrdinalIgnoreCase));
+
+                string? searchTitle = app.WindowTitle;
+                if (isExplorer && !string.IsNullOrWhiteSpace(app.FolderViewPath) && !app.FolderViewPath.Equals("Home", StringComparison.OrdinalIgnoreCase))
+                {
+                    string? folderName = Path.GetFileName(app.FolderViewPath.TrimEnd('\\', '/'));
+                    if (!string.IsNullOrEmpty(folderName))
+                    {
+                        searchTitle = folderName;
+                    }
+                }
+
+                var existingHwnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, searchTitle);
                 bool hasMatchingWindow = existingHwnd != IntPtr.Zero;
 
-                // For browsers with tabs/profiles, if the specific window isn't already open, allow launching the new window
-                bool hasSpecificTabs = !string.IsNullOrWhiteSpace(app.BrowserTabsJson) || 
-                                       (!string.IsNullOrWhiteSpace(app.LaunchArguments) && app.LaunchArguments.Contains("--new-window"));
+                // An app is considered already open ONLY if it matches the specific target window (folder, tabs, or document)
+                bool hasSpecificTarget = isExplorer || 
+                                         !string.IsNullOrWhiteSpace(app.BrowserTabsJson) || 
+                                         !string.IsNullOrWhiteSpace(app.FolderViewPath) ||
+                                         (!string.IsNullOrWhiteSpace(app.LaunchArguments) && (app.LaunchArguments.Contains("--new-window") || app.LaunchArguments.Contains("--profile-directory") || app.LaunchArguments.Length > 2));
 
-                if (isProcessRunning && (hasMatchingWindow || (!hasSpecificTabs && _windowService.HasVisibleTopLevelWindow(app.ProcessName, app.ExecutablePath))))
+                bool isAlreadyOpen = isProcessRunning && (hasMatchingWindow || (!hasSpecificTarget && _windowService.HasVisibleTopLevelWindow(app.ProcessName, app.ExecutablePath)));
+
+                if (isAlreadyOpen)
                 {
                     if (options.SkipAlreadyRunning)
                     {
@@ -148,7 +166,7 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
 
                     if (options.RepositionExisting)
                     {
-                        var hWnd = existingHwnd != IntPtr.Zero ? existingHwnd : _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, null);
+                        var hWnd = existingHwnd != IntPtr.Zero ? existingHwnd : _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, searchTitle);
                         if (hWnd != IntPtr.Zero && app.Placement != null)
                         {
                             var monitor = _monitorService.FindBestMatchingMonitor(app.Placement.MonitorDeviceId, app.Placement.MonitorBounds);
@@ -196,9 +214,19 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                     await Task.Delay(app.LaunchDelayMs, cancellationToken);
                 }
 
-                // Handle browsers running headless/background processes (e.g. chrome --no-startup-window)
+                // Handle launch arguments for Explorer and Browsers
                 string? launchArgs = app.LaunchArguments;
-                if (isProcessRunning && !hasMatchingWindow && 
+
+                if (isExplorer)
+                {
+                    if (string.IsNullOrWhiteSpace(launchArgs) && !string.IsNullOrWhiteSpace(app.FolderViewPath))
+                    {
+                        launchArgs = app.FolderViewPath.Equals("Home", StringComparison.OrdinalIgnoreCase) 
+                            ? string.Empty 
+                            : $"\"{app.FolderViewPath}\"";
+                    }
+                }
+                else if (isProcessRunning && !hasMatchingWindow && 
                     (app.ProcessName.Contains("chrome", StringComparison.OrdinalIgnoreCase) || 
                      app.ProcessName.Contains("msedge", StringComparison.OrdinalIgnoreCase)))
                 {
@@ -229,7 +257,7 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                 while (pollStart.Elapsed < timeout && !cancellationToken.IsCancellationRequested)
                 {
                     // Check best top-level window matching this process/executable
-                    targetHwnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, app.WindowTitle);
+                    targetHwnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, searchTitle);
                     if (targetHwnd != IntPtr.Zero && _windowService.IsWindowValid(targetHwnd))
                     {
                         break;

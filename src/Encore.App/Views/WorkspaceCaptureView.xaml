@@ -102,6 +102,11 @@
                                                 CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding BrowserProfile, StringFormat='👤 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
                                         </Border>
+                                        <Border Visibility="{Binding HasFolderViewPath, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding FolderViewPath, StringFormat='📁 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" />
+                                        </Border>
                                     </StackPanel>
                                     
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2" Visibility="{Binding HasTabs, Converter={StaticResource BoolToVisibilityConverter}}">

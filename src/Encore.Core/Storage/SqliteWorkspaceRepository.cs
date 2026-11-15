@@ -67,6 +67,7 @@ public class SqliteWorkspaceRepository : IWorkspaceRepository
                     is_enabled INTEGER NOT NULL DEFAULT 1,
                     browser_profile TEXT,
                     browser_tabs_json TEXT,
+                    folder_view_path TEXT,
                     FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE
                 );
 
@@ -127,6 +128,14 @@ public class SqliteWorkspaceRepository : IWorkspaceRepository
             {
                 using var mCmd = connection.CreateCommand();
                 mCmd.CommandText = "ALTER TABLE workspace_applications ADD COLUMN browser_tabs_json TEXT;";
+                await mCmd.ExecuteNonQueryAsync();
+            }
+            catch { }
+
+            try
+            {
+                using var mCmd = connection.CreateCommand();
+                mCmd.CommandText = "ALTER TABLE workspace_applications ADD COLUMN folder_view_path TEXT;";
                 await mCmd.ExecuteNonQueryAsync();
             }
             catch { }
@@ -243,7 +252,7 @@ public class SqliteWorkspaceRepository : IWorkspaceRepository
             cmd.CommandText = @"
                 SELECT a.id, a.workspace_id, a.executable_path, a.process_name, a.window_title, 
                        a.launch_arguments, a.launch_order, a.launch_delay_ms, a.is_enabled,
-                       a.browser_profile, a.browser_tabs_json,
+                       a.browser_profile, a.browser_tabs_json, a.folder_view_path,
                        p.id, p.x, p.y, p.width, p.height, p.window_state, p.monitor_device_id, p.monitor_bounds
                 FROM workspace_applications a
                 LEFT JOIN window_placements p ON p.workspace_application_id = a.id
@@ -266,22 +275,23 @@ public class SqliteWorkspaceRepository : IWorkspaceRepository
                     LaunchDelayMs = reader.GetInt32(7),
                     IsEnabled = reader.GetInt32(8) == 1,
                     BrowserProfile = reader.IsDBNull(9) ? null : reader.GetString(9),
-                    BrowserTabsJson = reader.IsDBNull(10) ? null : reader.GetString(10)
+                    BrowserTabsJson = reader.IsDBNull(10) ? null : reader.GetString(10),
+                    FolderViewPath = reader.IsDBNull(11) ? null : reader.GetString(11)
                 };
 
-                if (!reader.IsDBNull(11))
+                if (!reader.IsDBNull(12))
                 {
                     app.Placement = new WindowPlacement
                     {
-                        Id = Guid.Parse(reader.GetString(11)),
+                        Id = Guid.Parse(reader.GetString(12)),
                         WorkspaceApplicationId = app.Id,
-                        X = reader.GetInt32(12),
-                        Y = reader.GetInt32(13),
-                        Width = reader.GetInt32(14),
-                        Height = reader.GetInt32(15),
-                        WindowState = reader.GetString(16),
-                        MonitorDeviceId = reader.IsDBNull(17) ? null : reader.GetString(17),
-                        MonitorBounds = reader.IsDBNull(18) ? null : reader.GetString(18)
+                        X = reader.GetInt32(13),
+                        Y = reader.GetInt32(14),
+                        Width = reader.GetInt32(15),
+                        Height = reader.GetInt32(16),
+                        WindowState = reader.GetString(17),
+                        MonitorDeviceId = reader.IsDBNull(18) ? null : reader.GetString(18),
+                        MonitorBounds = reader.IsDBNull(19) ? null : reader.GetString(19)
                     };
                 }
 
@@ -352,8 +362,8 @@ public class SqliteWorkspaceRepository : IWorkspaceRepository
                         cmd.Transaction = transaction;
                         cmd.CommandText = @"
                             INSERT INTO workspace_applications 
-                            (id, workspace_id, executable_path, process_name, window_title, launch_arguments, launch_order, launch_delay_ms, is_enabled, browser_profile, browser_tabs_json)
-                            VALUES (@id, @workspace_id, @executable_path, @process_name, @window_title, @launch_arguments, @launch_order, @launch_delay_ms, @is_enabled, @browser_profile, @browser_tabs_json);
+                            (id, workspace_id, executable_path, process_name, window_title, launch_arguments, launch_order, launch_delay_ms, is_enabled, browser_profile, browser_tabs_json, folder_view_path)
+                            VALUES (@id, @workspace_id, @executable_path, @process_name, @window_title, @launch_arguments, @launch_order, @launch_delay_ms, @is_enabled, @browser_profile, @browser_tabs_json, @folder_view_path);
                         ";
                         cmd.Parameters.AddWithValue("@id", app.Id.ToString());
                         cmd.Parameters.AddWithValue("@workspace_id", workspace.Id.ToString());
@@ -366,6 +376,7 @@ public class SqliteWorkspaceRepository : IWorkspaceRepository
                         cmd.Parameters.AddWithValue("@is_enabled", app.IsEnabled ? 1 : 0);
                         cmd.Parameters.AddWithValue("@browser_profile", (object?)app.BrowserProfile ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@browser_tabs_json", (object?)app.BrowserTabsJson ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@folder_view_path", (object?)app.FolderViewPath ?? DBNull.Value);
                         await cmd.ExecuteNonQueryAsync();
                     }
 
