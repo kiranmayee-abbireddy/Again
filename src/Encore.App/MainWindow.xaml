@@ -1,0 +1,188 @@
+<Window x:Class="Encore.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:Encore.App.ViewModels"
+        xmlns:views="clr-namespace:Encore.App.Views"
+        mc:Ignorable="d"
+        Title="Encore — Your workspace, back on stage" 
+        Icon="Assets/icon.png"
+        Height="760" Width="1140" MinHeight="620" MinWidth="940"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        FontFamily="Segoe UI Variable, Segoe UI, sans-serif">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:DashboardViewModel}">
+            <views:DashboardView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:WorkspaceLibraryViewModel}">
+            <views:WorkspaceLibraryView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:WorkspaceDetailsViewModel}">
+            <views:WorkspaceDetailsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:WorkspaceCaptureViewModel}">
+            <views:WorkspaceCaptureView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ApplicationManagerViewModel}">
+            <views:ApplicationManagerView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:HistoryViewModel}">
+            <views:HistoryView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
+            <views:SettingsView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top Header Navigation Bar -->
+        <Border Grid.Row="0" Background="{DynamicResource SidebarBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1" Padding="20,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Brand / Logo -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="32" Height="32" CornerRadius="8" Background="{DynamicResource AccentBrush}" Margin="0,0,12,0">
+                        <TextBlock Text="▶" Foreground="#FFFFFF" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,0,0" />
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ENCORE" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                            <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="6,1" Margin="8,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="v1.0" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
+                            </Border>
+                        </StackPanel>
+                        <TextBlock Text="Your workspace, back on stage." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Top Quick Actions -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding QuickCaptureCommand}" Margin="0,0,10,0" Padding="14,7">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📸 " />
+                            <TextBlock Text="Capture" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource PrimaryButtonStyle}" Command="{Binding QuickRestoreLastUsedCommand}" Padding="16,7">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚡ " />
+                            <TextBlock Text="Quick Restore" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Body: Sidebar + Active Content View -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar Navigation Rail -->
+            <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,1,0" Padding="12,16">
+                <DockPanel LastChildFill="True">
+                    
+                    <!-- App Status / Shortcuts Hint in Bottom of Sidebar -->
+                    <Border DockPanel.Dock="Bottom" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="8" Padding="12" Margin="0,16,0,0">
+                        <StackPanel>
+                            <TextBlock Text="GLOBAL SHORTCUTS" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,6" />
+                            <Grid Margin="0,0,0,3">
+                                <TextBlock Text="Capture" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                <TextBlock Text="Ctrl+Alt+C" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Right" Foreground="{DynamicResource AccentLightBrush}" />
+                            </Grid>
+                            <Grid>
+                                <TextBlock Text="Restore" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                <TextBlock Text="Ctrl+Alt+R" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Right" Foreground="{DynamicResource AccentLightBrush}" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Navigation Items List -->
+                    <ItemsControl ItemsSource="{Binding NavigationItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:NavigationItem}">
+                                <RadioButton GroupName="NavMenu" IsChecked="{Binding IsSelected}" 
+                                             Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                             CommandParameter="{Binding}" Margin="0,0,0,6">
+                                    <RadioButton.Style>
+                                        <Style TargetType="RadioButton">
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="RadioButton">
+                                                        <Border x:Name="navBorder" Background="Transparent" CornerRadius="8" Padding="14,10">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Glyph}" FontSize="15" Margin="0,0,12,0" VerticalAlignment="Center" />
+                                                                <TextBlock x:Name="navTitle" Grid.Column="1" Text="{Binding Title}" FontSize="13" FontWeight="Medium" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                                                            </Grid>
+                                                        </Border>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsChecked" Value="True">
+                                                                <Setter TargetName="navBorder" Property="Background" Value="{DynamicResource CardBackgroundBrush}" />
+                                                                <Setter TargetName="navTitle" Property="Foreground" Value="{DynamicResource AccentLightBrush}" />
+                                                                <Setter TargetName="navTitle" Property="FontWeight" Value="SemiBold" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter TargetName="navBorder" Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </RadioButton.Style>
+                                </RadioButton>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DockPanel>
+            </Border>
+
+            <!-- Active View Content Container -->
+            <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" />
+        </Grid>
+
+        <!-- Bottom Status Bar -->
+        <Border Grid.Row="2" Background="{DynamicResource SidebarBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,1,0,0" Padding="18,7">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="8" Height="8" Fill="{DynamicResource SuccessBrush}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Windows 10 / 11 Native" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,16,0" />
+                    <TextBlock Text="{Binding CurrentTheme, StringFormat='Theme: {0}'}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>

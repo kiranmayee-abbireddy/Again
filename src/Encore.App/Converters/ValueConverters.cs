@@ -1,0 +1,62 @@
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
+
+namespace Encore.App.Converters;
+
+public class BoolToVisibilityConverter : IValueConverter
+{
+    public bool Invert { get; set; }
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        bool b = value is true;
+        if (Invert) b = !b;
+        return b ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value is Visibility.Visible;
+    }
+}
+
+public class StatusToBrushConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        string status = value?.ToString() ?? string.Empty;
+        return status switch
+        {
+            "Success" => new SolidColorBrush(Color.FromRgb(34, 197, 94)), // Emerald green
+            "LaunchedAndPlaced" => new SolidColorBrush(Color.FromRgb(34, 197, 94)),
+            "RepositionedOnly" => new SolidColorBrush(Color.FromRgb(59, 130, 246)), // Blue
+            "Partial" => new SolidColorBrush(Color.FromRgb(234, 179, 8)), // Yellow
+            "AlreadyRunning" => new SolidColorBrush(Color.FromRgb(148, 163, 184)), // Slate
+            "Skipped" => new SolidColorBrush(Color.FromRgb(148, 163, 184)),
+            "Failed" => new SolidColorBrush(Color.FromRgb(239, 68, 68)), // Red
+            "Cancelled" => new SolidColorBrush(Color.FromRgb(249, 115, 22)), // Orange
+            _ => new SolidColorBrush(Color.FromRgb(148, 163, 184))
+        };
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class PinGlyphConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        bool pinned = value is true;
+        return pinned ? "📌" : "📍";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}

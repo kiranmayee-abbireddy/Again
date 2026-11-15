@@ -1,0 +1,114 @@
+<UserControl x:Class="Encore.App.Views.WorkspaceCaptureView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:Encore.App.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:WorkspaceCaptureViewModel}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="32,24,32,32">
+
+            <!-- Header -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Capture Desktop Workspace" Style="{StaticResource HeaderTitleStyle}" />
+                    <TextBlock Text="Snapshot your current screen layout. Review detected windows and select which ones to include." Style="{StaticResource SubheaderStyle}" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,10,0" Padding="14,8" />
+                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Save Workspace" Command="{Binding SaveCommand}" Padding="18,8" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Error Banner -->
+            <Border Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Background="{DynamicResource DangerBrush}" CornerRadius="6" Padding="14,10" Margin="0,0,0,18">
+                <TextBlock Text="{Binding ErrorMessage}" FontSize="13" Foreground="#FFFFFF" FontWeight="Medium" />
+            </Border>
+
+            <!-- Configuration Card -->
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="Workspace Information" Style="{StaticResource SectionTitleStyle}" />
+
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="Workspace Name" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <TextBox Text="{Binding WorkspaceName, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Category" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Description (Optional)" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Height="48" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+
+            <!-- Detected Windows Header -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Detected Application Windows" Style="{StaticResource SectionTitleStyle}" Margin="0,0,12,0" />
+                    <TextBlock Text="{Binding DetectedWindows.Count, StringFormat='({0} detected)'}" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource GhostButtonStyle}" Content="Select All" Command="{Binding SelectAllCommand}" Margin="0,0,6,0" />
+                    <Button Style="{StaticResource GhostButtonStyle}" Content="Deselect All" Command="{Binding DeselectAllCommand}" Margin="0,0,8,0" />
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="🔄 Rescan" Command="{Binding ScanWindowsCommand}" Padding="10,5" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Windows List -->
+            <ItemsControl ItemsSource="{Binding DetectedWindows}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:CapturableWindowItemViewModel}">
+                        <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,10" Padding="14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Margin="0,0,14,0" />
+
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding DisplayTitle}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,0,0,2" />
+                                    <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding PlacementText}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Right" />
+                                    <TextBlock Text="{Binding MonitorText}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Right" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

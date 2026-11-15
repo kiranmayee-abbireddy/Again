@@ -1,0 +1,179 @@
+<UserControl x:Class="Encore.App.Views.WorkspaceDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:Encore.App.ViewModels"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:WorkspaceDetailsViewModel}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="32,24,32,32">
+
+            <!-- Top Navigation & Action Header -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding GoBackCommand}" Margin="0,0,16,0" Padding="12,8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="← " />
+                        <TextBlock Text="Back to Library" />
+                    </StackPanel>
+                </Button>
+
+                <TextBlock Grid.Column="1" Text="Workspace Configuration" Style="{StaticResource HeaderTitleStyle}" VerticalAlignment="Center" />
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Save Changes" Command="{Binding SaveCommand}" Margin="0,0,8,0" Padding="16,8" />
+                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Restore Workspace Now" Command="{Binding RestoreNowCommand}" Padding="18,8" />
+                </StackPanel>
+            </Grid>
+
+            <!-- Status Banner -->
+            <Border Visibility="{Binding StatusMessage, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" CornerRadius="6" Padding="14,10" Margin="0,0,0,18">
+                <TextBlock Text="{Binding StatusMessage}" FontSize="13" Foreground="{DynamicResource AccentLightBrush}" />
+            </Border>
+
+            <!-- Restoring Banner -->
+            <Border Visibility="{Binding IsRestoring, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Background="{DynamicResource AccentBrush}" CornerRadius="6" Padding="14,10" Margin="0,0,0,18">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="⏳ " Foreground="#FFFFFF" />
+                    <TextBlock Text="{Binding RestoringMessage}" Foreground="#FFFFFF" FontWeight="SemiBold" />
+                </StackPanel>
+            </Border>
+
+            <!-- Workspace Metadata Card -->
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,24">
+                <StackPanel>
+                    <TextBlock Text="General Details" Style="{StaticResource SectionTitleStyle}" />
+
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                            <TextBlock Text="Workspace Name" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Category" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                            <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Description (Optional)" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
+                    <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Height="60" TextWrapping="Wrap" AcceptsReturn="True" />
+                </StackPanel>
+            </Border>
+
+            <!-- Applications List Section -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Configured Applications &amp; Windows" Style="{StaticResource SectionTitleStyle}" Grid.Column="0" />
+                <TextBlock Text="{Binding Applications.Count, StringFormat='{}{0} applications'}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Grid.Column="1" />
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding Applications}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:WorkspaceAppItemViewModel}">
+                        <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12" Padding="16">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Top row: Checkbox, Name, Order Buttons, Action Buttons -->
+                                <Grid Grid.Row="0" Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" Margin="0,0,12,0" />
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                                    </StackPanel>
+
+                                    <!-- Reorder buttons -->
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,16,0">
+                                        <Button Style="{StaticResource GhostButtonStyle}" Content="▲" Padding="6,3" 
+                                                Command="{Binding DataContext.MoveAppUpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" ToolTip="Move Up in Launch Sequence" />
+                                        <Button Style="{StaticResource GhostButtonStyle}" Content="▼" Padding="6,3" 
+                                                Command="{Binding DataContext.MoveAppDownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" ToolTip="Move Down in Launch Sequence" />
+                                    </StackPanel>
+
+                                    <!-- Action Buttons -->
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                        <Button Style="{StaticResource SecondaryButtonStyle}" Content="▶ Test Launch" Padding="10,5" Margin="0,0,8,0"
+                                                Command="{Binding DataContext.TestLaunchCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                        <Button Style="{StaticResource DangerButtonStyle}" Content="Remove" Padding="10,5"
+                                                Command="{Binding DataContext.RemoveAppCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- Middle row: Window Position & Monitor details -->
+                                <Border Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Target Window Placement:" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <TextBlock Text="{Binding WindowBoundsText}" FontSize="12" FontWeight="Medium" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Monitor Assignment:" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <TextBlock Text="{Binding MonitorText}" FontSize="12" FontWeight="Medium" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Bottom row: Launch args & delay -->
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                        <TextBlock Text="Launch Arguments" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,3" />
+                                        <TextBox Text="{Binding LaunchArguments, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Startup Delay (ms)" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,3" />
+                                        <TextBox Text="{Binding LaunchDelayMs, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

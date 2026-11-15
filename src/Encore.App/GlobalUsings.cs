@@ -1,0 +1,11 @@
+global using System.IO;
+global using UserControl = System.Windows.Controls.UserControl;
+global using Button = System.Windows.Controls.Button;
+global using TextBox = System.Windows.Controls.TextBox;
+global using ComboBox = System.Windows.Controls.ComboBox;
+global using CheckBox = System.Windows.Controls.CheckBox;
+global using ListBox = System.Windows.Controls.ListBox;
+global using ListView = System.Windows.Controls.ListView;
+global using Application = System.Windows.Application;
+global using Color = System.Windows.Media.Color;
+global using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
