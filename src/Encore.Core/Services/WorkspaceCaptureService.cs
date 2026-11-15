@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json;
 using Encore.Core.Domain;
 using Encore.Core.Storage;
 using Microsoft.Extensions.Logging;
@@ -19,15 +20,18 @@ public interface IWorkspaceCaptureService
 public class WorkspaceCaptureService : IWorkspaceCaptureService
 {
     private readonly IWindowsWindowService _windowService;
+    private readonly IChromiumBrowserService _browserService;
     private readonly IWorkspaceRepository _repository;
     private readonly ILogger<WorkspaceCaptureService>? _logger;
 
     public WorkspaceCaptureService(
         IWindowsWindowService windowService,
+        IChromiumBrowserService browserService,
         IWorkspaceRepository repository,
         ILogger<WorkspaceCaptureService>? logger = null)
     {
         _windowService = windowService;
+        _browserService = browserService;
         _repository = repository;
         _logger = logger;
     }
@@ -42,13 +46,47 @@ public class WorkspaceCaptureService : IWorkspaceCaptureService
 
         foreach (var window in detectedWindows)
         {
+            string? launchArguments = null;
+            string? browserProfile = null;
+            string? browserTabsJson = null;
+            string windowTitle = window.Title;
+
+            // Check if this is a supported browser (Chrome, Edge, Brave, etc.)
+            if (_browserService.IsSupportedBrowser(window.ExecutablePath))
+            {
+                try
+                {
+                    var browserDetails = _browserService.InspectWindow(window.Handle, window.ExecutablePath);
+                    if (browserDetails != null)
+                    {
+                        browserProfile = $"{browserDetails.ProfileDisplayName} ({browserDetails.ProfileDirectory})";
+                        if (browserDetails.Tabs.Count > 0)
+                        {
+                            browserTabsJson = JsonSerializer.Serialize(browserDetails.Tabs);
+                        }
+                        launchArguments = browserDetails.LaunchArguments;
+
+                        if (browserDetails.Tabs.Count > 0)
+                        {
+                            windowTitle = $"{browserDetails.Tabs[0].Title} — {browserDetails.BrowserName}";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogWarning(ex, "Failed to inspect browser tabs for {Hwnd}", window.Handle);
+                }
+            }
+
             var app = new WorkspaceApplication
             {
                 Id = Guid.NewGuid(),
                 ExecutablePath = window.ExecutablePath,
                 ProcessName = window.ProcessName,
-                WindowTitle = window.Title,
-                LaunchArguments = null,
+                WindowTitle = windowTitle,
+                LaunchArguments = launchArguments,
+                BrowserProfile = browserProfile,
+                BrowserTabsJson = browserTabsJson,
                 LaunchOrder = order++,
                 LaunchDelayMs = 250,
                 IsEnabled = true,

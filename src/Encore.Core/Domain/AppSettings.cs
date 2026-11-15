@@ -4,7 +4,7 @@ public class AppSettings
 {
     public bool MinimizeToTrayOnClose { get; set; } = true;
     public bool StartWithWindows { get; set; } = false;
-    public string Theme { get; set; } = "Dark"; // "Dark", "Light", "System"
+    public string Theme { get; set; } = "Emerald (Dark)"; // "Emerald (Dark)", "Emerald (Light)", "Nordic Teal (Dark)", "Solar Amber (Dark)", etc.
     
     // Restoration defaults
     public bool DefaultSkipAlreadyRunning { get; set; } = false;

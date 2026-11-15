@@ -95,7 +95,19 @@
                                 <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Margin="0,0,14,0" />
 
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding DisplayTitle}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" Margin="0,0,0,2" />
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                        <TextBlock Text="{Binding DisplayTitle}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="450" />
+                                        <Border Visibility="{Binding HasBrowserProfile, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding BrowserProfile, StringFormat='👤 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
+                                        </Border>
+                                    </StackPanel>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,2" Visibility="{Binding HasTabs, Converter={StaticResource BoolToVisibilityConverter}}">
+                                        <TextBlock Text="{Binding TabsSummary, StringFormat='🌐 {0}'}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="500" />
+                                    </StackPanel>
+
                                     <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
 

@@ -1,33 +1,35 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <!-- Emerald Dark Theme (No Blue / Indigo) -->
+
     <!-- Backgrounds -->
-    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#0B0F19" />
-    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#111827" />
-    <SolidColorBrush x:Key="SurfaceBackgroundBrush" Color="#1F2937" />
-    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#374151" />
-    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#1E2638" />
-    <SolidColorBrush x:Key="CardBorderBrush" Color="#2D3748" />
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#0D1117" />
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#161B22" />
+    <SolidColorBrush x:Key="SurfaceBackgroundBrush" Color="#21262D" />
+    <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#30363D" />
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#161B22" />
+    <SolidColorBrush x:Key="CardBorderBrush" Color="#30363D" />
 
     <!-- Text -->
-    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F9FAFB" />
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#9CA3AF" />
-    <SolidColorBrush x:Key="TextMutedBrush" Color="#6B7280" />
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#F0F6FC" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#8B949E" />
+    <SolidColorBrush x:Key="TextMutedBrush" Color="#6E7681" />
 
-    <!-- Accents -->
-    <SolidColorBrush x:Key="AccentBrush" Color="#6366F1" />
-    <SolidColorBrush x:Key="AccentHoverBrush" Color="#4F46E5" />
-    <SolidColorBrush x:Key="AccentLightBrush" Color="#818CF8" />
-    <SolidColorBrush x:Key="AccentCyanBrush" Color="#06B6D4" />
+    <!-- Accents (Emerald & Mint) -->
+    <SolidColorBrush x:Key="AccentBrush" Color="#10B981" />
+    <SolidColorBrush x:Key="AccentHoverBrush" Color="#059669" />
+    <SolidColorBrush x:Key="AccentLightBrush" Color="#34D399" />
+    <SolidColorBrush x:Key="AccentCyanBrush" Color="#14B8A6" />
 
     <!-- States -->
     <SolidColorBrush x:Key="SuccessBrush" Color="#10B981" />
     <SolidColorBrush x:Key="WarningBrush" Color="#F59E0B" />
     <SolidColorBrush x:Key="DangerBrush" Color="#EF4444" />
-    <SolidColorBrush x:Key="InfoBrush" Color="#3B82F6" />
+    <SolidColorBrush x:Key="InfoBrush" Color="#10B981" />
 
     <!-- Controls -->
-    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#111827" />
-    <SolidColorBrush x:Key="InputBorderBrush" Color="#374151" />
+    <SolidColorBrush x:Key="InputBackgroundBrush" Color="#0D1117" />
+    <SolidColorBrush x:Key="InputBorderBrush" Color="#30363D" />
 
 </ResourceDictionary>

@@ -53,7 +53,17 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private string _statusMessage = string.Empty;
 
-    public ObservableCollection<string> Themes { get; } = new() { "Dark", "Light" };
+    public ObservableCollection<string> Themes { get; } = new()
+    {
+        "Emerald (Dark)",
+        "Emerald (Light)",
+        "Nordic Teal (Dark)",
+        "Nordic Teal (Light)",
+        "Solar Amber (Dark)",
+        "Solar Amber (Light)",
+        "Rosewood (Dark)",
+        "Rosewood (Light)"
+    };
     public ObservableCollection<string> Categories { get; } = new();
 
     public Action<string>? ThemeChanged { get; set; }
@@ -69,7 +79,12 @@ public partial class SettingsViewModel : ObservableObject
 
         MinimizeToTrayOnClose = settings.MinimizeToTrayOnClose;
         StartWithWindows = IsStartWithWindowsEnabled();
-        SelectedTheme = settings.Theme;
+        SelectedTheme = settings.Theme switch
+        {
+            "Dark" => "Emerald (Dark)",
+            "Light" => "Emerald (Light)",
+            _ => string.IsNullOrEmpty(settings.Theme) ? "Emerald (Dark)" : settings.Theme
+        };
         SkipAlreadyRunning = settings.DefaultSkipAlreadyRunning;
         RepositionExistingWindows = settings.DefaultRepositionExistingWindows;
         LaunchMissing = settings.DefaultLaunchMissing;

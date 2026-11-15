@@ -15,6 +15,40 @@ public partial class CapturableWindowItemViewModel : ObservableObject
     public string DisplayTitle => string.IsNullOrWhiteSpace(Application.WindowTitle) ? Application.ProcessName : Application.WindowTitle;
     public string ExecutablePath => Application.ExecutablePath;
 
+    public string? BrowserProfile => Application.BrowserProfile;
+    public bool HasBrowserProfile => !string.IsNullOrEmpty(Application.BrowserProfile);
+
+    public int TabCount
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Application.BrowserTabsJson)) return 0;
+            try
+            {
+                var tabs = System.Text.Json.JsonSerializer.Deserialize<List<BrowserTabInfo>>(Application.BrowserTabsJson);
+                return tabs?.Count ?? 0;
+            }
+            catch { return 0; }
+        }
+    }
+
+    public bool HasTabs => TabCount > 0;
+
+    public string TabsSummary
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Application.BrowserTabsJson)) return string.Empty;
+            try
+            {
+                var tabs = System.Text.Json.JsonSerializer.Deserialize<List<BrowserTabInfo>>(Application.BrowserTabsJson);
+                if (tabs == null || tabs.Count == 0) return string.Empty;
+                return $"{tabs.Count} tab{(tabs.Count > 1 ? "s" : "")}: " + string.Join(", ", tabs.Take(3).Select(t => t.Title));
+            }
+            catch { return string.Empty; }
+        }
+    }
+
     [ObservableProperty]
     private bool _isSelected = true;
 

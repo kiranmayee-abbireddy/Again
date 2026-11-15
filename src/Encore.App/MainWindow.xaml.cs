@@ -117,10 +117,19 @@ public partial class MainWindow : Window
 
     public void ApplyTheme(string theme)
     {
-        var uri = string.Equals(theme, "Light", StringComparison.OrdinalIgnoreCase)
-            ? new Uri("Styles/LightTheme.xaml", UriKind.Relative)
-            : new Uri("Styles/DarkTheme.xaml", UriKind.Relative);
+        string stylePath = theme switch
+        {
+            "Emerald (Light)" or "Light" => "Styles/LightTheme.xaml",
+            "Nordic Teal (Dark)" or "Teal Dark" => "Styles/TealDark.xaml",
+            "Nordic Teal (Light)" or "Teal Light" => "Styles/TealLight.xaml",
+            "Solar Amber (Dark)" or "Amber Dark" => "Styles/AmberDark.xaml",
+            "Solar Amber (Light)" or "Amber Light" => "Styles/AmberLight.xaml",
+            "Rosewood (Dark)" or "Rosewood Dark" => "Styles/RosewoodDark.xaml",
+            "Rosewood (Light)" or "Rosewood Light" => "Styles/RosewoodLight.xaml",
+            _ => "Styles/DarkTheme.xaml" // Emerald (Dark) is default
+        };
 
+        var uri = new Uri(stylePath, UriKind.Relative);
         var dict = new ResourceDictionary { Source = uri };
 
         var merged = System.Windows.Application.Current.Resources.MergedDictionaries;

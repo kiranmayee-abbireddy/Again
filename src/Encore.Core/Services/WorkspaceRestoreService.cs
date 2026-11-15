@@ -126,11 +126,16 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                     continue;
                 }
 
-                // Step 2: Check if already running AND has an active top-level window
+                // Step 2: Check if already running AND has an active matching top-level window
                 bool isProcessRunning = _processService.IsProcessRunning(app.ProcessName, app.ExecutablePath);
-                bool hasVisibleWindow = _windowService.HasVisibleTopLevelWindow(app.ProcessName, app.ExecutablePath);
+                var existingHwnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, app.WindowTitle);
+                bool hasMatchingWindow = existingHwnd != IntPtr.Zero;
 
-                if (isProcessRunning && hasVisibleWindow)
+                // For browsers with tabs/profiles, if the specific window isn't already open, allow launching the new window
+                bool hasSpecificTabs = !string.IsNullOrWhiteSpace(app.BrowserTabsJson) || 
+                                       (!string.IsNullOrWhiteSpace(app.LaunchArguments) && app.LaunchArguments.Contains("--new-window"));
+
+                if (isProcessRunning && (hasMatchingWindow || (!hasSpecificTabs && _windowService.HasVisibleTopLevelWindow(app.ProcessName, app.ExecutablePath))))
                 {
                     if (options.SkipAlreadyRunning)
                     {
@@ -143,7 +148,7 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
 
                     if (options.RepositionExisting)
                     {
-                        var hWnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, app.WindowTitle);
+                        var hWnd = existingHwnd != IntPtr.Zero ? existingHwnd : _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, null);
                         if (hWnd != IntPtr.Zero && app.Placement != null)
                         {
                             var monitor = _monitorService.FindBestMatchingMonitor(app.Placement.MonitorDeviceId, app.Placement.MonitorBounds);
@@ -193,7 +198,7 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
 
                 // Handle browsers running headless/background processes (e.g. chrome --no-startup-window)
                 string? launchArgs = app.LaunchArguments;
-                if (isProcessRunning && !hasVisibleWindow && 
+                if (isProcessRunning && !hasMatchingWindow && 
                     (app.ProcessName.Contains("chrome", StringComparison.OrdinalIgnoreCase) || 
                      app.ProcessName.Contains("msedge", StringComparison.OrdinalIgnoreCase)))
                 {

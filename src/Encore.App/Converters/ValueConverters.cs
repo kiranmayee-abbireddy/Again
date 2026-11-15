@@ -29,10 +29,10 @@ public class StatusToBrushConverter : IValueConverter
         string status = value?.ToString() ?? string.Empty;
         return status switch
         {
-            "Success" => new SolidColorBrush(Color.FromRgb(34, 197, 94)), // Emerald green
-            "LaunchedAndPlaced" => new SolidColorBrush(Color.FromRgb(34, 197, 94)),
-            "RepositionedOnly" => new SolidColorBrush(Color.FromRgb(59, 130, 246)), // Blue
-            "Partial" => new SolidColorBrush(Color.FromRgb(234, 179, 8)), // Yellow
+            "Success" => new SolidColorBrush(Color.FromRgb(16, 185, 129)), // Emerald
+            "LaunchedAndPlaced" => new SolidColorBrush(Color.FromRgb(16, 185, 129)), // Emerald
+            "RepositionedOnly" => new SolidColorBrush(Color.FromRgb(20, 184, 166)), // Cyan/Teal
+            "Partial" => new SolidColorBrush(Color.FromRgb(245, 158, 11)), // Amber
             "AlreadyRunning" => new SolidColorBrush(Color.FromRgb(148, 163, 184)), // Slate
             "Skipped" => new SolidColorBrush(Color.FromRgb(148, 163, 184)),
             "Failed" => new SolidColorBrush(Color.FromRgb(239, 68, 68)), // Red

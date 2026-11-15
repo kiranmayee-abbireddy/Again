@@ -197,14 +197,14 @@ public class StorageTests : IDisposable
             var loadedDefaults = await configRepo.LoadSettingsAsync();
             Assert.NotNull(loadedDefaults);
             Assert.True(loadedDefaults.MinimizeToTrayOnClose);
-            Assert.Equal("Dark", loadedDefaults.Theme);
+            Assert.Equal("Emerald (Dark)", loadedDefaults.Theme);
 
-            loadedDefaults.Theme = "Light";
+            loadedDefaults.Theme = "Nordic Teal (Dark)";
             loadedDefaults.MinimizeToTrayOnClose = false;
             await configRepo.SaveSettingsAsync(loadedDefaults);
 
             var reloaded = await configRepo.LoadSettingsAsync();
-            Assert.Equal("Light", reloaded.Theme);
+            Assert.Equal("Nordic Teal (Dark)", reloaded.Theme);
             Assert.False(reloaded.MinimizeToTrayOnClose);
         }
         finally
@@ -319,5 +319,105 @@ public class MultiProcessWindowServiceTests
         var placement = new WindowPlacement { X = 100, Y = 100, Width = 800, Height = 600, WindowState = "Normal" };
         bool result = winService.SetPlacement(IntPtr.Zero, placement, null);
         Assert.False(result);
+    }
+
+    [Fact]
+    public void ChromiumBrowserService_IdentifiesSupportedBrowsers()
+    {
+        var service = new ChromiumBrowserService();
+
+        Assert.True(service.IsSupportedBrowser(@"C:\Program Files\Google\Chrome\Application\chrome.exe"));
+        Assert.True(service.IsSupportedBrowser(@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"));
+        Assert.True(service.IsSupportedBrowser(@"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"));
+        Assert.False(service.IsSupportedBrowser(@"C:\Windows\notepad.exe"));
+        Assert.False(service.IsSupportedBrowser(@"C:\Program Files\Git\bin\bash.exe"));
+    }
+
+    [Fact]
+    public void ChromiumBrowserService_LoadsProfiles_WhenPresent()
+    {
+        var service = new ChromiumBrowserService();
+        string chromePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+        if (File.Exists(chromePath))
+        {
+            var profiles = service.GetProfiles(chromePath);
+            Assert.NotEmpty(profiles);
+            Assert.Contains(profiles, p => !string.IsNullOrEmpty(p.DirectoryName));
+        }
+    }
+
+    [Fact]
+    public async Task Sqlite_SaveAndRetrieve_BrowserProfileAndTabs_Preserved()
+    {
+        string tempDb = Path.Combine(Path.GetTempPath(), $"encore_browser_test_{Guid.NewGuid():N}.db");
+        var repo = new SqliteWorkspaceRepository(tempDb);
+
+        try
+        {
+            var ws = new Workspace
+            {
+                Name = "Chrome Research Setup",
+                Category = "Development",
+                Applications = new List<WorkspaceApplication>
+                {
+                    new()
+                    {
+                        ExecutablePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe",
+                        ProcessName = "chrome",
+                        WindowTitle = "AI & ML Papers — Google Chrome",
+                        BrowserProfile = "Kiranmayee (Profile 1)",
+                        BrowserTabsJson = "[{\"Title\":\"arXiv:2301.00001\",\"Url\":\"https://arxiv.org/abs/2301.00001\"},{\"Title\":\"GitHub\",\"Url\":\"https://github.com\"}]",
+                        LaunchArguments = "--profile-directory=\"Profile 1\" --new-window \"https://arxiv.org/abs/2301.00001\" \"https://github.com\"",
+                        Placement = new WindowPlacement { X = 0, Y = 0, Width = 1920, Height = 1080, WindowState = "Normal" }
+                    }
+                }
+            };
+
+            await repo.SaveWorkspaceAsync(ws);
+
+            var loaded = await repo.GetWorkspaceByIdAsync(ws.Id);
+            Assert.NotNull(loaded);
+            Assert.Single(loaded.Applications);
+
+            var app = loaded.Applications[0];
+            Assert.Equal("Kiranmayee (Profile 1)", app.BrowserProfile);
+            Assert.NotNull(app.BrowserTabsJson);
+            Assert.Contains("arXiv", app.BrowserTabsJson);
+            Assert.Contains("--profile-directory=\"Profile 1\"", app.LaunchArguments);
+        }
+        finally
+        {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
+            if (File.Exists(tempDb)) File.Delete(tempDb);
+        }
+    }
+
+    [Fact]
+    public async Task WorkspaceCaptureService_CapturesChromeWithProfileAndTabs_IfRunning()
+    {
+        var procService = new WindowsProcessService();
+        var monService = new WindowsMonitorService();
+        var winService = new WindowsWindowService(procService, monService);
+        var browserService = new ChromiumBrowserService();
+        string tempDb = Path.Combine(Path.GetTempPath(), $"test_capture_{Guid.NewGuid():N}.db");
+        var repo = new SqliteWorkspaceRepository(tempDb);
+
+        try
+        {
+            var captureService = new WorkspaceCaptureService(winService, browserService, repo);
+            var apps = await captureService.CaptureCurrentWindowsAsync();
+            Assert.NotNull(apps);
+
+            var chromeApp = apps.FirstOrDefault(a => a.ProcessName.Contains("chrome", StringComparison.OrdinalIgnoreCase));
+            if (chromeApp != null)
+            {
+                Assert.True(!string.IsNullOrEmpty(chromeApp.BrowserProfile) || !string.IsNullOrEmpty(chromeApp.LaunchArguments));
+            }
+        }
+        finally
+        {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
+            if (File.Exists(tempDb)) File.Delete(tempDb);
+        }
     }
 }

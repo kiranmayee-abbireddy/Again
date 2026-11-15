@@ -121,9 +121,26 @@ public class WindowsWindowService : IWindowsWindowService
             if (pid == 0 || pid == pidToExclude)
                 return true;
 
-            // Get Window Bounds
-            if (!NativeMethods.GetWindowRect(hWnd, out RECT rect))
-                return true;
+            // Get Window Bounds & State
+            bool isMinimized = NativeMethods.IsIconic(hWnd);
+            RECT rect;
+            if (isMinimized)
+            {
+                var wp = new WINDOWPLACEMENT { Length = Marshal.SizeOf<WINDOWPLACEMENT>() };
+                if (NativeMethods.GetWindowPlacement(hWnd, ref wp) && wp.NormalPosition.Width > 150 && wp.NormalPosition.Height > 100)
+                {
+                    rect = wp.NormalPosition;
+                }
+                else if (!NativeMethods.GetWindowRect(hWnd, out rect))
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (!NativeMethods.GetWindowRect(hWnd, out rect))
+                    return true;
+            }
 
             if (rect.Width <= 150 || rect.Height <= 100)
                 return true;
@@ -148,7 +165,7 @@ public class WindowsWindowService : IWindowsWindowService
 
             // Determine Window State
             string windowState = "Normal";
-            if (NativeMethods.IsIconic(hWnd))
+            if (isMinimized)
                 windowState = "Minimized";
             else if (NativeMethods.IsZoomed(hWnd))
                 windowState = "Maximized";

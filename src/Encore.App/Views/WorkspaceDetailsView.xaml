@@ -108,7 +108,17 @@
                                     <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" Margin="0,0,12,0" />
 
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="400" />
+                                            <Border Visibility="{Binding HasBrowserProfile, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                    Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
+                                                    CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding BrowserProfile, StringFormat='👤 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
+                                            </Border>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Margin="0,2,0,2" Visibility="{Binding HasTabs, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBlock Text="{Binding TabsSummary, StringFormat='🌐 {0}'}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="450" />
+                                        </StackPanel>
                                         <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
                                     </StackPanel>
 

@@ -238,6 +238,12 @@ public static class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+    [DllImport("oleacc.dll")]
+    public static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwId, ref Guid riid, [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject);
+
+    public const uint OBJID_CLIENT = 0xFFFFFFFC;
+    public static readonly Guid IID_IAccessible = new("{618736E0-3C3D-11CF-810C-00AA00389B71}");
+
     public static IDisposable EnsureInputDesktop() => new DesktopScope();
 
     public sealed class DesktopScope : IDisposable

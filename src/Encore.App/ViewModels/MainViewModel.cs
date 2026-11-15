@@ -93,7 +93,12 @@ public partial class MainViewModel : ObservableObject
     public async Task InitializeAsync()
     {
         var settings = await _configRepo.LoadSettingsAsync();
-        CurrentTheme = settings.Theme;
+        CurrentTheme = settings.Theme switch
+        {
+            "Dark" => "Emerald (Dark)",
+            "Light" => "Emerald (Light)",
+            _ => string.IsNullOrEmpty(settings.Theme) ? "Emerald (Dark)" : settings.Theme
+        };
         ThemeChangeRequested?.Invoke(CurrentTheme);
 
         await NavigateToPageAsync(NavigationPage.Dashboard);

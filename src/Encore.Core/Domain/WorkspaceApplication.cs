@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace Encore.Core.Domain;
 
 public class WorkspaceApplication
@@ -12,6 +17,9 @@ public class WorkspaceApplication
     public int LaunchDelayMs { get; set; }
     public bool IsEnabled { get; set; } = true;
     
+    public string? BrowserProfile { get; set; }
+    public string? BrowserTabsJson { get; set; }
+
     public WindowPlacement? Placement { get; set; }
 
     public WorkspaceApplication Clone(Guid newWorkspaceId)
@@ -27,6 +35,8 @@ public class WorkspaceApplication
             LaunchOrder = LaunchOrder,
             LaunchDelayMs = LaunchDelayMs,
             IsEnabled = IsEnabled,
+            BrowserProfile = BrowserProfile,
+            BrowserTabsJson = BrowserTabsJson,
             Placement = Placement?.Clone()
         };
     }
