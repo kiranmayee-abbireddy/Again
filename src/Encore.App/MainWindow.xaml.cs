@@ -39,6 +39,47 @@ public partial class MainWindow : Window
 
         Loaded += MainWindow_Loaded;
         Closing += MainWindow_Closing;
+        StateChanged += MainWindow_StateChanged;
+    }
+
+    private void MainWindow_StateChanged(object? sender, EventArgs e)
+    {
+        UpdateMaximizeRestoreButton();
+    }
+
+    private void UpdateMaximizeRestoreButton()
+    {
+        if (WindowState == WindowState.Maximized)
+        {
+            MaximizeIcon.Visibility = Visibility.Collapsed;
+            RestoreIcon.Visibility = Visibility.Visible;
+            MaximizeButton.ToolTip = "Restore";
+            RootBorder.BorderThickness = new Thickness(0);
+            RootBorder.Margin = new Thickness(7);
+        }
+        else
+        {
+            MaximizeIcon.Visibility = Visibility.Visible;
+            RestoreIcon.Visibility = Visibility.Collapsed;
+            MaximizeButton.ToolTip = "Maximize";
+            RootBorder.BorderThickness = new Thickness(1);
+            RootBorder.Margin = new Thickness(0);
+        }
+    }
+
+    private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    }
+
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
     }
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
