@@ -91,6 +91,11 @@ public static class NativeMethods
     public const uint PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
     public const uint PROCESS_QUERY_INFORMATION = 0x0400;
 
+    public const uint DESKTOP_ENUMERATE = 0x0040;
+    public const uint DESKTOP_WRITEOBJECTS = 0x0080;
+    public const uint DESKTOP_READOBJECTS = 0x0001;
+    public const uint GENERIC_ALL = 0x10000000;
+
     public const int WM_HOTKEY = 0x0312;
     public const uint MOD_ALT = 0x0001;
     public const uint MOD_CONTROL = 0x0002;
@@ -100,6 +105,27 @@ public static class NativeMethods
 
     public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
     public delegate bool MonitorEnumProc(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr OpenInputDesktop(uint dwFlags, bool fInherit, uint dwDesiredAccess);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool CloseDesktop(IntPtr hDesktop);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetThreadDesktop(IntPtr hDesktop);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr GetThreadDesktop(int dwThreadId);
+
+    [DllImport("kernel32.dll")]
+    public static extern int GetCurrentThreadId();
+
+    [DllImport("user32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool EnumDesktopWindows(IntPtr hDesktop, EnumWindowsProc lpfn, IntPtr lParam);
 
     [DllImport("user32.dll")]
     public static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
@@ -211,4 +237,35 @@ public static class NativeMethods
     [DllImport("user32.dll", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+    public static IDisposable EnsureInputDesktop() => new DesktopScope();
+
+    public sealed class DesktopScope : IDisposable
+    {
+        private readonly IntPtr _originalDesktop;
+        private readonly IntPtr _inputDesktop;
+        private readonly bool _switched;
+
+        public DesktopScope()
+        {
+            _originalDesktop = GetThreadDesktop(GetCurrentThreadId());
+            _inputDesktop = OpenInputDesktop(0, false, 0x01FF);
+            if (_inputDesktop != IntPtr.Zero && _inputDesktop != _originalDesktop)
+            {
+                _switched = SetThreadDesktop(_inputDesktop);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_switched && _originalDesktop != IntPtr.Zero)
+            {
+                SetThreadDesktop(_originalDesktop);
+            }
+            if (_inputDesktop != IntPtr.Zero)
+            {
+                CloseDesktop(_inputDesktop);
+            }
+        }
+    }
 }

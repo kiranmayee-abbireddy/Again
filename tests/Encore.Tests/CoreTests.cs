@@ -292,3 +292,32 @@ public class ShortcutParsingTests
         }
     }
 }
+
+public class MultiProcessWindowServiceTests
+{
+    [Fact]
+    public void WindowService_FindTopLevelWindow_HandlesNonExistentProcessesCleanly()
+    {
+        var procService = new WindowsProcessService();
+        var monService = new WindowsMonitorService();
+        var winService = new WindowsWindowService(procService, monService);
+
+        IntPtr hwnd = winService.FindTopLevelWindow("NonExistentApp999", null, "Some Title");
+        Assert.Equal(IntPtr.Zero, hwnd);
+
+        bool hasWin = winService.HasVisibleTopLevelWindow("NonExistentApp999");
+        Assert.False(hasWin);
+    }
+
+    [Fact]
+    public void WindowService_SetPlacement_HandlesZeroHandleGracefully()
+    {
+        var procService = new WindowsProcessService();
+        var monService = new WindowsMonitorService();
+        var winService = new WindowsWindowService(procService, monService);
+
+        var placement = new WindowPlacement { X = 100, Y = 100, Width = 800, Height = 600, WindowState = "Normal" };
+        bool result = winService.SetPlacement(IntPtr.Zero, placement, null);
+        Assert.False(result);
+    }
+}

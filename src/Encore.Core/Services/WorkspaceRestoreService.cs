@@ -126,15 +126,16 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                     continue;
                 }
 
-                // Step 2: Check if already running
-                bool isRunning = _processService.IsProcessRunning(app.ProcessName, app.ExecutablePath);
+                // Step 2: Check if already running AND has an active top-level window
+                bool isProcessRunning = _processService.IsProcessRunning(app.ProcessName, app.ExecutablePath);
+                bool hasVisibleWindow = _windowService.HasVisibleTopLevelWindow(app.ProcessName, app.ExecutablePath);
 
-                if (isRunning)
+                if (isProcessRunning && hasVisibleWindow)
                 {
                     if (options.SkipAlreadyRunning)
                     {
                         item.Status = "Skipped";
-                        item.ErrorMessage = "Already running (skipped by user option)";
+                        item.ErrorMessage = "Already running with window (skipped by user option)";
                         item.CompletedAt = DateTime.UtcNow;
                         session.Items.Add(item);
                         continue;
@@ -142,36 +143,21 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
 
                     if (options.RepositionExisting)
                     {
-                        var runningProcs = _processService.GetRunningProcessesByName(app.ProcessName);
-                        bool placedAny = false;
-
-                        foreach (var proc in runningProcs)
+                        var hWnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, app.WindowTitle);
+                        if (hWnd != IntPtr.Zero && app.Placement != null)
                         {
-                            try
+                            var monitor = _monitorService.FindBestMatchingMonitor(app.Placement.MonitorDeviceId, app.Placement.MonitorBounds);
+                            bool placed = _windowService.SetPlacement(hWnd, app.Placement, monitor);
+                            if (placed)
                             {
-                                var hWnd = _windowService.FindWindowForProcess(proc.Id, app.WindowTitle);
-                                if (hWnd != IntPtr.Zero && app.Placement != null)
-                                {
-                                    var monitor = _monitorService.FindBestMatchingMonitor(app.Placement.MonitorDeviceId, app.Placement.MonitorBounds);
-                                    _windowService.SetPlacement(hWnd, app.Placement, monitor);
-                                    placedAny = true;
-                                    break;
-                                }
+                                item.Status = "RepositionedOnly";
+                                successCount++;
                             }
-                            catch
+                            else
                             {
-                                // continue to next candidate process
+                                item.Status = "AlreadyRunning";
+                                item.ErrorMessage = "Found window, but SetPlacement failed";
                             }
-                            finally
-                            {
-                                proc.Dispose();
-                            }
-                        }
-
-                        if (placedAny)
-                        {
-                            item.Status = "RepositionedOnly";
-                            successCount++;
                         }
                         else
                         {
@@ -189,11 +175,11 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                     continue;
                 }
 
-                // Step 3: Launch missing application if enabled
+                // Step 3: Launch missing application (or launch window if only background process existed)
                 if (!options.LaunchMissing)
                 {
                     item.Status = "Skipped";
-                    item.ErrorMessage = "Application is not running and LaunchMissing is false";
+                    item.ErrorMessage = "Application window is not present and LaunchMissing is false";
                     item.CompletedAt = DateTime.UtcNow;
                     session.Items.Add(item);
                     continue;
@@ -205,8 +191,20 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                     await Task.Delay(app.LaunchDelayMs, cancellationToken);
                 }
 
-                var procStarted = _processService.LaunchApplication(app.ExecutablePath, app.LaunchArguments);
-                if (procStarted == null)
+                // Handle browsers running headless/background processes (e.g. chrome --no-startup-window)
+                string? launchArgs = app.LaunchArguments;
+                if (isProcessRunning && !hasVisibleWindow && 
+                    (app.ProcessName.Contains("chrome", StringComparison.OrdinalIgnoreCase) || 
+                     app.ProcessName.Contains("msedge", StringComparison.OrdinalIgnoreCase)))
+                {
+                    if (string.IsNullOrWhiteSpace(launchArgs))
+                    {
+                        launchArgs = "--new-window";
+                    }
+                }
+
+                var procStarted = _processService.LaunchApplication(app.ExecutablePath, launchArgs);
+                if (procStarted == null && !isProcessRunning)
                 {
                     item.Status = "Failed";
                     item.ErrorMessage = "Failed to start process";
@@ -216,34 +214,31 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                     continue;
                 }
 
-                int launchedPid = procStarted.Id;
+                int launchedPid = procStarted?.Id ?? 0;
 
-                // Step 4: Wait for main window readiness with polling & timeout
+                // Step 4: Wait for main window readiness with polling & timeout across all processes of this app
                 IntPtr targetHwnd = IntPtr.Zero;
                 var timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
                 var pollStart = Stopwatch.StartNew();
 
                 while (pollStart.Elapsed < timeout && !cancellationToken.IsCancellationRequested)
                 {
-                    targetHwnd = _windowService.FindWindowForProcess(launchedPid, app.WindowTitle);
+                    // Check best top-level window matching this process/executable
+                    targetHwnd = _windowService.FindTopLevelWindow(app.ProcessName, app.ExecutablePath, app.WindowTitle);
                     if (targetHwnd != IntPtr.Zero && _windowService.IsWindowValid(targetHwnd))
                     {
                         break;
                     }
 
-                    // Check by process name as well (in case child process or launcher spawned another PID)
-                    var runningProcs = _processService.GetRunningProcessesByName(app.ProcessName);
-                    foreach (var p in runningProcs)
+                    // Check by specific PID if available
+                    if (launchedPid > 0)
                     {
-                        targetHwnd = _windowService.FindWindowForProcess(p.Id, app.WindowTitle);
-                        p.Dispose();
+                        targetHwnd = _windowService.FindWindowForProcess(launchedPid, app.WindowTitle);
                         if (targetHwnd != IntPtr.Zero && _windowService.IsWindowValid(targetHwnd))
                         {
                             break;
                         }
                     }
-
-                    if (targetHwnd != IntPtr.Zero) break;
 
                     await Task.Delay(250, cancellationToken);
                 }
@@ -252,13 +247,12 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                 if (targetHwnd != IntPtr.Zero && app.Placement != null)
                 {
                     var targetMonitor = _monitorService.FindBestMatchingMonitor(app.Placement.MonitorDeviceId, app.Placement.MonitorBounds);
-                    _windowService.SetPlacement(targetHwnd, app.Placement, targetMonitor);
-                    item.Status = "LaunchedAndPlaced";
+                    bool placed = _windowService.SetPlacement(targetHwnd, app.Placement, targetMonitor);
+                    item.Status = placed ? "LaunchedAndPlaced" : "LaunchedWithoutPlacement";
                     successCount++;
                 }
                 else
                 {
-                    // Process launched, but window handle didn't become ready in time
                     item.Status = targetHwnd != IntPtr.Zero ? "LaunchedAndPlaced" : "LaunchedWithoutPlacement";
                     if (targetHwnd == IntPtr.Zero)
                     {
