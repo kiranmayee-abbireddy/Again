@@ -27,10 +27,10 @@
                     <TextBlock Text="Browse, restore, edit, duplicate, and organize all your saved workspaces." Style="{StaticResource SubheaderStyle}" Margin="0" />
                 </StackPanel>
 
-                <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding StartCaptureCommand}" VerticalAlignment="Center" Padding="18,10">
+                <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding StartCaptureCommand}" VerticalAlignment="Center" Height="34" Padding="16,0">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="&#xE710;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center" />
-                        <TextBlock Text="New Workspace" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        <TextBlock Text="&#xE710;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Foreground="#FFFFFF" Margin="0,0,8,0" VerticalAlignment="Center" />
+                        <TextBlock Text="New Workspace" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
             </Grid>
@@ -43,16 +43,16 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Search Input with Vector Search Icon -->
+                    <!-- Search Input with Vector Search Icon (Compact 34px) -->
                     <Grid Grid.Row="0" Margin="0,0,0,14">
-                        <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Padding="36,9,12,9" />
+                        <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Height="34" Padding="34,0,12,0" VerticalContentAlignment="Center" />
                         <!-- Left Vector Search Icon -->
-                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource SymbolFont}" FontSize="14" Foreground="{DynamicResource TextMutedBrush}" 
-                                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False" />
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="11,0,0,0" IsHitTestVisible="False" />
                         <!-- Placeholder -->
                         <TextBlock Text="Search workspaces by name, application, or tag..." 
                                    Foreground="{DynamicResource TextMutedBrush}" 
-                                   IsHitTestVisible="False" Margin="38,9,12,9"
+                                   IsHitTestVisible="False" Margin="34,0,12,0" VerticalAlignment="Center"
                                    Visibility="{Binding SearchQuery, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -91,12 +91,14 @@
                                                     <Setter.Value>
                                                         <ControlTemplate TargetType="RadioButton">
                                                             <Border x:Name="pill" Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="{TemplateBinding Padding}">
-                                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                             </Border>
                                                             <ControlTemplate.Triggers>
                                                                 <Trigger Property="IsChecked" Value="True">
                                                                     <Setter TargetName="pill" Property="Background" Value="{DynamicResource AccentBrush}" />
+                                                                    <Setter TargetName="pill" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
                                                                     <Setter Property="Foreground" Value="#FFFFFF" />
+                                                                    <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="#FFFFFF" />
                                                                 </Trigger>
                                                                 <Trigger Property="IsMouseOver" Value="True">
                                                                     <Setter TargetName="pill" Property="BorderBrush" Value="{DynamicResource AccentLightBrush}" />
@@ -183,25 +185,25 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                                        <!-- Category Tag -->
-                                        <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="7,2" Margin="0,0,6,0">
-                                            <TextBlock Text="{Binding Category}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        <!-- Category Tag (Centered, Height=20) -->
+                                        <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center" Margin="0,0,6,0">
+                                            <TextBlock Text="{Binding Category}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                         </Border>
 
-                                        <!-- Displays Tag -->
-                                        <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,6,0">
+                                        <!-- Displays Tag (Centered, Height=20) -->
+                                        <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center" Margin="0,0,6,0">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="&#xE7F4;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                                <TextBlock Text="{Binding MonitorSummaryText}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                                <TextBlock Text="{Binding MonitorSummaryText}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                                             </StackPanel>
                                         </Border>
 
-                                        <!-- Pinned Pill -->
+                                        <!-- Pinned Pill (Centered Text, Height=20, No Dots) -->
                                         <Border Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                Background="{DynamicResource AccentBrush}" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="&#xE718;" FontFamily="{StaticResource SymbolFont}" FontSize="9" Foreground="#FFFFFF" Margin="0,0,3,0" VerticalAlignment="Center" />
-                                                <TextBlock Text="PINNED" FontSize="8.5" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                                                Background="{DynamicResource AccentBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                <TextBlock Text="&#xE718;" FontFamily="{StaticResource SymbolFont}" FontSize="9" Foreground="#FFFFFF" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="PINNED" FontSize="8.5" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center" TextAlignment="Center" />
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
@@ -249,15 +251,15 @@
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
 
-                                        <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding CompactAppCountText}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="4" Height="22" Padding="6,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding CompactAppCountText}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                         </Border>
                                     </StackPanel>
 
                                     <TextBlock Grid.Column="1" Text="{Binding LastRestoredText}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
                                 </Grid>
 
-                                <!-- Action Buttons -->
+                                <!-- Action Buttons (All Height="32" for Exact Uniformity) -->
                                 <Grid Grid.Row="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -269,25 +271,25 @@
                                     <!-- Primary Restore Button with Emerald Hover Glow -->
                                     <Button Grid.Column="0" Style="{StaticResource RestoreButtonStyle}" Content="Restore" 
                                             Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                            CommandParameter="{Binding}" Margin="0,0,6,0" />
+                                            CommandParameter="{Binding}" Height="32" Padding="14,0" VerticalAlignment="Center" Margin="0,0,6,0" />
 
                                     <!-- Details Button -->
                                     <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Details" 
                                             Command="{Binding DataContext.OpenDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                            CommandParameter="{Binding}" Margin="0,0,4,0" Padding="12,7" ToolTip="View and Edit Applications" />
+                                            CommandParameter="{Binding}" Height="32" Padding="12,0" VerticalAlignment="Center" Margin="0,0,4,0" ToolTip="View and Edit Applications" />
 
                                     <!-- Duplicate Button with Vector Copy Icon -->
                                     <Button Grid.Column="2" Style="{StaticResource GhostButtonStyle}" 
                                             Command="{Binding DataContext.DuplicateCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                            CommandParameter="{Binding}" Margin="0,0,2,0" Padding="8,6" ToolTip="Duplicate Workspace">
-                                        <TextBlock Text="&#xE8C8;" FontFamily="{StaticResource SymbolFont}" FontSize="13" />
+                                            CommandParameter="{Binding}" Height="32" Width="32" Padding="0" VerticalAlignment="Center" Margin="0,0,2,0" ToolTip="Duplicate Workspace">
+                                        <TextBlock Text="&#xE8C8;" FontFamily="{StaticResource SymbolFont}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     </Button>
 
                                     <!-- Delete Button with Vector Trash Icon -->
                                     <Button Grid.Column="3" Style="{StaticResource GhostButtonStyle}" 
                                             Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                            CommandParameter="{Binding}" Padding="8,6" ToolTip="Delete Workspace">
-                                        <TextBlock Text="&#xE74D;" FontFamily="{StaticResource SymbolFont}" FontSize="13" />
+                                            CommandParameter="{Binding}" Height="32" Width="32" Padding="0" VerticalAlignment="Center" ToolTip="Delete Workspace">
+                                        <TextBlock Text="&#xE74D;" FontFamily="{StaticResource SymbolFont}" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     </Button>
                                 </Grid>
                             </Grid>

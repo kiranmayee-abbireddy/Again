@@ -25,19 +25,20 @@
 
                     <!-- Left: Greeting, Active Stage Spotlight & Action CTAs -->
                     <StackPanel Grid.Column="0" Margin="0,0,24,0">
-                        <!-- Live Status Pill -->
+                        <!-- Live Status Pill (No flickering dots) -->
                         <Border Background="{DynamicResource WindowBackgroundBrush}" 
                                 BorderBrush="{DynamicResource CardBorderBrush}" 
                                 BorderThickness="1" 
-                                CornerRadius="12" 
-                                Padding="10,3" 
+                                CornerRadius="6" 
+                                Height="24"
+                                Padding="10,0" 
                                 HorizontalAlignment="Left" 
+                                VerticalAlignment="Center"
                                 Margin="0,0,0,10">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Ellipse Width="7" Height="7" Fill="{DynamicResource AccentBrush}" Margin="0,0,7,0" />
-                                <TextBlock Text="LIVE DESKTOP" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,7,0" />
-                                <TextBlock Text="•" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,7,0" />
-                                <TextBlock Text="{Binding LiveDesktopSummary}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                <TextBlock Text="LIVE DESKTOP" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                <TextBlock Text="•" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding LiveDesktopSummary}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
 
@@ -51,17 +52,17 @@
                                 BorderBrush="{DynamicResource CardBorderBrush}" 
                                 BorderThickness="1" 
                                 CornerRadius="8" 
-                                Padding="12,8" 
+                                Padding="12,6" 
                                 Margin="0,0,0,14">
-                            <Grid>
+                            <Grid VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,8,0">
-                                        <TextBlock Text="{Binding ActiveStageCategory}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="22" Padding="8,0" VerticalAlignment="Center" Margin="0,0,8,0">
+                                        <TextBlock Text="{Binding ActiveStageCategory}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                     </Border>
                                     <TextBlock Text="Currently on Stage:" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
                                     <TextBlock Text="{Binding ActiveStageName}" FontSize="12.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
@@ -72,15 +73,15 @@
                                     <ItemsControl ItemsSource="{Binding ActiveStageWorkspace.AppPreviews}" VerticalAlignment="Center">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal" />
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate DataType="{x:Type viewmodels:AppPreviewItem}">
-                                                <Border Width="20" Height="20" CornerRadius="4" 
+                                                <Border Width="22" Height="22" CornerRadius="4" 
                                                         Background="{DynamicResource SurfaceBackgroundBrush}" 
                                                         BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
-                                                        Margin="0,0,3,0" ToolTip="{Binding DisplayName}">
+                                                        Margin="0,0,4,0" VerticalAlignment="Center" ToolTip="{Binding DisplayName}">
                                                     <TextBlock Text="{Binding IconGlyph}" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                             </DataTemplate>
@@ -88,27 +89,30 @@
                                     </ItemsControl>
                                 </StackPanel>
 
-                                <Border Grid.Column="1" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding ActiveStageDisplaysText}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                <Border Grid.Column="1" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="22" Padding="8,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding ActiveStageDisplaysText}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 </Border>
                             </Grid>
                         </Border>
 
-                        <!-- Action Buttons -->
+                        <!-- Action Buttons and Shortcut Badges (Exact Same Height: 32px) -->
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <!-- Re-align Windows CTA (Primary with Glow) -->
+                            <!-- Re-align Windows CTA (Primary with Glow, Pure White Text and Icon) -->
                             <Button Style="{StaticResource RestoreButtonStyle}" 
                                     Command="{Binding RealignActiveStageCommand}" 
-                                    Padding="18,8" Margin="0,0,10,0"
+                                    Height="32" Padding="16,0" Margin="0,0,10,0"
+                                    VerticalAlignment="Center"
                                     IsEnabled="{Binding HasActiveStage}">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,7,0" VerticalAlignment="Center" />
-                                    <TextBlock Text="Re-align Windows" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                    <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Foreground="#FFFFFF" Margin="0,0,7,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="Re-align Windows" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Button>
 
                             <!-- Snapshot Current Desktop Button -->
-                            <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding StartCaptureCommand}" Padding="14,8" Margin="0,0,10,0">
+                            <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding StartCaptureCommand}" 
+                                    Height="32" Padding="14,0" Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="&#xE722;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,7,0" VerticalAlignment="Center" />
                                     <TextBlock Text="Snapshot Desktop" FontWeight="Medium" VerticalAlignment="Center" />
@@ -119,7 +123,8 @@
                             <Button Style="{StaticResource SecondaryButtonStyle}" 
                                     Command="{Binding OpenWorkspaceDetailsCommand}" 
                                     CommandParameter="{Binding ActiveStageWorkspace}" 
-                                    Padding="12,8" Margin="0,0,14,0"
+                                    Height="32" Padding="14,0" Margin="0,0,14,0"
+                                    VerticalAlignment="Center"
                                     IsEnabled="{Binding HasActiveStage}">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="&#xE70F;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center" />
@@ -127,18 +132,18 @@
                                 </StackPanel>
                             </Button>
 
-                            <!-- Global Shortcut Pills -->
-                            <Border Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="7,3" VerticalAlignment="Center" Margin="0,0,6,0">
+                            <!-- Global Shortcut Badges (Height="32" to Match Buttons) -->
+                            <Border Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="6" Height="32" Padding="10,0" VerticalAlignment="Center" Margin="0,0,8,0">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="Capture: " FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                    <TextBlock Text="Ctrl+Alt+C" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}" />
+                                    <TextBlock Text="Capture: " FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                                    <TextBlock Text="Ctrl+Alt+C" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Border>
 
-                            <Border Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="7,3" VerticalAlignment="Center">
+                            <Border Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="6" Height="32" Padding="10,0" VerticalAlignment="Center">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="Restore: " FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                    <TextBlock Text="Ctrl+Alt+R" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}" />
+                                    <TextBlock Text="Restore: " FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                                    <TextBlock Text="Ctrl+Alt+R" FontSize="10.5" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -197,7 +202,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- 2-Column Split: Left (Stages & Library) + Right (Live Desktop & Diagnostics) -->
+            <!-- 2-Column Split: Left (Stages & Library) + Right (Fixed Engine Health on Top, Live Windows Below) -->
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.15*" />
@@ -215,8 +220,8 @@
                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="&#xE8F1;" FontFamily="{StaticResource SymbolFont}" FontSize="14" Margin="0,0,7,0" VerticalAlignment="Center" Foreground="{DynamicResource AccentLightBrush}" />
                             <TextBlock Text="Saved Stages &amp; Workspaces" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,8,0" />
-                            <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="8" Padding="6,1">
-                                <TextBlock Text="{Binding TotalWorkspacesCount}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="8" Height="20" Padding="6,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding TotalWorkspacesCount}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
                         </StackPanel>
                         <Button Style="{StaticResource GhostButtonStyle}" Content="Browse Full Library" Command="{Binding ViewAllWorkspacesCommand}" Grid.Column="1" />
@@ -234,7 +239,7 @@
                             <TextBlock Text="Ready to snapshot your first stage?" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,3" />
                             <TextBlock Text="Arrange windows on your screen, click Snapshot Desktop, and Again will remember the exact coordinates." 
                                        FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,10" TextAlignment="Center" />
-                            <Button Style="{StaticResource RestoreButtonStyle}" Content="Snapshot Desktop Now" Command="{Binding StartCaptureCommand}" HorizontalAlignment="Center" Padding="16,7" />
+                            <Button Style="{StaticResource RestoreButtonStyle}" Content="Snapshot Desktop Now" Command="{Binding StartCaptureCommand}" HorizontalAlignment="Center" Height="32" Padding="16,0" />
                         </StackPanel>
                     </Border>
 
@@ -257,15 +262,15 @@
 
                                         <!-- Stage Details -->
                                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Margin="0,0,8,0" TextTrimming="CharacterEllipsis" />
-                                                <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="5,1" Margin="0,0,6,0">
-                                                    <TextBlock Text="{Binding Category}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,3">
+                                                <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Margin="0,0,8,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                                <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center" Margin="0,0,6,0">
+                                                    <TextBlock Text="{Binding Category}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                                 </Border>
-                                                <!-- Pinned Badge -->
-                                                <Border Background="{DynamicResource AccentBrush}" CornerRadius="8" Padding="6,1"
+                                                <!-- Pinned Badge with Centered Text -->
+                                                <Border Background="{DynamicResource AccentBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center"
                                                         Visibility="{Binding Model.IsPinned, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <TextBlock Text="PINNED" FontSize="8.5" FontWeight="Bold" Foreground="#FFFFFF" />
+                                                    <TextBlock Text="PINNED" FontSize="8.5" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                                 </Border>
                                             </StackPanel>
                                             <TextBlock Text="{Binding LastRestoredText}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
@@ -276,7 +281,7 @@
                                             <ItemsControl ItemsSource="{Binding AppPreviews}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
-                                                        <StackPanel Orientation="Horizontal" />
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" />
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
@@ -284,25 +289,25 @@
                                                         <Border Width="22" Height="22" CornerRadius="4" 
                                                                 Background="{DynamicResource SurfaceBackgroundBrush}" 
                                                                 BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
-                                                                Margin="0,0,3,0" ToolTip="{Binding DisplayName}">
+                                                                Margin="0,0,3,0" VerticalAlignment="Center" ToolTip="{Binding DisplayName}">
                                                             <TextBlock Text="{Binding IconGlyph}" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                         </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="6,1" Margin="4,0,0,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding CompactAppCountText}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="4" Height="22" Padding="6,0" Margin="4,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding CompactAppCountText}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                             </Border>
                                         </StackPanel>
 
-                                        <!-- Actions -->
+                                        <!-- Actions (Both Height="30" for Uniformity) -->
                                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                             <Button Style="{StaticResource RestoreButtonStyle}" Content="Switch" 
                                                     Command="{Binding DataContext.QuickRestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                    CommandParameter="{Binding}" Margin="0,0,6,0" Padding="14,6" FontSize="12" />
+                                                    CommandParameter="{Binding}" Margin="0,0,6,0" Height="30" Padding="14,0" FontSize="12" VerticalAlignment="Center" />
                                             <Button Style="{StaticResource SecondaryButtonStyle}" Content="Details" 
                                                     Command="{Binding DataContext.OpenWorkspaceDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                    CommandParameter="{Binding}" Padding="10,6" FontSize="12" />
+                                                    CommandParameter="{Binding}" Height="30" Padding="12,0" FontSize="12" VerticalAlignment="Center" />
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -347,9 +352,10 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
 
+                                                <!-- Status Badge (Centered Horizontally & Vertically) -->
                                                 <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" 
-                                                        CornerRadius="3" Padding="5,1" Margin="0,0,8,0" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Status}" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF" />
+                                                        CornerRadius="4" Height="20" Padding="8,0" Margin="0,0,8,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Status}" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                                 </Border>
 
                                                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
@@ -359,8 +365,8 @@
 
                                                 <TextBlock Grid.Column="2" Text="{Binding RelativeTime}" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="8,0" />
 
-                                                <Border Grid.Column="3" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="3" Padding="5,1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding DurationMs, StringFormat='{}{0}ms'}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                                <Border Grid.Column="3" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding DurationMs, StringFormat='{}{0}ms'}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                 </Border>
                                             </Grid>
                                         </Border>
@@ -371,112 +377,16 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Right Column: Live Desktop, Detected Windows & Engine Health -->
+                <!-- Right Column: Engine Diagnostics on Top (Stays Constant), Live Desktop Below -->
                 <StackPanel Grid.Column="2">
                     
-                    <!-- Live Desktop State & Windows Card -->
+                    <!-- 1. Placement & System Diagnostics Card (Above Active, Stays Fixed) -->
                     <Border Background="{DynamicResource CardBackgroundBrush}" 
                             BorderBrush="{DynamicResource CardBorderBrush}" 
                             BorderThickness="1" 
                             CornerRadius="10" 
-                            Padding="16,14" 
+                            Padding="16,14"
                             Margin="0,0,0,16">
-                        <StackPanel>
-                            <!-- Header -->
-                            <Grid Margin="0,0,0,12">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="&#xE7F4;" FontFamily="{StaticResource SymbolFont}" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center" Foreground="{DynamicResource AccentLightBrush}" />
-                                    <TextBlock Text="Active Desktop &amp; Windows" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,6,0" />
-                                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="6" Padding="5,1">
-                                        <TextBlock Text="Live" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}" />
-                                    </Border>
-                                </StackPanel>
-                                <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding RescanDesktopCommand}" Padding="8,4" FontSize="11">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
-                                        <TextBlock Text="Rescan" FontWeight="Medium" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </Button>
-                            </Grid>
-
-                            <!-- Connected Displays Chips -->
-                            <ItemsControl ItemsSource="{Binding CurrentMonitors}" Margin="0,0,0,10">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type viewmodels:LiveMonitorPreviewItem}">
-                                        <Border Background="{DynamicResource WindowBackgroundBrush}" 
-                                                BorderBrush="{DynamicResource CardBorderBrush}" 
-                                                BorderThickness="1" 
-                                                CornerRadius="6" 
-                                                Padding="10,6" 
-                                                Margin="0,0,0,6">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="&#xE7F4;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Foreground="{DynamicResource AccentLightBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
-                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding DeviceName}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
-                                                    <TextBlock Text="{Binding ResolutionText}" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                                </StackPanel>
-                                                <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="3" Padding="5,1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding ScaleText}" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <!-- Open Windows Header -->
-                            <TextBlock Text="Detected Open Windows" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,6" />
-
-                            <!-- Detected Windows List -->
-                            <ItemsControl ItemsSource="{Binding LiveActiveWindows}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type viewmodels:LiveWindowPreviewItem}">
-                                        <Border Background="{DynamicResource WindowBackgroundBrush}" 
-                                                BorderBrush="{DynamicResource CardBorderBrush}" 
-                                                BorderThickness="1" 
-                                                CornerRadius="6" 
-                                                Padding="8,5" 
-                                                Margin="0,0,0,4">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <!-- App Glyph -->
-                                                <TextBlock Grid.Column="0" Text="{Binding IconGlyph}" FontSize="11" Margin="0,0,8,0" VerticalAlignment="Center" />
-                                                <!-- Title & Process -->
-                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Title}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="180" />
-                                                    <TextBlock Text="{Binding ProcessName}" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
-                                                </StackPanel>
-                                                <!-- Bounds Pill -->
-                                                <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="3" Padding="4,1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding BoundsText}" FontSize="8.5" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Placement & System Diagnostics Card -->
-                    <Border Background="{DynamicResource CardBackgroundBrush}" 
-                            BorderBrush="{DynamicResource CardBorderBrush}" 
-                            BorderThickness="1" 
-                            CornerRadius="10" 
-                            Padding="16,14">
                         <StackPanel>
                             <TextBlock Text="Engine &amp; System Health" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,10" />
 
@@ -529,6 +439,102 @@
                                 <TextBlock Grid.Column="1" Text="Benchmark Speed" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="2" Text="{Binding EngineLatencyText}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" />
                             </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- 2. Live Desktop State & Windows Card (Below Engine Diagnostics) -->
+                    <Border Background="{DynamicResource CardBackgroundBrush}" 
+                            BorderBrush="{DynamicResource CardBorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="10" 
+                            Padding="16,14">
+                        <StackPanel>
+                            <!-- Header -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="&#xE7F4;" FontFamily="{StaticResource SymbolFont}" FontSize="14" Margin="0,0,6,0" VerticalAlignment="Center" Foreground="{DynamicResource AccentLightBrush}" />
+                                    <TextBlock Text="Active Desktop &amp; Windows" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,6,0" />
+                                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Live" FontSize="9.5" FontWeight="Bold" Foreground="{DynamicResource AccentLightBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </StackPanel>
+                                <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding RescanDesktopCommand}" Height="26" Padding="8,0" FontSize="11" VerticalAlignment="Center" Grid.Column="1">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Rescan" FontWeight="Medium" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                            <!-- Connected Displays Chips -->
+                            <ItemsControl ItemsSource="{Binding CurrentMonitors}" Margin="0,0,0,10">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type viewmodels:LiveMonitorPreviewItem}">
+                                        <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                                BorderBrush="{DynamicResource CardBorderBrush}" 
+                                                BorderThickness="1" 
+                                                CornerRadius="6" 
+                                                Padding="10,6" 
+                                                Margin="0,0,0,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="&#xE7F4;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Foreground="{DynamicResource AccentLightBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding DeviceName}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                                                    <TextBlock Text="{Binding ResolutionText}" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                                </StackPanel>
+                                                <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding ScaleText}" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Open Windows Header -->
+                            <TextBlock Text="Detected Open Windows" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,4,0,6" />
+
+                            <!-- Detected Windows List -->
+                            <ItemsControl ItemsSource="{Binding LiveActiveWindows}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type viewmodels:LiveWindowPreviewItem}">
+                                        <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                                BorderBrush="{DynamicResource CardBorderBrush}" 
+                                                BorderThickness="1" 
+                                                CornerRadius="6" 
+                                                Padding="8,5" 
+                                                Margin="0,0,0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <!-- App Glyph -->
+                                                <TextBlock Grid.Column="0" Text="{Binding IconGlyph}" FontSize="11" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                                <!-- Title & Process -->
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Title}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="180" />
+                                                    <TextBlock Text="{Binding ProcessName}" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                                                </StackPanel>
+                                                <!-- Bounds Pill -->
+                                                <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="18" Padding="5,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding BoundsText}" FontSize="8.5" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </Border>
                 </StackPanel>

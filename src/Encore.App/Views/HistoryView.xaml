@@ -22,7 +22,7 @@
                     <TextBlock Text="Audit log of previous workspace restores with duration and status details." Style="{StaticResource SubheaderStyle}" />
                 </StackPanel>
 
-                <Button Grid.Column="1" Style="{StaticResource DangerButtonStyle}" Content="Clear History" Command="{Binding ClearHistoryCommand}" Padding="14,8" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Style="{StaticResource DangerButtonStyle}" Content="Clear History" Command="{Binding ClearHistoryCommand}" Height="32" Padding="14,0" VerticalAlignment="Center" />
             </Grid>
 
             <!-- Status Banner -->
@@ -59,9 +59,9 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Status Badge -->
-                                    <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" CornerRadius="4" Padding="8,4" VerticalAlignment="Center" Margin="0,0,14,0">
-                                        <TextBlock Text="{Binding Status}" FontSize="11" FontWeight="Bold" Foreground="#FFFFFF" />
+                                    <!-- Status Badge (Centered Horizontally & Vertically) -->
+                                    <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" CornerRadius="4" Height="22" Padding="8,0" VerticalAlignment="Center" Margin="0,0,14,0">
+                                        <TextBlock Text="{Binding Status}" FontSize="9.5" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                     </Border>
 
                                     <!-- Session Details -->
@@ -76,14 +76,14 @@
                                         <TextBlock Text="{Binding SummaryText}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Right" />
                                     </StackPanel>
 
-                                    <!-- Action Buttons -->
+                                    <!-- Action Buttons (Height="30" for Exact Uniformity) -->
                                     <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
                                         <Button Style="{StaticResource SecondaryButtonStyle}" Content="Retry Failed" 
                                                 Visibility="{Binding HasFailures, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Command="{Binding DataContext.RetryFailedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                CommandParameter="{Binding}" Margin="0,0,8,0" Padding="10,6" />
+                                                CommandParameter="{Binding}" Height="30" Padding="10,0" Margin="0,0,8,0" VerticalAlignment="Center" />
 
-                                        <ToggleButton Content="{Binding IsExpanded, Converter={x:Null}}" IsChecked="{Binding IsExpanded}" Padding="10,6">
+                                        <ToggleButton Content="{Binding IsExpanded, Converter={x:Null}}" IsChecked="{Binding IsExpanded}" Height="30" Padding="10,0" VerticalAlignment="Center">
                                             <ToggleButton.Style>
                                                 <Style TargetType="ToggleButton">
                                                     <Setter Property="Background" Value="{DynamicResource SurfaceBackgroundBrush}" />

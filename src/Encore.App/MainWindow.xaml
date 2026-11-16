@@ -86,11 +86,11 @@
                     <!-- Draggable Space (WindowChrome drag) -->
                     <Grid Grid.Column="1" Background="Transparent" />
 
-                    <!-- Top Quick Action Buttons -->
+                    <!-- Top Quick Action Buttons (Exact Same Height: 32px) -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,14,0">
                         <Button Style="{StaticResource SecondaryButtonStyle}" 
                                 Command="{Binding QuickCaptureCommand}" 
-                                Margin="0,0,8,0" Padding="12,5"
+                                Height="32" Margin="0,0,8,0" Padding="12,0" VerticalAlignment="Center"
                                 WindowChrome.IsHitTestVisibleInChrome="True">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="&#xE722;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
@@ -100,11 +100,11 @@
 
                         <Button Style="{StaticResource RestoreButtonStyle}" 
                                 Command="{Binding QuickRestoreLastUsedCommand}" 
-                                Padding="14,5"
+                                Height="32" Padding="14,0" VerticalAlignment="Center"
                                 WindowChrome.IsHitTestVisibleInChrome="True">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="&#xE768;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
-                                <TextBlock Text="Quick Restore" FontSize="12" VerticalAlignment="Center" />
+                                <TextBlock Text="&#xE768;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Foreground="#FFFFFF" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Quick Restore" FontSize="12" Foreground="#FFFFFF" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -239,7 +239,7 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Ellipse Width="8" Height="8" Fill="{DynamicResource SuccessBrush}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBlock Text="&#xE73E;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Foreground="{DynamicResource SuccessBrush}" VerticalAlignment="Center" Margin="0,0,6,0" />
                     <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                 </StackPanel>
 

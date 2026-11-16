@@ -23,8 +23,8 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,10,0" Padding="14,8" />
-                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Save Workspace" Command="{Binding SaveCommand}" Padding="18,8" />
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,10,0" Height="32" Padding="14,0" VerticalAlignment="Center" />
+                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Save Workspace" Command="{Binding SaveCommand}" Height="32" Padding="18,0" VerticalAlignment="Center" />
                 </StackPanel>
             </Grid>
 
@@ -47,7 +47,7 @@
 
                         <StackPanel Grid.Column="0" Margin="0,0,16,0">
                             <TextBlock Text="Workspace Name" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
-                            <TextBox Text="{Binding WorkspaceName, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Text="{Binding WorkspaceName, UpdateSourceTrigger=PropertyChanged}" Height="34" VerticalContentAlignment="Center" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="1">
@@ -73,10 +73,10 @@
                     <TextBlock Text="{Binding DetectedWindows.Count, StringFormat='({0} detected)'}" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <Button Style="{StaticResource GhostButtonStyle}" Content="Select All" Command="{Binding SelectAllCommand}" Margin="0,0,6,0" />
-                    <Button Style="{StaticResource GhostButtonStyle}" Content="Deselect All" Command="{Binding DeselectAllCommand}" Margin="0,0,8,0" />
-                    <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding ScanWindowsCommand}" Padding="12,6">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource GhostButtonStyle}" Content="Select All" Command="{Binding SelectAllCommand}" Height="30" Padding="8,0" Margin="0,0,6,0" VerticalAlignment="Center" />
+                    <Button Style="{StaticResource GhostButtonStyle}" Content="Deselect All" Command="{Binding DeselectAllCommand}" Height="30" Padding="8,0" Margin="0,0,8,0" VerticalAlignment="Center" />
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding ScanWindowsCommand}" Height="30" Padding="12,0" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
                             <TextBlock Text="Rescan Windows" FontSize="12" VerticalAlignment="Center" />
@@ -104,18 +104,18 @@
                                         <TextBlock Text="{Binding DisplayTitle}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="450" />
                                         <Border Visibility="{Binding HasBrowserProfile, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
-                                                CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                CornerRadius="4" Height="20" Padding="6,0" Margin="8,0,0,0" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="&#xE77B;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
-                                                <TextBlock Text="{Binding BrowserProfile}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding BrowserProfile}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
                                             </StackPanel>
                                         </Border>
                                         <Border Visibility="{Binding HasFolderViewPath, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
-                                                CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
+                                                CornerRadius="4" Height="20" Padding="6,0" Margin="8,0,0,0" VerticalAlignment="Center">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <TextBlock Text="&#xE8B7;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
-                                                <TextBlock Text="{Binding FolderViewPath}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding FolderViewPath}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" VerticalAlignment="Center" />
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
