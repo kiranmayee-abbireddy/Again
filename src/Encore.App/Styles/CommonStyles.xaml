@@ -228,6 +228,157 @@
         </Setter>
     </Style>
 
+    <!-- Modern Color-Filled CheckBox Style (No Ticks, Pure Color Fill & Solid Core) -->
+    <Style TargetType="{x:Type CheckBox}">
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="8,0,0,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Color-Filled Box (Theme Color on Checked, Zero Ticks) -->
+                        <Border x:Name="checkBorder"
+                                Grid.Column="0"
+                                Width="20"
+                                Height="20"
+                                CornerRadius="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            
+                            <!-- Solid Core Indicator (NO Tick) -->
+                            <Border x:Name="innerIndicator"
+                                    Width="8"
+                                    Height="8"
+                                    CornerRadius="2"
+                                    Background="#FFFFFF"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Opacity="0" />
+                        </Border>
+
+                        <!-- Label Content -->
+                        <ContentPresenter Grid.Column="1"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="Left"
+                                          RecognizesAccessKey="True" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Hover Unchecked -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="checkBorder" Property="BorderBrush" Value="{DynamicResource AccentLightBrush}" />
+                            <Setter TargetName="checkBorder" Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+                        </Trigger>
+                        
+                        <!-- Checked: Box fills with Accent Color, Solid Core, Zero Ticks -->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="checkBorder" Property="Background" Value="{DynamicResource AccentBrush}" />
+                            <Setter TargetName="checkBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                            <Setter TargetName="innerIndicator" Property="Opacity" Value="1" />
+                        </Trigger>
+                        
+                        <!-- Hover Checked -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="checkBorder" Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+                            <Setter TargetName="checkBorder" Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}" />
+                        </MultiTrigger>
+                        
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Modern Toggle Switch CheckBox Style (No Ticks, Pure Color Fill & Sliding Knob) -->
+    <Style x:Key="ModernSwitchCheckBoxStyle" TargetType="{x:Type CheckBox}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CheckBox}">
+                    <Grid VerticalAlignment="Center" Background="Transparent">
+                        <!-- Switch Pill Track -->
+                        <Border x:Name="switchTrack"
+                                Width="44"
+                                Height="24"
+                                CornerRadius="12"
+                                Background="{DynamicResource SurfaceBackgroundBrush}"
+                                BorderBrush="{DynamicResource CardBorderBrush}"
+                                BorderThickness="1.5">
+                            
+                            <!-- Sliding Knob (White Solid Circle, NO Ticks) -->
+                            <Grid>
+                                <Ellipse x:Name="switchKnob"
+                                         Width="16"
+                                         Height="16"
+                                         Fill="#FFFFFF"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Center"
+                                         Margin="3,0,0,0">
+                                    <Ellipse.Effect>
+                                        <DropShadowEffect BlurRadius="4" ShadowDepth="1" Direction="270" Opacity="0.3" Color="#000000" />
+                                    </Ellipse.Effect>
+                                </Ellipse>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Hover Unchecked -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="switchTrack" Property="BorderBrush" Value="{DynamicResource AccentLightBrush}" />
+                        </Trigger>
+
+                        <!-- Checked: Track fills with Theme Accent Color, Knob moves to right, NO Ticks -->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="switchTrack" Property="Background" Value="{DynamicResource AccentBrush}" />
+                            <Setter TargetName="switchTrack" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                            <Setter TargetName="switchKnob" Property="HorizontalAlignment" Value="Right" />
+                            <Setter TargetName="switchKnob" Property="Margin" Value="0,0,3,0" />
+                        </Trigger>
+
+                        <!-- Hover Checked -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsChecked" Value="True" />
+                                <Condition Property="IsMouseOver" Value="True" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="switchTrack" Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+                            <Setter TargetName="switchTrack" Property="BorderBrush" Value="{DynamicResource AccentHoverBrush}" />
+                        </MultiTrigger>
+
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- ComboBox Toggle Button Template -->
     <ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="{x:Type ToggleButton}">
         <Grid>

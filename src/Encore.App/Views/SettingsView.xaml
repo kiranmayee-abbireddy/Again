@@ -19,7 +19,7 @@
 
                 <StackPanel Grid.Column="0">
                     <TextBlock Text="Settings &amp; Preferences" Style="{StaticResource HeaderTitleStyle}" />
-                    <TextBlock Text="Customize desktop behavior, keyboard shortcuts, themes, and workspace restoration rules." Style="{StaticResource SubheaderStyle}" />
+                    <TextBlock Text="Customize desktop behavior, themes, keyboard shortcuts, and workspace restoration rules." Style="{StaticResource SubheaderStyle}" />
                 </StackPanel>
 
                 <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Content="Save Settings" Command="{Binding SaveCommand}" Padding="20,10" VerticalAlignment="Center" />
@@ -31,24 +31,120 @@
                 <TextBlock Text="{Binding StatusMessage}" FontSize="13" Foreground="{DynamicResource SuccessBrush}" FontWeight="Medium" />
             </Border>
 
-            <!-- Appearance & System Tray -->
+            <!-- Theme & Visual Style Gallery -->
             <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,20">
                 <StackPanel>
-                    <TextBlock Text="Appearance &amp; Background Operation" Style="{StaticResource SectionTitleStyle}" />
-
-                    <Grid Margin="0,0,0,14">
+                    <Grid Margin="0,0,0,16">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="Theme" FontSize="13" FontWeight="SemiBold" />
-                            <TextBlock Text="Choose between modern dark and clean light themes." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+
+                        <StackPanel Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,3">
+                                <TextBlock Text="&#xE790;" FontFamily="{StaticResource SymbolFont}" FontSize="15" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{DynamicResource AccentLightBrush}" />
+                                <TextBlock Text="Theme &amp; Visual Style" Style="{StaticResource SectionTitleStyle}" Margin="0" />
+                            </StackPanel>
+                            <TextBlock Text="Select from 8 tuned dark and light palettes. Click any card to apply live immediately." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
+
+                        <!-- Compact Quick-Select ComboBox -->
                         <ComboBox Grid.Column="1" ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme}" Width="160" VerticalAlignment="Center" />
                     </Grid>
 
-                    <Separator Background="{DynamicResource CardBorderBrush}" Margin="0,4,0,14" />
+                    <!-- Visual Theme Cards Grid -->
+                    <ItemsControl ItemsSource="{Binding ThemeOptions}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:ThemeItemViewModel}">
+                                <Button Command="{Binding DataContext.SelectThemeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Margin="0,0,10,12"
+                                        Padding="0"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="themeBorder"
+                                                    Background="{DynamicResource WindowBackgroundBrush}"
+                                                    BorderBrush="{DynamicResource CardBorderBrush}"
+                                                    BorderThickness="1.5"
+                                                    CornerRadius="10"
+                                                    Padding="14,12">
+                                                <Grid>
+                                                    <StackPanel>
+                                                        <!-- Top Row: Swatches & Mode Pill -->
+                                                        <Grid Margin="0,0,0,10">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <!-- Dual Color Swatches -->
+                                                            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <!-- Accent Swatch -->
+                                                                <Border Width="22" Height="22" CornerRadius="11" Background="{Binding AccentBrush}" Margin="0,0,-6,0" BorderBrush="#20FFFFFF" BorderThickness="1.5">
+                                                                    <Border.Effect>
+                                                                        <DropShadowEffect BlurRadius="6" ShadowDepth="1" Direction="270" Opacity="0.3" Color="#000000" />
+                                                                    </Border.Effect>
+                                                                </Border>
+                                                                <!-- Background Swatch -->
+                                                                <Border Width="22" Height="22" CornerRadius="11" Background="{Binding BgBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1.5" />
+                                                            </StackPanel>
+
+                                                            <!-- Mode Badge -->
+                                                            <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                                                <TextBlock Text="{Binding ModeText}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                                            </Border>
+                                                        </Grid>
+
+                                                        <!-- Theme Name -->
+                                                        <TextBlock Text="{Binding Name}" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,3" />
+
+                                                        <!-- Description -->
+                                                        <TextBlock Text="{Binding Description}" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxHeight="30" TextTrimming="CharacterEllipsis" Margin="0,0,0,10" />
+
+                                                        <!-- Active Indicator -->
+                                                        <Border x:Name="activeIndicator" Background="{DynamicResource AccentBrush}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" Visibility="Collapsed">
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                                <Ellipse Width="5" Height="5" Fill="#FFFFFF" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                                                <TextBlock Text="ACTIVE" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="themeBorder" Property="Background" Value="{DynamicResource SurfaceHoverBrush}" />
+                                                    <Setter TargetName="themeBorder" Property="BorderBrush" Value="{DynamicResource AccentLightBrush}" />
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter TargetName="themeBorder" Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                                                    <Setter TargetName="themeBorder" Property="BorderThickness" Value="2" />
+                                                    <Setter TargetName="activeIndicator" Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Background Operation & System Tray -->
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock Text="Background Operation &amp; Startup" Style="{StaticResource SectionTitleStyle}" />
 
                     <Grid Margin="0,0,0,14">
                         <Grid.ColumnDefinitions>
@@ -59,7 +155,7 @@
                             <TextBlock Text="Minimize to System Tray on Close" FontSize="13" FontWeight="SemiBold" />
                             <TextBlock Text="Keep Again running in the system tray when closing the main window." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding MinimizeToTrayOnClose}" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" Style="{StaticResource ModernSwitchCheckBoxStyle}" IsChecked="{Binding MinimizeToTrayOnClose}" VerticalAlignment="Center" />
                     </Grid>
 
                     <Separator Background="{DynamicResource CardBorderBrush}" Margin="0,4,0,14" />
@@ -73,7 +169,7 @@
                             <TextBlock Text="Launch Again on Windows Startup" FontSize="13" FontWeight="SemiBold" />
                             <TextBlock Text="Automatically start Again in the background when logging into Windows." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding StartWithWindows}" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" Style="{StaticResource ModernSwitchCheckBoxStyle}" IsChecked="{Binding StartWithWindows}" VerticalAlignment="Center" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -92,7 +188,7 @@
                             <TextBlock Text="Reposition Existing Windows" FontSize="13" FontWeight="SemiBold" />
                             <TextBlock Text="Move already running applications to their saved coordinates and monitors." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding RepositionExistingWindows}" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" Style="{StaticResource ModernSwitchCheckBoxStyle}" IsChecked="{Binding RepositionExistingWindows}" VerticalAlignment="Center" />
                     </Grid>
 
                     <Separator Background="{DynamicResource CardBorderBrush}" Margin="0,4,0,14" />
@@ -106,7 +202,7 @@
                             <TextBlock Text="Launch Missing Applications" FontSize="13" FontWeight="SemiBold" />
                             <TextBlock Text="Automatically start applications in the workspace if they are not currently running." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding LaunchMissing}" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" Style="{StaticResource ModernSwitchCheckBoxStyle}" IsChecked="{Binding LaunchMissing}" VerticalAlignment="Center" />
                     </Grid>
 
                     <Separator Background="{DynamicResource CardBorderBrush}" Margin="0,4,0,14" />
@@ -120,7 +216,7 @@
                             <TextBlock Text="Skip Already Running" FontSize="13" FontWeight="SemiBold" />
                             <TextBlock Text="Do not move or touch windows of processes that are already active." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding SkipAlreadyRunning}" VerticalAlignment="Center" />
+                        <CheckBox Grid.Column="1" Style="{StaticResource ModernSwitchCheckBoxStyle}" IsChecked="{Binding SkipAlreadyRunning}" VerticalAlignment="Center" />
                     </Grid>
 
                     <Separator Background="{DynamicResource CardBorderBrush}" Margin="0,4,0,14" />
@@ -243,9 +339,11 @@
                                 <Border Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="14" Padding="10,4" Margin="0,0,8,8">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding}" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0" />
-                                        <Button Style="{StaticResource GhostButtonStyle}" Content="✕" Padding="2,0" FontSize="10"
+                                        <Button Style="{StaticResource GhostButtonStyle}" Padding="4,0"
                                                 Command="{Binding DataContext.RemoveCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                CommandParameter="{Binding}" ToolTip="Remove Category" />
+                                                CommandParameter="{Binding}" ToolTip="Remove Category">
+                                            <TextBlock Text="&#xE711;" FontFamily="{StaticResource SymbolFont}" FontSize="10" />
+                                        </Button>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
