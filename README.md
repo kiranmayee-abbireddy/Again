@@ -78,9 +78,8 @@ d:\projects\Encore\
 ├── tests\
 │   └── Encore.Tests\                 # xUnit Test Suite for domain, storage, and services
 ├── dist\
-│   ├── app\                          # Framework-dependent build
-│   ├── standalone\                   # Self-contained single-file executable (Encore.App.exe)
-│   └── installer\                    # Inno Setup Windows installer (Encore-Setup-v1.0.0.exe)
+│   ├── standalone\                   # Standalone release executable (Again.exe)
+│   └── installer\                    # Inno Setup Windows installer (Again-Setup-v1.0.0.exe)
 └── installer\
     └── encore.iss                    # Inno Setup compilation script
 ```
@@ -112,4 +111,4 @@ dotnet publish d:\projects\Encore\src\Encore.App\Encore.App.csproj -c Release -r
 ```powershell
 & "C:\Users\LENOVO\AppData\Local\Programs\Inno Setup 6\ISCC.exe" "d:\projects\Encore\installer\encore.iss"
 ```
-Output: `d:\projects\Encore\dist\installer\Encore-Setup-v1.0.0.exe`
+Output: `d:\projects\Encore\dist\installer\Again-Setup-v1.0.0.exe` (installs `Again.exe`)

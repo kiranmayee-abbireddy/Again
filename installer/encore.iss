@@ -2,7 +2,7 @@
 #define MyAppName "Again"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Again Team"
-#define MyAppExeName "Encore.App.exe"
+#define MyAppExeName "Again.exe"
 
 [Setup]
 AppId={{E14A8973-8C21-4FA4-8DC4-67C2F6FE1A3B}
