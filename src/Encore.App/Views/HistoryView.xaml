@@ -32,8 +32,8 @@
             </Border>
 
             <!-- Empty History State -->
-            <Border Visibility="{Binding Sessions.Count, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                    Style="{StaticResource CardBorderStyle}" Padding="32">
+            <Border Visibility="{Binding HasSessions, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
+                    Style="{StaticResource CardBorderStyle}" Padding="32" Margin="0,0,0,16">
                 <StackPanel HorizontalAlignment="Center">
                     <Border Width="48" Height="48" CornerRadius="24" Background="{DynamicResource SurfaceBackgroundBrush}" 
                             BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Margin="0,0,0,12" HorizontalAlignment="Center">
@@ -60,8 +60,8 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Status Badge (Centered Horizontally & Vertically) -->
-                                    <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" CornerRadius="4" Height="22" Padding="8,0" VerticalAlignment="Center" Margin="0,0,14,0">
-                                        <TextBlock Text="{Binding Status}" FontSize="9.5" FontWeight="Bold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
+                                    <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" CornerRadius="4" Height="22" MinWidth="64" Padding="8,0" VerticalAlignment="Center" Margin="0,0,14,0">
+                                        <TextBlock Text="{Binding Status}" FontSize="10" FontWeight="SemiBold" Foreground="#FFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                     </Border>
 
                                     <!-- Session Details -->
@@ -127,7 +127,7 @@
                                                                 <ColumnDefinition Width="Auto" />
                                                             </Grid.ColumnDefinitions>
 
-                                                            <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" Width="8" Height="8" CornerRadius="4" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                                            <TextBlock Grid.Column="0" Text="&#xE73E;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Foreground="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" VerticalAlignment="Center" Margin="0,0,10,0" />
 
                                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                                 <TextBlock Text="{Binding ProcessName}" FontSize="13" FontWeight="Medium" />

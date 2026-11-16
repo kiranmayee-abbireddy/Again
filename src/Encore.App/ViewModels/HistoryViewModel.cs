@@ -52,6 +52,9 @@ public partial class HistoryViewModel : ObservableObject
     [ObservableProperty]
     private string _statusMessage = string.Empty;
 
+    [ObservableProperty]
+    private bool _hasSessions;
+
     public ObservableCollection<SessionItemViewModel> Sessions { get; } = new();
 
     public HistoryViewModel(IRestorationHistoryService historyService)
@@ -71,6 +74,7 @@ public partial class HistoryViewModel : ObservableObject
             {
                 Sessions.Add(new SessionItemViewModel(s));
             }
+            HasSessions = Sessions.Count > 0;
         }
         finally
         {
@@ -110,6 +114,7 @@ public partial class HistoryViewModel : ObservableObject
     {
         await _historyService.ClearHistoryAsync();
         Sessions.Clear();
+        HasSessions = false;
         StatusMessage = "Restoration history cleared.";
     }
 }
