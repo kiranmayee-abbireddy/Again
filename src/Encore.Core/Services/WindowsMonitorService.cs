@@ -47,10 +47,11 @@ public class WindowsMonitorService : IMonitorManagementService
                     dpiY = 96;
                 }
 
+                bool isPrimary = (mi.Flags & NativeMethods.MONITORINFOF_PRIMARY) != 0;
                 var model = new MonitorInfoModel
                 {
                     DeviceId = mi.DeviceName,
-                    DeviceName = mi.DeviceName,
+                    DeviceName = MonitorInfoModel.FormatFriendlyName(mi.DeviceName, isPrimary),
                     Left = mi.Monitor.Left,
                     Top = mi.Monitor.Top,
                     Right = mi.Monitor.Right,
@@ -59,7 +60,7 @@ public class WindowsMonitorService : IMonitorManagementService
                     WorkTop = mi.WorkArea.Top,
                     WorkRight = mi.WorkArea.Right,
                     WorkBottom = mi.WorkArea.Bottom,
-                    IsPrimary = (mi.Flags & NativeMethods.MONITORINFOF_PRIMARY) != 0,
+                    IsPrimary = isPrimary,
                     DpiX = dpiX > 0 ? dpiX : 96,
                     DpiY = dpiY > 0 ? dpiY : 96
                 };

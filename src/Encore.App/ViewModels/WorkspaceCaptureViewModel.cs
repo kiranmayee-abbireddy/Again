@@ -59,7 +59,7 @@ public partial class CapturableWindowItemViewModel : ObservableObject
         ? $"{Application.Placement.Width}×{Application.Placement.Height} at ({Application.Placement.X}, {Application.Placement.Y}) [{Application.Placement.WindowState}]"
         : "Default bounds";
 
-    public string MonitorText => Application.Placement?.MonitorDeviceId ?? "Primary Monitor";
+    public string MonitorText => MonitorInfoModel.FormatFriendlyName(Application.Placement?.MonitorDeviceId, true);
 
     public CapturableWindowItemViewModel(WorkspaceApplication app)
     {

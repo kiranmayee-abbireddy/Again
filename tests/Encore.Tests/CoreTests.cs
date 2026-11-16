@@ -272,6 +272,19 @@ public class MonitorAdjustmentTests
         Assert.True(w >= 200);
         Assert.True(h >= 150);
     }
+
+    [Theory]
+    [InlineData(@"\\.\DISPLAY1", false, "Display 1")]
+    [InlineData(@"\\.\DISPLAY2", false, "Display 2")]
+    [InlineData(@"DISPLAY1", false, "Display 1")]
+    [InlineData(null, true, "Primary Display")]
+    [InlineData("", false, "Display 1")]
+    [InlineData("Primary Display", true, "Primary Display")]
+    public void FormatFriendlyName_CleansWin32DeviceNamespace(string? input, bool isPrimary, string expected)
+    {
+        var result = MonitorInfoModel.FormatFriendlyName(input, isPrimary);
+        Assert.Equal(expected, result);
+    }
 }
 
 public class ShortcutParsingTests

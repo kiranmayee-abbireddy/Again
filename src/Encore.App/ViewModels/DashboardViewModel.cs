@@ -227,7 +227,7 @@ public partial class DashboardViewModel : ObservableObject
         {
             CurrentMonitors.Add(new LiveMonitorPreviewItem
             {
-                DeviceName = m.DeviceName,
+                DeviceName = m.FriendlyName,
                 ResolutionText = $"{m.Width} × {m.Height}",
                 ScaleText = $"{Math.Round(m.ScaleFactor * 100)}% DPI",
                 BoundsText = $"Virtual: ({m.Left}, {m.Top})",
@@ -239,8 +239,8 @@ public partial class DashboardViewModel : ObservableObject
         }
         var primaryMon = monitors.FirstOrDefault(m => m.IsPrimary) ?? monitors.FirstOrDefault();
         PrimaryMonitorSummary = primaryMon != null 
-            ? $"{primaryMon.Width}×{primaryMon.Height} (Primary)" 
-            : "Primary Monitor";
+            ? $"{primaryMon.FriendlyName} ({primaryMon.Width}×{primaryMon.Height})" 
+            : "Primary Display";
 
         // Load Live Active Windows
         try
@@ -259,7 +259,7 @@ public partial class DashboardViewModel : ObservableObject
                     IconGlyph = WorkspaceItemViewModel.GetAppGlyph(w.ProcessName, w.Title),
                     BoundsText = $"{w.Bounds.Width}×{w.Bounds.Height}",
                     StateText = w.WindowState,
-                    MonitorName = w.Monitor?.DeviceName ?? "Display 1"
+                    MonitorName = MonitorInfoModel.FormatFriendlyName(w.Monitor?.DeviceName)
                 });
             }
             HasLiveWindows = LiveActiveWindows.Count > 0;

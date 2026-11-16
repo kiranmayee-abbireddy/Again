@@ -67,8 +67,8 @@ public partial class WorkspaceAppItemViewModel : ObservableObject
         : "Default window placement";
 
     public string MonitorText => !string.IsNullOrEmpty(Model.Placement?.MonitorDeviceId)
-        ? Model.Placement.MonitorDeviceId
-        : "Primary Monitor";
+        ? MonitorInfoModel.FormatFriendlyName(Model.Placement.MonitorDeviceId)
+        : "Primary Display";
 
     public WorkspaceAppItemViewModel(WorkspaceApplication model)
     {
