@@ -19,23 +19,56 @@ public partial class App : System.Windows.Application
     {
         base.OnStartup(e);
 
-        // Ensure PerMonitorV2 DPI awareness
+        string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string logDir = Path.Combine(localAppData, "Again");
+        Directory.CreateDirectory(logDir);
+        string crashLog = Path.Combine(logDir, "startup.log");
+
+        AppDomain.CurrentDomain.UnhandledException += (s, ev) =>
+        {
+            try { File.AppendAllText(crashLog, $"[UnhandledException] {ev.ExceptionObject}\n"); } catch { }
+        };
+
+        DispatcherUnhandledException += (s, ev) =>
+        {
+            try { File.AppendAllText(crashLog, $"[DispatcherUnhandledException] {ev.Exception}\n"); } catch { }
+        };
+
         try
         {
-            NativeMethods.SetProcessDpiAwarenessContext(new IntPtr(-4));
+            File.AppendAllText(crashLog, $"[Startup] Starting Again at {DateTime.UtcNow}\n");
+
+            // Ensure PerMonitorV2 DPI awareness
+            try
+            {
+                NativeMethods.SetProcessDpiAwarenessContext(new IntPtr(-4));
+                File.AppendAllText(crashLog, "Step 1: DpiAwareness set\n");
+            }
+            catch (Exception dpiEx)
+            {
+                File.AppendAllText(crashLog, $"Step 1: DpiAwareness skipped: {dpiEx.Message}\n");
+            }
+
+            var services = new ServiceCollection();
+            File.AppendAllText(crashLog, "Step 2a: ServiceCollection created\n");
+            ConfigureServices(services);
+            File.AppendAllText(crashLog, "Step 2b: ConfigureServices done\n");
+
+            _serviceProvider = services.BuildServiceProvider();
+            File.AppendAllText(crashLog, "Step 3: BuildServiceProvider done\n");
+
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            MainWindow = mainWindow;
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
+            File.AppendAllText(crashLog, "Step 4: GetRequiredService<MainWindow> done\n");
+            mainWindow.Show();
+            File.AppendAllText(crashLog, $"Step 5: MainWindow shown successfully\n");
         }
-        catch
+        catch (Exception ex)
         {
-            // Fallback gracefully on older OS versions
+            File.AppendAllText(crashLog, $"[StartupError] {ex}\n");
+            throw;
         }
-
-        var services = new ServiceCollection();
-        ConfigureServices(services);
-
-        _serviceProvider = services.BuildServiceProvider();
-
-        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-        mainWindow.Show();
     }
 
     private static void ConfigureServices(IServiceCollection services)
@@ -97,7 +130,8 @@ public partial class App : System.Windows.Application
                 sp.GetRequiredService<IWorkspaceRestoreService>(),
                 sp.GetRequiredService<IMonitorManagementService>(),
                 sp.GetRequiredService<IWindowsWindowService>(),
-                (page, param) => _ = sp.GetRequiredService<MainViewModel>().NavigateToPageAsync(page, param)));
+                (page, param) => _ = sp.GetRequiredService<MainViewModel>().NavigateToPageAsync(page, param),
+                sp.GetService<IRestorationHistoryService>()));
 
         services.AddTransient<WorkspaceLibraryViewModel>(sp =>
             new WorkspaceLibraryViewModel(
@@ -132,6 +166,9 @@ public partial class App : System.Windows.Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string crashLog = Path.Combine(localAppData, "Again", "startup.log");
+        try { File.AppendAllText(crashLog, $"[OnExit] Application exiting with exit code {e.ApplicationExitCode}\n"); } catch { }
         _serviceProvider?.Dispose();
         base.OnExit(e);
     }

@@ -30,7 +30,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "startwithwindows"; Description: "Launch Again when Windows starts"; GroupDescription: "Startup options:"
 
 [Files]
-Source: "..\dist\standalone\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\dist\standalone\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\src\Encore.App\Assets\app.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]

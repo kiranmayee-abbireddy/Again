@@ -84,30 +84,39 @@ public partial class MainWindow : Window
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        var helper = new WindowInteropHelper(this);
-        var hWnd = helper.Handle;
+        try
+        {
+            var helper = new WindowInteropHelper(this);
+            var hWnd = helper.Handle;
 
-        _hwndSource = HwndSource.FromHwnd(hWnd);
-        _hwndSource?.AddHook(HwndHook);
+            _hwndSource = HwndSource.FromHwnd(hWnd);
+            _hwndSource?.AddHook(HwndHook);
 
-        _shortcutService.Initialize(hWnd);
+            _shortcutService.Initialize(hWnd);
 
-        var settings = await _configRepo.LoadSettingsAsync();
-        _shortcutService.RegisterShortcut(ShortcutAction.CaptureWorkspace, settings.CaptureHotkey);
-        _shortcutService.RegisterShortcut(ShortcutAction.RestoreLastUsed, settings.RestoreLastHotkey);
-        _shortcutService.RegisterShortcut(ShortcutAction.ToggleShowHide, settings.ShowHideHotkey);
-        _shortcutService.RegisterShortcut(ShortcutAction.QuickSelector, settings.QuickSelectorHotkey);
+            var settings = await _configRepo.LoadSettingsAsync();
+            _shortcutService.RegisterShortcut(ShortcutAction.CaptureWorkspace, settings.CaptureHotkey);
+            _shortcutService.RegisterShortcut(ShortcutAction.RestoreLastUsed, settings.RestoreLastHotkey);
+            _shortcutService.RegisterShortcut(ShortcutAction.ToggleShowHide, settings.ShowHideHotkey);
+            _shortcutService.RegisterShortcut(ShortcutAction.QuickSelector, settings.QuickSelectorHotkey);
 
-        _trayManager.Initialize(
-            this,
-            quickRestoreLastAction: async () => await _viewModel.QuickRestoreLastUsedAsync(),
-            openCaptureAction: async () => await _viewModel.NavigateToPageAsync(NavigationPage.CaptureWorkspace),
-            openSettingsAction: async () => await _viewModel.NavigateToPageAsync(NavigationPage.Settings));
+            _trayManager.Initialize(
+                this,
+                quickRestoreLastAction: async () => await _viewModel.QuickRestoreLastUsedAsync(),
+                openCaptureAction: async () => await _viewModel.NavigateToPageAsync(NavigationPage.CaptureWorkspace),
+                openSettingsAction: async () => await _viewModel.NavigateToPageAsync(NavigationPage.Settings));
 
-        var allWorkspaces = await _repository.GetAllWorkspacesAsync();
-        _trayManager.RefreshPinnedMenu(allWorkspaces.Where(w => w.IsPinned));
+            var allWorkspaces = await _repository.GetAllWorkspacesAsync();
+            _trayManager.RefreshPinnedMenu(allWorkspaces.Where(w => w.IsPinned));
 
-        await _viewModel.InitializeAsync();
+            await _viewModel.InitializeAsync();
+        }
+        catch (Exception ex)
+        {
+            string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string crashLog = System.IO.Path.Combine(localAppData, "Again", "startup.log");
+            try { System.IO.File.AppendAllText(crashLog, $"[MainWindow_Loaded_Error] {ex}\n"); } catch { }
+        }
     }
 
     private async void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

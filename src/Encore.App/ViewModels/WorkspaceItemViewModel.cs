@@ -57,7 +57,7 @@ public partial class WorkspaceItemViewModel : ObservableObject
         AdditionalAppsCount = Math.Max(0, model.Applications.Count - distinctApps.Count);
     }
 
-    private static string GetAppGlyph(string processName, string? windowTitle)
+    public static string GetAppGlyph(string processName, string? windowTitle = null)
     {
         var lower = processName.ToLowerInvariant();
         if (lower.Contains("chrome")) return "🌐";

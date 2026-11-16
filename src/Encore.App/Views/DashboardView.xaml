@@ -8,75 +8,250 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:DashboardViewModel}">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="32,24,32,32">
+        <StackPanel Margin="32,24,32,40">
             
-            <!-- Hero Banner -->
-            <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="28" Margin="0,0,0,24">
+            <!-- Hero Command Center Banner -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="14" 
+                    Padding="28" 
+                    Margin="0,0,0,24">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="Welcome to Again" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6" />
-                        <TextBlock Text="Your workspace, back on stage. Save multi-window arrangements and restore your entire desktop instantly." 
-                                   FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="620" Margin="0,0,0,18" />
+                    <StackPanel Grid.Column="0" Margin="0,0,24,0">
+                        <!-- Live Status Pill -->
+                        <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                BorderBrush="{DynamicResource CardBorderBrush}" 
+                                BorderThickness="1" 
+                                CornerRadius="12" 
+                                Padding="10,4" 
+                                HorizontalAlignment="Left" 
+                                Margin="0,0,0,12">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse Width="8" Height="8" Fill="{DynamicResource AccentBrush}" Margin="0,0,8,0" />
+                                <TextBlock Text="LIVE DESKTOP" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,8,0" />
+                                <TextBlock Text="•" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,8,0" />
+                                <TextBlock Text="{Binding LiveDesktopSummary}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextSecondaryBrush}" />
+                            </StackPanel>
+                        </Border>
 
-                        <StackPanel Orientation="Horizontal">
-                            <Button Style="{StaticResource PrimaryButtonStyle}" Command="{Binding StartCaptureCommand}" Margin="0,0,12,0" Padding="18,10">
-                                <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Welcome to Again" FontSize="28" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6" />
+                        <TextBlock Text="Your workspace, back on stage. Snapshot your multi-window desktop arrangement and restore your entire flow with one click." 
+                                   FontSize="13.5" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="620" Margin="0,0,0,20" />
+
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Primary Snapshot CTA with Hover Glow -->
+                            <Button Style="{StaticResource RestoreButtonStyle}" Command="{Binding StartCaptureCommand}" Margin="0,0,12,0" Padding="20,10">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="📸 " FontSize="14" />
-                                    <TextBlock Text="Capture Workspace" FontWeight="SemiBold" />
+                                    <TextBlock Text="Snapshot Current Desktop" FontWeight="SemiBold" />
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding QuickRestoreCommand}" Padding="16,10">
-                                <StackPanel Orientation="Horizontal">
+                            <!-- Instant Quick Restore Button -->
+                            <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding QuickRestoreCommand}" Padding="16,10" Margin="0,0,16,0">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                     <TextBlock Text="⚡ " FontSize="14" />
-                                    <TextBlock Text="Quick Restore Last" />
+                                    <TextBlock Text="Quick Restore Last" FontWeight="Medium" />
                                 </StackPanel>
                             </Button>
+
+                            <!-- Global Shortcut Pill -->
+                            <Border Background="{DynamicResource WindowBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="6" Padding="8,4" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="3" Padding="5,2" Margin="0,0,3,0">
+                                        <TextBlock Text="Ctrl" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    </Border>
+                                    <TextBlock Text="+" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,3,0" />
+                                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="3" Padding="5,2" Margin="0,0,3,0">
+                                        <TextBlock Text="Alt" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    </Border>
+                                    <TextBlock Text="+" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,3,0" />
+                                    <Border Background="{DynamicResource CardBackgroundBrush}" CornerRadius="3" Padding="5,2">
+                                        <TextBlock Text="C" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    </Border>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Metrics Badges (Secondary statistics: elegant muted tones) -->
-                    <Border Grid.Column="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="10" Padding="18,14" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Margin="6,0,18,0" HorizontalAlignment="Center">
+                    <!-- Productivity Metrics Badges (Secondary statistics in elegant muted tones) -->
+                    <Border Grid.Column="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="12" Padding="20,16" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" VerticalAlignment="Center">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="8,0,18,0" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
                                     <TextBlock Text="🖥️ " FontSize="13" VerticalAlignment="Center" />
                                     <TextBlock Text="{Binding ActiveMonitorsCount}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
                                 </StackPanel>
-                                <TextBlock Text="Monitors" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                <TextBlock Text="Displays" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <Separator Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,2" />
-                            <StackPanel Margin="18,0,18,0" HorizontalAlignment="Center">
+
+                            <Border Grid.Column="1" Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,2,18,2" />
+
+                            <StackPanel Grid.Column="2" Margin="0,0,18,0" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
                                     <TextBlock Text="🪟 " FontSize="13" VerticalAlignment="Center" />
                                     <TextBlock Text="{Binding DetectedWindowsCount}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
                                 </StackPanel>
-                                <TextBlock Text="Open Windows" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                <TextBlock Text="Live Windows" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <Separator Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,2" />
-                            <StackPanel Margin="18,0,6,0" HorizontalAlignment="Center">
+
+                            <Border Grid.Column="3" Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,2,18,2" />
+
+                            <StackPanel Grid.Column="4" Margin="0,0,8,0" HorizontalAlignment="Center">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
                                     <TextBlock Text="📦 " FontSize="13" VerticalAlignment="Center" />
                                     <TextBlock Text="{Binding TotalWorkspacesCount}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
                                 </StackPanel>
-                                <TextBlock Text="Saved Workspaces" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                <TextBlock Text="Workspaces" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
-                        </StackPanel>
+                        </Grid>
                     </Border>
                 </Grid>
             </Border>
 
-            <!-- Restoring Banner -->
+            <!-- Restoring Banner Overlay -->
             <Border Visibility="{Binding IsRestoring, Converter={StaticResource BoolToVisibilityConverter}}" 
-                    Background="{DynamicResource AccentBrush}" CornerRadius="8" Padding="14,10" Margin="0,0,0,20">
+                    Background="{DynamicResource AccentBrush}" CornerRadius="10" Padding="16,12" Margin="0,0,0,24">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="⏳ " FontSize="14" Foreground="#FFFFFF" />
-                    <TextBlock Text="{Binding RestoringMessage}" FontSize="13" FontWeight="SemiBold" Foreground="#FFFFFF" />
+                    <TextBlock Text="⏳ " FontSize="16" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding RestoringMessage}" FontSize="13.5" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+
+            <!-- Live Desktop State & Arrangement Widget -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="12" 
+                    Padding="22,18" 
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <!-- Header -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="🖥️ Active Desktop Arrangement" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,10,0" />
+                                <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="6,2">
+                                    <TextBlock Text="Real-Time" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                </Border>
+                            </StackPanel>
+                            <TextBlock Text="Currently detected active displays and open application windows on your screen." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,3,0,0" />
+                        </StackPanel>
+
+                        <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding StartCaptureCommand}" Padding="14,6">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📸 " FontSize="12" />
+                                <TextBlock Text="Snapshot This Setup" FontWeight="Medium" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <!-- Connected Monitors Row -->
+                    <ItemsControl ItemsSource="{Binding CurrentMonitors}" Margin="0,0,0,14">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:LiveMonitorPreviewItem}">
+                                <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                                        BorderThickness="1" 
+                                        CornerRadius="8" 
+                                        Padding="14,10" 
+                                        Margin="0,0,12,8" 
+                                        MinWidth="200">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" Text="🖥️" FontSize="18" VerticalAlignment="Center" Margin="0,0,10,0" />
+                                        
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DeviceName}" FontSize="12.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                                            <TextBlock Text="{Binding ResolutionText}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        </StackPanel>
+
+                                        <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center" Margin="8,0,0,0">
+                                            <TextBlock Text="{Binding RoleBadge}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Live Open Windows Grid -->
+                    <ItemsControl ItemsSource="{Binding LiveActiveWindows}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:LiveWindowPreviewItem}">
+                                <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                                        BorderThickness="1" 
+                                        CornerRadius="8" 
+                                        Padding="12,8" 
+                                        Margin="0,0,10,8" 
+                                        Width="270">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- App Icon Glyph -->
+                                        <Border Grid.Column="0" Width="30" Height="30" CornerRadius="6" 
+                                                Background="{DynamicResource SurfaceBackgroundBrush}" 
+                                                BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
+                                                Margin="0,0,10,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding IconGlyph}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+
+                                        <!-- Title & Process -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="150" />
+                                            <TextBlock Text="{Binding ProcessName}" FontSize="10.5" Foreground="{DynamicResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+
+                                        <!-- Bounds / State Badge -->
+                                        <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="6,0,0,0">
+                                            <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="5,1" Margin="0,0,0,2">
+                                                <TextBlock Text="{Binding BoundsText}" FontSize="9.5" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                            </Border>
+                                            <TextBlock Text="{Binding StateText}" FontSize="9" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </Border>
 
@@ -86,11 +261,16 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Pinned Workspaces" Style="{StaticResource SectionTitleStyle}" Grid.Column="0" />
-                <Button Style="{StaticResource GhostButtonStyle}" Content="View All →" Command="{Binding ViewAllWorkspacesCommand}" Grid.Column="1" />
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="📌 Pinned Workspaces" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,8,0" />
+                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="8" Padding="6,2">
+                        <TextBlock Text="{Binding PinnedCount}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                    </Border>
+                </StackPanel>
+                <Button Style="{StaticResource GhostButtonStyle}" Content="Browse All Workspaces →" Command="{Binding ViewAllWorkspacesCommand}" Grid.Column="1" />
             </Grid>
 
-            <!-- Empty State for Pinned (with personality) -->
+            <!-- Empty State for Pinned (Personality & Clear Onboarding) -->
             <Border Visibility="{Binding HasPinnedWorkspaces, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                     Background="{DynamicResource CardBackgroundBrush}" 
                     BorderBrush="{DynamicResource CardBorderBrush}" 
@@ -114,8 +294,8 @@
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <TextBlock Text="Keep your favorite stages one click away" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,3" />
-                        <TextBlock Text="Pin your daily workspaces — deep work setup, meeting mode, or research. They'll live right here and in your Windows tray for instant switching." 
-                                   FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="560" Margin="0,0,0,5" />
+                        <TextBlock Text="Pin your daily workflows — full-stack dev, meeting setup, or deep research. They'll appear right here and in your Windows tray menu for instant switching." 
+                                   FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="580" Margin="0,0,0,5" />
                         <TextBlock Text="💡 Tip: Click the 📌 icon on any workspace card in the library to pin it here." FontSize="11" Foreground="{DynamicResource TextMutedBrush}" />
                     </StackPanel>
 
@@ -216,20 +396,111 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <!-- Starter Stage Blueprints / Recommended Presets -->
+            <Border Background="{DynamicResource CardBackgroundBrush}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="12" 
+                    Padding="22,18" 
+                    Margin="0,0,0,24">
+                <StackPanel>
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="💡 Recommended Stage Blueprints" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,8,0" />
+                                <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="6,2">
+                                    <TextBlock Text="Starter Templates" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                </Border>
+                            </StackPanel>
+                            <TextBlock Text="Popular multi-application arrangements to kickstart your productivity in one click." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,3,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding RecommendedPresets}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:WorkspacePresetItem}">
+                                <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                                        BorderThickness="1" 
+                                        CornerRadius="10" 
+                                        Padding="16" 
+                                        Margin="0,0,12,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Preset Icon Glyph -->
+                                        <Border Grid.Column="0" Width="42" Height="42" CornerRadius="8" 
+                                                Background="{DynamicResource SurfaceBackgroundBrush}" 
+                                                BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
+                                                Margin="0,0,14,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding IconGlyph}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+
+                                        <!-- Details -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                                <TextBlock Text="{Binding Title}" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,8,0" />
+                                                <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,1">
+                                                    <TextBlock Text="{Binding Category}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                                </Border>
+                                            </StackPanel>
+                                            <TextBlock Text="{Binding Description}" FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,4" />
+                                            <TextBlock Text="{Binding SuggestedApps}" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                                        </StackPanel>
+
+                                        <!-- Action -->
+                                        <Button Grid.Column="2" Style="{StaticResource SecondaryButtonStyle}" 
+                                                Command="{Binding DataContext.UsePresetCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                CommandParameter="{Binding}" 
+                                                Padding="12,6" VerticalAlignment="Center" Margin="12,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Use" FontWeight="Medium" />
+                                                <TextBlock Text=" →" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
             <!-- Recent Workspaces Section -->
-            <TextBlock Text="Recent Workspaces" Style="{StaticResource SectionTitleStyle}" Margin="0,0,0,12" />
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Recent Workspaces" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Grid.Column="0" />
+                <Button Style="{StaticResource GhostButtonStyle}" Content="View All →" Command="{Binding ViewAllWorkspacesCommand}" Grid.Column="1" />
+            </Grid>
 
             <Border Visibility="{Binding HasRecentWorkspaces, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                    Style="{StaticResource CardBorderStyle}" Padding="24">
+                    Style="{StaticResource CardBorderStyle}" Padding="24" Margin="0,0,0,24">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="🚀 Ready to capture your first workspace?" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,4" />
-                    <TextBlock Text="Arrange your applications on your desktop, click Capture Workspace, and Again will remember the entire setup." 
+                    <TextBlock Text="Arrange your applications on your desktop, click Capture Desktop, and Again will remember the entire setup." 
                                FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,12" />
                     <Button Style="{StaticResource PrimaryButtonStyle}" Content="Capture Desktop Now" Command="{Binding StartCaptureCommand}" HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>
 
-            <ItemsControl ItemsSource="{Binding RecentWorkspaces}">
+            <ItemsControl ItemsSource="{Binding RecentWorkspaces}" Margin="0,0,0,24">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:WorkspaceItemViewModel}">
                         <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,10" Padding="16">
@@ -287,6 +558,72 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+            <!-- Recent Restoration Activity History Snippet -->
+            <Border Visibility="{Binding HasRestorationHistory, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Background="{DynamicResource CardBackgroundBrush}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="12" 
+                    Padding="22,18">
+                <StackPanel>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="⏱️ Recent Restoration Activity" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                            <TextBlock Text="Performance &amp; timeline of recent workspace restorations." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,2,0,0" />
+                        </StackPanel>
+
+                        <Button Grid.Column="1" Style="{StaticResource GhostButtonStyle}" Content="Full History →" Command="{Binding ViewHistoryCommand}" />
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding RecentRestorations}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:RecentHistorySnippetItem}">
+                                <Border Background="{DynamicResource WindowBackgroundBrush}" 
+                                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                                        BorderThickness="1" 
+                                        CornerRadius="8" 
+                                        Padding="14,10" 
+                                        Margin="0,0,0,8">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Status Badge -->
+                                        <Border Grid.Column="0" Background="{Binding Status, Converter={StaticResource StatusToBrushConverter}}" 
+                                                CornerRadius="4" Padding="6,2" Margin="0,0,12,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status}" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF" />
+                                        </Border>
+
+                                        <!-- Name & Summary -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding WorkspaceName}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                                            <TextBlock Text="{Binding SummaryText}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        </StackPanel>
+
+                                        <!-- Relative Time -->
+                                        <TextBlock Grid.Column="2" Text="{Binding RelativeTime}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="12,0" />
+
+                                        <!-- Duration -->
+                                        <Border Grid.Column="3" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DurationMs, StringFormat='{}{0}ms'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
 
         </StackPanel>
     </ScrollViewer>
