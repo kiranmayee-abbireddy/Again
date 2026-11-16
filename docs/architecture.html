@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture Specification: Again Desktop Workspace Restorer</title>
+  <meta name="description" content="Technical architecture specification for Again: Win32 subsystem interop, browser tab injection, and coordinate clamping.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Blueprint Title Block Navigation -->
+  <header class="masthead">
+    <div class="container masthead-bar">
+      <a href="./" class="sheet-title-group" aria-label="Again home">
+        <span class="sheet-brand">AGAIN // ARCHITECTURE</span>
+        <span class="sheet-tag">Dwg 02: Rev 1.0.0</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Documentation navigation">
+        <a href="./" class="nav-item">Home</a>
+        <a href="#subsystems" class="nav-item">Subsystems</a>
+        <a href="#pipeline" class="nav-item">Pipeline</a>
+        <a href="#schema" class="nav-item">Schema</a>
+        <a href="https://github.com/kiranmayee-abbireddy/Again" class="btn btn--secondary" target="_blank" rel="noopener">GitHub (@kiranmayee-abbireddy)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Architecture Hero -->
+    <section class="hero-stage">
+      <div class="container">
+        <div class="stat-counter-block">
+          <div class="dim"><span class="dim-val">Specification: system internals</span></div>
+          <h1>System architecture specification.</h1>
+          <p class="lede">Low-level Win32 interop, Chromium UI Automation, and multi-monitor coordinate clamping.</p>
+
+          <div class="btn-row">
+            <a href="https://github.com/kiranmayee-abbireddy/Again" class="btn btn--primary" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+              GitHub repository
+            </a>
+            <a href="./" class="btn btn--secondary">Back to product</a>
+          </div>
+          <p class="body-muted">Maintained by @kiranmayee-abbireddy. Distributed under MIT License.</p>
+        </div>
+
+        <!-- Subsystem Register -->
+        <div class="spec-frame" id="subsystems">
+          <table class="reg-table">
+            <thead>
+              <tr>
+                <th scope="col">Subsystem</th>
+                <th scope="col">Domain service</th>
+                <th scope="col">Win32 API interop</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tag-col">Window enumeration</td>
+                <td>WindowsWindowService</td>
+                <td class="num">user32.dll: EnumWindows, GetWindowPlacement</td>
+              </tr>
+              <tr>
+                <td class="tag-col">Process management</td>
+                <td>WindowsProcessService</td>
+                <td class="num">kernel32.dll: QueryFullProcessImageName</td>
+              </tr>
+              <tr>
+                <td class="tag-col">Tab reconciliation</td>
+                <td>ChromiumBrowserService</td>
+                <td class="num">UIAutomationClient: IUIAutomation</td>
+              </tr>
+              <tr>
+                <td class="tag-col">Monitor clamping</td>
+                <td>WindowsMonitorService</td>
+                <td class="num">user32.dll: EnumDisplayMonitors, PerMonitorV2</td>
+              </tr>
+              <tr>
+                <td class="tag-col">Offline staging</td>
+                <td>ApplicationCatalogService</td>
+                <td class="num">Shell Link COM: IShellLink, PATH discovery</td>
+              </tr>
+              <tr>
+                <td class="tag-col">Storage repository</td>
+                <td>SqliteWorkspaceRepository</td>
+                <td class="num">SQLite3: local offline manifest storage</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- The 3-Stage Restoration Pipeline -->
+    <section class="section" id="pipeline">
+      <div class="container">
+        <div class="section-head">
+          <h2>The 3-stage restoration pipeline</h2>
+          <p class="body-muted">How Again restores running processes, browser tabs, and coordinates in under 600ms.</p>
+        </div>
+
+        <div class="elevation-grid">
+          <div class="elevation-col">
+            <span class="elevation-title">1. Enumeration &amp; reconciliation</span>
+            <ul class="elevation-list">
+              <li class="elevation-item">
+                <span class="elevation-mark">[1]</span>
+                <span>EnumWindows walks top-level handles, filtering cloaked virtual desktop windows.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[2]</span>
+                <span>ChromiumBrowserService inspects active tabs on running Chrome/Edge windows.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[3]</span>
+                <span>Missing tabs are queued for attachment into existing instances.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="elevation-col">
+            <span class="elevation-title">2. Clamping &amp; placement</span>
+            <ul class="elevation-list">
+              <li class="elevation-item">
+                <span class="elevation-mark">[4]</span>
+                <span>PerMonitorV2 checks clamp negative coordinates to active screen bounds.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[5]</span>
+                <span>Closed programs configured in offline catalog launch automatically.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[6]</span>
+                <span>SetWindowPlacement restores coordinates simultaneously in &lt; 600ms.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schema Specification -->
+    <section class="section" id="schema">
+      <div class="container">
+        <div class="section-head">
+          <h2>Local manifest schema</h2>
+          <p class="body-muted">Workspaces save as human-readable JSON in %LOCALAPPDATA%\Again\workspaces\.</p>
+        </div>
+
+        <div class="keyline-box">
+          <pre style="margin:0;font-family:var(--font-outlier);font-size:var(--text-xs);color:var(--color-ink-2);overflow-x:auto;"><code>{
+  "name": "Engineering Workspace",
+  "author": "kiranmayee-abbireddy",
+  "version": "1.0.0",
+  "windows": [
+    {
+      "process": "chrome",
+      "tabs": ["https://github.com/kiranmayee-abbireddy/Again"],
+      "bounds": [0, 0, 1920, 1080],
+      "display": 1
+    },
+    {
+      "process": "code",
+      "executable": "Code.exe",
+      "bounds": [0, 540, 960, 540],
+      "display": 1
+    }
+  ]
+}</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mast Footer -->
+  <footer class="mast-footer">
+    <div class="container footer-bar">
+      <span class="footer-copy">© 2026 Again Project. Architected by @kiranmayee-abbireddy. MIT License.</span>
+      <div class="footer-nav">
+        <a href="https://github.com/kiranmayee-abbireddy" class="footer-link" target="_blank" rel="noopener">GitHub: @kiranmayee-abbireddy</a>
+        <a href="https://github.com/kiranmayee-abbireddy/Again" class="footer-link" target="_blank" rel="noopener">Repository</a>
+        <a href="./" class="footer-link">Home</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
