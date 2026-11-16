@@ -119,3 +119,9 @@ dotnet publish src/Again.App/Again.App.csproj -c Release -r win-x64 --self-conta
 & "C:\Users\LENOVO\AppData\Local\Programs\Inno Setup 6\ISCC.exe" "installer/again.iss"
 ```
 Output: `dist/installer/Again-Setup-v1.0.0.exe` (installs `Again.exe`)
+
+---
+
+## 6. License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for details.

@@ -33,3 +33,7 @@ TestResults/
 dist/
 *.zip
 release-assets/
+
+## Netlify
+.netlify/
+.netlify
