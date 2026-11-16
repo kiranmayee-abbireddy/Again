@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.locale.1.6.0.schema.json
+
+PackageIdentifier: kiranmayee-abbireddy.Again
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: kiranmayee-abbireddy
+PublisherUrl: https://github.com/kiranmayee-abbireddy
+PublisherSupportUrl: https://github.com/kiranmayee-abbireddy/Again/issues
+PackageName: Again
+PackageUrl: https://github.com/kiranmayee-abbireddy/Again
+License: MIT
+LicenseUrl: https://github.com/kiranmayee-abbireddy/Again/blob/master/LICENSE
+ShortDescription: Deterministic desktop workspace restorer for Windows with zero duplicate windows.
+Description: |
+  Again snapshots and restores running applications, multi-monitor coordinates, and browser tabs without opening duplicate windows.
+Tags:
+  - windows
+  - workspace
+  - window-manager
+  - productivity
+  - multi-monitor
+  - desktop
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0
