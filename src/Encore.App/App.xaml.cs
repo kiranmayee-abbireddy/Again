@@ -128,7 +128,9 @@ public partial class App : System.Windows.Application
                 sp.GetRequiredService<IMonitorManagementService>(),
                 sp.GetRequiredService<IWorkspaceRepository>(),
                 sp.GetService<ILogger<WorkspaceRestoreService>>(),
-                sp.GetRequiredService<IApplicationCatalogService>()));
+                sp.GetRequiredService<IApplicationCatalogService>(),
+                sp.GetService<IChromiumBrowserService>(),
+                sp.GetService<IWindowsExplorerService>()));
         services.AddSingleton<IRestorationHistoryService, RestorationHistoryService>();
 
         // ViewModels

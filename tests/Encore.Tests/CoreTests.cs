@@ -559,4 +559,61 @@ public class MultiProcessWindowServiceTests
         Assert.Equal("⚡", ApplicationCatalogService.GetAppGlyph("powershell"));
         Assert.Equal("📝", ApplicationCatalogService.GetAppGlyph("notepad"));
     }
+
+    [Fact]
+    public async Task WorkspaceRestoreService_DoesNotSpawnDuplicate_WhenWindowAlreadyExists()
+    {
+        var tempDbPath = Path.Combine(Path.GetTempPath(), $"encore_test_{Guid.NewGuid():N}.db");
+        try
+        {
+            var repo = new SqliteWorkspaceRepository(tempDbPath);
+            var monitorService = new WindowsMonitorService();
+            var procService = new WindowsProcessService();
+            var windowService = new WindowsWindowService(procService, monitorService);
+            var restoreService = new WorkspaceRestoreService(procService, windowService, monitorService, repo);
+
+            // Find an actual visible window currently running on this test runner (e.g. explorer or desktop process)
+            var visibleWindows = windowService.EnumerateVisibleWindows();
+            var existing = visibleWindows.FirstOrDefault(w => !string.IsNullOrEmpty(w.ExecutablePath) && File.Exists(w.ExecutablePath));
+
+            if (existing != null)
+            {
+                var ws = new Workspace
+                {
+                    Name = "Existing App Re-use Test",
+                    Applications = new List<WorkspaceApplication>
+                    {
+                        new()
+                        {
+                            ExecutablePath = existing.ExecutablePath,
+                            ProcessName = existing.ProcessName,
+                            WindowTitle = existing.Title,
+                            IsEnabled = true,
+                            Placement = new WindowPlacement
+                            {
+                                X = existing.Bounds.Left,
+                                Y = existing.Bounds.Top,
+                                Width = existing.Bounds.Width,
+                                Height = existing.Bounds.Height,
+                                WindowState = existing.WindowState
+                            }
+                        }
+                    }
+                };
+
+                await repo.SaveWorkspaceAsync(ws);
+                var session = await restoreService.RestoreWorkspaceAsync(ws);
+
+                Assert.Equal("Success", session.Status);
+                Assert.Single(session.Items);
+                // When an existing window is present, it should be repositioned rather than launched as a duplicate instance
+                Assert.True(session.Items[0].Status is "RepositionedOnly" or "AlreadyRunning");
+            }
+        }
+        finally
+        {
+            Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
+            if (File.Exists(tempDbPath)) File.Delete(tempDbPath);
+        }
+    }
 }
