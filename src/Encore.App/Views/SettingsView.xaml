@@ -22,7 +22,9 @@
                     <TextBlock Text="Customize desktop behavior, themes, keyboard shortcuts, and workspace restoration rules." Style="{StaticResource SubheaderStyle}" />
                 </StackPanel>
 
-                <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Content="Save Settings" Command="{Binding SaveCommand}" Height="34" Padding="18,0" VerticalAlignment="Center" />
+                <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding SaveCommand}" Height="34" Padding="18,0" VerticalAlignment="Center">
+                    <TextBlock Text="Save Settings" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                </Button>
             </Grid>
 
             <!-- Status Banner -->

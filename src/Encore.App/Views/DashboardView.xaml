@@ -239,7 +239,9 @@
                             <TextBlock Text="Ready to snapshot your first stage?" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,3" />
                             <TextBlock Text="Arrange windows on your screen, click Snapshot Desktop, and Again will remember the exact coordinates." 
                                        FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,10" TextAlignment="Center" />
-                            <Button Style="{StaticResource RestoreButtonStyle}" Content="Snapshot Desktop Now" Command="{Binding StartCaptureCommand}" HorizontalAlignment="Center" Height="32" Padding="16,0" />
+                            <Button Style="{StaticResource RestoreButtonStyle}" Command="{Binding StartCaptureCommand}" HorizontalAlignment="Center" Height="32" Padding="16,0">
+                                <TextBlock Text="Snapshot Desktop Now" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                            </Button>
                         </StackPanel>
                     </Border>
 
@@ -302,9 +304,11 @@
 
                                         <!-- Actions (Both Height="30" for Uniformity) -->
                                         <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Button Style="{StaticResource RestoreButtonStyle}" Content="Switch" 
+                                            <Button Style="{StaticResource RestoreButtonStyle}" 
                                                     Command="{Binding DataContext.QuickRestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                                    CommandParameter="{Binding}" Margin="0,0,6,0" Height="30" Padding="14,0" FontSize="12" VerticalAlignment="Center" />
+                                                    CommandParameter="{Binding}" Margin="0,0,6,0" Height="30" Padding="14,0" VerticalAlignment="Center">
+                                                <TextBlock Text="Switch" FontSize="12" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                                            </Button>
                                             <Button Style="{StaticResource SecondaryButtonStyle}" Content="Details" 
                                                     Command="{Binding DataContext.OpenWorkspaceDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                                     CommandParameter="{Binding}" Height="30" Padding="12,0" FontSize="12" VerticalAlignment="Center" />

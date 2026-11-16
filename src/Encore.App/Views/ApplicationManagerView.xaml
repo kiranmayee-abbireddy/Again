@@ -68,7 +68,9 @@
                             </TextBlock.Style>
                         </TextBlock>
 
-                        <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Content="Launch App" Command="{Binding LaunchManualCommand}" Height="32" Padding="16,0" VerticalAlignment="Center" />
+                        <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding LaunchManualCommand}" Height="32" Padding="16,0" VerticalAlignment="Center">
+                            <TextBlock Text="Launch App" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                        </Button>
                     </Grid>
 
                     <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource AccentLightBrush}" Margin="0,8,0,0"

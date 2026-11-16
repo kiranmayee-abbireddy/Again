@@ -24,7 +24,9 @@
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Style="{StaticResource SecondaryButtonStyle}" Content="Cancel" Command="{Binding CancelCommand}" Margin="0,0,10,0" Height="32" Padding="14,0" VerticalAlignment="Center" />
-                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Save Workspace" Command="{Binding SaveCommand}" Height="32" Padding="18,0" VerticalAlignment="Center" />
+                    <Button Style="{StaticResource PrimaryButtonStyle}" Command="{Binding SaveCommand}" Height="32" Padding="18,0" VerticalAlignment="Center">
+                        <TextBlock Text="Save Workspace" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                    </Button>
                 </StackPanel>
             </Grid>
 
