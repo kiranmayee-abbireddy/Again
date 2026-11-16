@@ -3,51 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Again: Deterministic Desktop Workspace Console for Windows</title>
+  <title>Again: Deterministic Desktop Workspace Restorer for Windows</title>
   <meta name="description" content="Precision workspace restorer for Windows. Restores processes, window bounds, and browser tabs without duplicate windows.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500&family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
-  <!-- Masthead Navigation -->
+  <!-- Blueprint Title Block Navigation -->
   <header class="masthead">
     <div class="container masthead-bar">
-      <a href="./" class="brand-unit" aria-label="Again home">
-        <div class="brand-logo" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-            <path d="M3 3v5h5"/>
-            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-            <path d="M16 21h5v-5"/>
-          </svg>
-        </div>
-        <span class="brand-name">Again</span>
-        <span class="status-pill">
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="3"/></svg>
-          v1.0.0
-        </span>
+      <a href="./" class="sheet-title-group" aria-label="Again home">
+        <span class="sheet-brand">AGAIN // WORKSPACE</span>
+        <span class="sheet-tag">Dwg 01: Rev 1.0.0</span>
       </a>
 
-      <nav class="nav-links" aria-label="Primary">
-        <a href="#topology" class="nav-item">Topology</a>
-        <a href="#trail" class="nav-item">Audit trail</a>
-        <a href="#diff" class="nav-item">Deduplication</a>
-        <a href="#architecture" class="nav-item">Architecture</a>
+      <nav class="nav-links" aria-label="Drawing sections">
+        <a href="#canvas" class="nav-item">Topology</a>
+        <a href="#register" class="nav-item">Register</a>
+        <a href="#elevation" class="nav-item">Elevation</a>
         <a href="#downloads" class="btn btn--secondary">Get Again</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- Hero Section: Console Workbench -->
+    <!-- Hero Section: Stat-Led Counter Stage -->
     <section class="hero-stage">
       <div class="container">
-        <div class="hero-prose-centered">
-          <h1>Deterministic desktop workspaces for Windows.</h1>
-          <p class="lede">Restores multi-monitor bounds, running processes, and browser tabs in 600ms.</p>
+        <div class="stat-counter-block">
+          <div class="stat-row">
+            <span class="stat-figure">600</span>
+            <span class="stat-unit">milliseconds restoration</span>
+          </div>
+          <div class="dim"><span class="dim-val">Spec: latency &lt; 600ms</span></div>
+          <h1>Deterministic desktop workspace restoration.</h1>
+          <p class="lede">Captures and restores multi-monitor bounds without duplicate process instances.</p>
 
           <div class="btn-row">
             <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Setup-v1.0.0.exe" class="btn btn--primary">
@@ -65,326 +58,109 @@
           <p class="body-muted">Windows 10/11 x64. Open source under MIT License. Local storage only.</p>
         </div>
 
-        <!-- Dual-Display Topology Visualizer + Live Process Registry -->
-        <div class="topology-console" id="topology" aria-label="Desktop topology console">
-          <div class="monitors-grid">
-            <div class="monitor-frame">
-              <div class="monitor-head">
-                <span class="monitor-name">Display 1 (Primary)</span>
-                <span class="monitor-dpi">1920×1080 @ 100% DPI</span>
-              </div>
-              <div class="monitor-screen">
-                <div class="screen-app-tile span-2">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-                  <span>chrome: GitHub + Documentation</span>
+        <!-- Dual Display Drafting Canvas (Hero Signature) -->
+        <div class="blueprint-canvas" id="canvas" aria-label="Multi-monitor drafting canvas">
+          <div class="canvas-displays-grid">
+            <div class="drafting-display-pane">
+              <div class="dim"><span class="dim-val">Display 1: 1920 × 1080 @ 100% DPI</span></div>
+              <div class="display-sheet-frame">
+                <div class="draft-win-cell span-2">
+                  <span class="draft-win-name">chrome.exe: GitHub + Win32 API Reference</span>
+                  <span class="draft-win-coords">x: 0, y: 0, w: 1920, h: 540 (2 tabs)</span>
                 </div>
-                <div class="screen-app-tile">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                  <span>Code: workspace.ts</span>
+                <div class="draft-win-cell">
+                  <span class="draft-win-name">code.exe: workspace.ts</span>
+                  <span class="draft-win-coords">x: 0, y: 540, w: 960, h: 540</span>
                 </div>
-                <div class="screen-app-tile">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
-                  <span>WindowsTerminal</span>
+                <div class="draft-win-cell">
+                  <span class="draft-win-name">windowsterminal.exe: pwsh</span>
+                  <span class="draft-win-coords">x: 960, y: 540, w: 960, h: 540</span>
                 </div>
               </div>
             </div>
 
-            <div class="monitor-frame">
-              <div class="monitor-head">
-                <span class="monitor-name">Display 2 (Secondary)</span>
-                <span class="monitor-dpi">1600×900 @ 100% DPI</span>
-              </div>
-              <div class="monitor-screen">
-                <div class="screen-app-tile">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                  <span>explorer: Projects</span>
+            <div class="drafting-display-pane">
+              <div class="dim"><span class="dim-val">Display 2: 1600 × 900 @ 100% DPI</span></div>
+              <div class="display-sheet-frame">
+                <div class="draft-win-cell">
+                  <span class="draft-win-name">explorer.exe: Projects</span>
+                  <span class="draft-win-coords">x: 1920, y: 0, w: 800, h: 900</span>
                 </div>
-                <div class="screen-app-tile">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                  <span>Slack</span>
+                <div class="draft-win-cell">
+                  <span class="draft-win-name">slack.exe: #engineering</span>
+                  <span class="draft-win-coords">x: 2720, y: 0, w: 800, h: 450</span>
                 </div>
-                <div class="screen-app-tile span-2">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                  <span>Figma: UI Kit</span>
+                <div class="draft-win-cell span-2">
+                  <span class="draft-win-name">figma.exe: Design System v2</span>
+                  <span class="draft-win-coords">x: 2720, y: 450, w: 800, h: 450</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Live Window Registry -->
-          <div class="registry-header">
-            <span class="registry-title">Detected Open Windows</span>
-            <div class="filter-row" role="tablist" aria-label="Process filters">
-              <button type="button" class="filter-btn active" role="tab" aria-selected="true">All (7)</button>
-              <button type="button" class="filter-btn" role="tab" aria-selected="false">Running (5)</button>
-              <button type="button" class="filter-btn" role="tab" aria-selected="false">Staged (2)</button>
-            </div>
-          </div>
-
-          <ul class="window-list">
-            <li class="window-item active">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-              </svg>
-              <span class="proc-label">chrome</span>
-              <span class="title-label">GitHub: Pull Requests and Issues</span>
-              <span class="res-pill">1920×1080</span>
-            </li>
-
-            <li class="window-item active">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-              </svg>
-              <span class="proc-label">chrome</span>
-              <span class="title-label">Documentation: Win32 API Reference</span>
-              <span class="res-pill">1920×1080</span>
-            </li>
-
-            <li class="window-item">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-              </svg>
-              <span class="proc-label">Code</span>
-              <span class="title-label">workspace.ts: frontend runtime</span>
-              <span class="res-pill">1920×1080</span>
-            </li>
-
-            <li class="window-item">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-              </svg>
-              <span class="proc-label">WindowsTerminal</span>
-              <span class="title-label">pwsh: docker-compose up --build</span>
-              <span class="res-pill">1920×1080</span>
-            </li>
-
-            <li class="window-item">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-              </svg>
-              <span class="proc-label">explorer</span>
-              <span class="title-label">C:\Users\Developer\Projects</span>
-              <span class="res-pill">1920×1080</span>
-            </li>
-
-            <li class="window-item">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-              </svg>
-              <span class="proc-label">Slack</span>
-              <span class="title-label">#general-engineering</span>
-              <span class="res-pill">1600×900</span>
-            </li>
-
-            <li class="window-item">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/>
-              </svg>
-              <span class="proc-label">Figma</span>
-              <span class="title-label">Design System v2: UI Kit</span>
-              <span class="res-pill">1600×900</span>
-            </li>
-          </ul>
         </div>
       </div>
     </section>
 
-    <!-- Console Audit Trail (Spine Layout) -->
-    <section class="section" id="trail">
+    <!-- Drawing Register Table -->
+    <section class="section" id="register">
       <div class="container">
         <div class="section-head">
-          <h2>Restoration audit trail</h2>
-          <p class="body-muted">Measured timeline of a complete workspace restore sequence.</p>
-        </div>
-
-        <div class="trail-card">
-          <div class="trail-spine">
-            <div class="trail-node">
-              <span class="trail-time">00:00.012s</span>
-              <span class="trail-head">Process enumeration</span>
-              <p class="trail-desc">Scans running handles via Win32 EnumWindows.</p>
-            </div>
-
-            <div class="trail-node">
-              <span class="trail-time">00:00.045s</span>
-              <span class="trail-head">Target reconciliation</span>
-              <p class="trail-desc">Reconciles Chrome PID 14820 tabs.</p>
-            </div>
-
-            <div class="trail-node">
-              <span class="trail-time">00:00.090s</span>
-              <span class="trail-head">Browser tab injection</span>
-              <p class="trail-desc">Attaches missing URL into existing Chrome window.</p>
-            </div>
-
-            <div class="trail-node">
-              <span class="trail-time">00:00.580s</span>
-              <span class="trail-head">Placement completed</span>
-              <p class="trail-desc">Applies SetWindowPlacement across all 7 targets.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Diff Comparison -->
-    <section class="section" id="diff">
-      <div class="container">
-        <div class="section-head">
-          <h2>Engine comparison</h2>
-          <p class="body-muted">How Again eliminates desktop clutter versus traditional window managers.</p>
-        </div>
-
-        <div class="diff-container">
-          <div class="diff-col">
-            <span class="diff-title">Standard window managers</span>
-            <ul class="diff-rows">
-              <li class="diff-row">
-                <span class="diff-gutter gutter-bad">-</span>
-                <span>Spawns duplicate Chrome instance.</span>
-              </li>
-              <li class="diff-row">
-                <span class="diff-gutter gutter-bad">-</span>
-                <span>Launches second IDE, locking project files.</span>
-              </li>
-              <li class="diff-row">
-                <span class="diff-gutter gutter-bad">-</span>
-                <span>Positions windows off-screen on disconnected monitors.</span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="diff-col col-good">
-            <span class="diff-title title-good">Again restoration engine</span>
-            <ul class="diff-rows">
-              <li class="diff-row">
-                <span class="diff-gutter gutter-good">+</span>
-                <span>Attaches missing tabs into existing browser window.</span>
-              </li>
-              <li class="diff-row">
-                <span class="diff-gutter gutter-good">+</span>
-                <span>Focuses running IDE and applies target bounds.</span>
-              </li>
-              <li class="diff-row">
-                <span class="diff-gutter gutter-good">+</span>
-                <span>Clamps coordinates to active display resolution.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Continuous Seam Bento Grid -->
-    <section class="section" id="architecture">
-      <div class="container">
-        <div class="section-head">
-          <h2>Core architecture</h2>
-          <p class="body-muted">Engineered for deterministic desktop control with zero cloud dependencies.</p>
-        </div>
-
-        <div class="bento-surface">
-          <div class="bento-panel span-2">
-            <h3>Smart browser tab injection</h3>
-            <p>Locates running browser processes and appends missing tabs without opening redundant windows.</p>
-          </div>
-
-          <div class="bento-panel">
-            <h3>Closed app catalog</h3>
-            <p>Configure closed tools to boot automatically on workspace load.</p>
-          </div>
-
-          <div class="bento-panel">
-            <h3>Coordinate clamping</h3>
-            <p>Clamps window bounds to active monitors to prevent off-screen coordinates.</p>
-          </div>
-
-          <div class="bento-panel span-2">
-            <h3>100% offline local storage</h3>
-            <p>Workspaces save as local JSON. Zero telemetry, zero cloud.</p>
-            <pre class="code-snippet"><code>{
-  "name": "Sprint",
-  "windows": [
-    { "process": "chrome", "tabs": 2, "display": 1, "bounds": [0, 0, 1920, 1080] }
-  ]
-}</code></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Global Shortcuts -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>Global shortcuts</h2>
-          <p class="body-muted">Low-level Win32 hooks deliver instantaneous workspace control.</p>
-        </div>
-
-        <div class="hotkey-grid">
-          <div class="hotkey-card">
-            <div class="key-cluster">
-              <kbd class="keycap">Ctrl</kbd>
-              <span class="key-plus">+</span>
-              <kbd class="keycap">Alt</kbd>
-              <span class="key-plus">+</span>
-              <kbd class="keycap">C</kbd>
-            </div>
-            <h3>Capture active workspace</h3>
-            <p class="body-muted">Snapshots running handles, monitor bounds, and active browser tabs.</p>
-          </div>
-
-          <div class="hotkey-card">
-            <div class="key-cluster">
-              <kbd class="keycap">Ctrl</kbd>
-              <span class="key-plus">+</span>
-              <kbd class="keycap">Alt</kbd>
-              <span class="key-plus">+</span>
-              <kbd class="keycap">R</kbd>
-            </div>
-            <h3>Restore previous workspace</h3>
-            <p class="body-muted">Repurposes running instances and repositions staged windows.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Technical Specifications Table -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>Technical specifications</h2>
-          <p class="body-muted">Lightweight native Windows architecture with zero cloud dependencies.</p>
+          <h2>Drawing register: process manifest</h2>
+          <p class="body-muted">Active application topology monitored and staged for deterministic recovery.</p>
         </div>
 
         <div class="spec-frame">
-          <table class="spec-table">
+          <table class="reg-table">
             <thead>
               <tr>
-                <th scope="col">Parameter</th>
-                <th scope="col">Specification</th>
+                <th scope="col">Process</th>
+                <th scope="col">Window title</th>
+                <th scope="col">Coordinates</th>
+                <th scope="col">Restoration action</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Runtime framework</td>
-                <td class="value-col">.NET 8 Native AOT / WPF</td>
+                <td class="tag-col">chrome.exe</td>
+                <td>GitHub: Pull Requests and Issues</td>
+                <td class="num">1920×1080</td>
+                <td>Attach tab to running PID</td>
               </tr>
               <tr>
-                <td>RAM consumption</td>
-                <td class="value-col">38 MB idle</td>
+                <td class="tag-col">chrome.exe</td>
+                <td>Documentation: Win32 API Reference</td>
+                <td class="num">1920×1080</td>
+                <td>Attach tab to running PID</td>
               </tr>
               <tr>
-                <td>Restore execution latency</td>
-                <td class="value-col">&lt; 600 ms</td>
+                <td class="tag-col">code.exe</td>
+                <td>workspace.ts: frontend runtime</td>
+                <td class="num">1920×1080</td>
+                <td>Focus window &amp; set bounds</td>
               </tr>
               <tr>
-                <td>Telemetry &amp; network traffic</td>
-                <td class="value-col">0 bytes (100% offline local JSON)</td>
+                <td class="tag-col">windowsterminal.exe</td>
+                <td>pwsh: docker-compose up</td>
+                <td class="num">1920×1080</td>
+                <td>Focus window &amp; set bounds</td>
               </tr>
               <tr>
-                <td>Supported operating systems</td>
-                <td class="value-col">Windows 10 / Windows 11 (x64)</td>
+                <td class="tag-col">explorer.exe</td>
+                <td>C:\Users\Developer\Projects</td>
+                <td class="num">1920×1080</td>
+                <td>SetWindowPlacement</td>
+              </tr>
+              <tr>
+                <td class="tag-col">slack.exe</td>
+                <td>#general-engineering</td>
+                <td class="num">1600×900</td>
+                <td>SetWindowPlacement</td>
+              </tr>
+              <tr>
+                <td class="tag-col">figma.exe</td>
+                <td>Design System v2: UI Kit</td>
+                <td class="num">1600×900</td>
+                <td>Launch from offline catalog</td>
               </tr>
             </tbody>
           </table>
@@ -392,11 +168,102 @@
       </div>
     </section>
 
-    <!-- Distribution Matrix -->
+    <!-- Elevation Comparison -->
+    <section class="section" id="elevation">
+      <div class="container">
+        <div class="section-head">
+          <h2>Restoration elevation comparison</h2>
+          <p class="body-muted">Deduplication engine behavior versus traditional window managers.</p>
+        </div>
+
+        <div class="elevation-grid">
+          <div class="elevation-col">
+            <span class="elevation-title">Standard window managers</span>
+            <ul class="elevation-list">
+              <li class="elevation-item">
+                <span class="elevation-mark">[!]</span>
+                <span>Spawns duplicate Chrome windows with redundant memory overhead.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[!]</span>
+                <span>Launches second IDE instance, causing file lock collisions.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[!]</span>
+                <span>Positions windows off-screen on disconnected monitors.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="elevation-col">
+            <span class="elevation-title">Again restoration engine</span>
+            <ul class="elevation-list">
+              <li class="elevation-item">
+                <span class="elevation-mark">[+]</span>
+                <span>Appends missing URLs into current browser window without duplicate processes.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[+]</span>
+                <span>Brings running IDE to focus and applies target bounds immediately.</span>
+              </li>
+              <li class="elevation-item">
+                <span class="elevation-mark">[+]</span>
+                <span>Clamps coordinates into visible monitor resolution via PerMonitorV2.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Specifications Ledger -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Technical specification ledger</h2>
+          <p class="body-muted">Lightweight native Windows architecture with zero cloud dependencies.</p>
+        </div>
+
+        <div class="spec-frame">
+          <table class="reg-table">
+            <thead>
+              <tr>
+                <th scope="col">Parameter</th>
+                <th scope="col">Engineering specification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Runtime framework</td>
+                <td class="num">.NET 8 Native AOT / WPF</td>
+              </tr>
+              <tr>
+                <td>RAM consumption</td>
+                <td class="num">38 MB idle</td>
+              </tr>
+              <tr>
+                <td>Restore execution latency</td>
+                <td class="num">&lt; 600 ms</td>
+              </tr>
+              <tr>
+                <td>Telemetry traffic</td>
+                <td class="num">0 bytes (100% offline local JSON)</td>
+              </tr>
+              <tr>
+                <td>Supported operating systems</td>
+                <td class="num">Windows 10 / Windows 11 (x64)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Distribution Drawing Blocks -->
     <section class="section" id="downloads">
       <div class="container">
         <div class="section-head">
-          <h2>Download packages</h2>
+          <h2>Distribution package register</h2>
           <p class="body-muted">Direct release artifacts for Windows x64.</p>
         </div>
 
@@ -426,10 +293,10 @@
     </section>
   </main>
 
-  <!-- Mast Footer -->
+  <!-- Mast Footer / Index Columns -->
   <footer class="mast-footer">
     <div class="container footer-bar">
-      <span class="footer-copy">© 2026 Again Project. Released under MIT License.</span>
+      <span class="footer-copy">© 2026 Again Project. Drawing register under MIT License.</span>
       <div class="footer-nav">
         <a href="https://github.com/kiranmayee-abbireddy/Again" class="footer-link" target="_blank" rel="noopener">GitHub repository</a>
         <a href="https://github.com/kiranmayee-abbireddy/Again/releases" class="footer-link" target="_blank" rel="noopener">All releases</a>
@@ -438,35 +305,5 @@
     </div>
   </footer>
 
-  <script>
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const windowItems = document.querySelectorAll('.window-item');
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        const filter = btn.innerText.toLowerCase();
-        windowItems.forEach(item => {
-          const isStaged = item.querySelector('.res-pill').innerText === '1600×900';
-          if (filter.startsWith('all')) {
-            item.style.display = 'grid';
-          } else if (filter.startsWith('running')) {
-            item.style.display = isStaged ? 'none' : 'grid';
-          } else if (filter.startsWith('staged')) {
-            item.style.display = isStaged ? 'grid' : 'none';
-          }
-        });
-      });
-    });
-    windowItems.forEach(item => {
-      item.addEventListener('click', () => {
-        item.classList.toggle('active');
-      });
-    });
-  </script>
 </body>
 </html>

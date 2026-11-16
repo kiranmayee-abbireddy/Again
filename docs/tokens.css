@@ -50,40 +50,39 @@
   --z-toast: 500;
   --z-tooltip: 600;
 
-  /* Client palette: deep obsidian ground with slate-navy cards and nordic teal signals */
-  --color-paper: oklch(13% 0.035 260);
-  --color-paper-2: oklch(17.5% 0.042 260);
-  --color-paper-3: oklch(22% 0.048 260);
-  --color-paper-elevated: oklch(25% 0.05 260);
+  /* Client palette: deep obsidian drafting sheet with nordic teal lines */
+  --color-paper: oklch(14% 0.038 260);
+  --color-paper-2: oklch(18% 0.042 260);
+  --color-paper-3: oklch(22.5% 0.046 260);
 
-  --color-ink: oklch(96% 0.012 250);
-  --color-ink-2: oklch(86% 0.025 248);
-  --color-muted: oklch(72% 0.035 250);
-  --color-subtle: oklch(55% 0.035 250);
+  --color-ink: oklch(96% 0.012 240);
+  --color-ink-2: oklch(88% 0.025 242);
+  --color-muted: oklch(75% 0.045 244);
+  --color-subtle: oklch(58% 0.035 250);
 
-  --color-rule: oklch(26% 0.042 260);
-  --color-rule-2: oklch(34% 0.052 260);
+  --color-rule: oklch(78% 0.11 225 / 0.85);
+  --color-rule-2: oklch(78% 0.11 225 / 0.35);
+
+  --color-grid: oklch(80% 0.12 225 / 0.07);
+  --color-grid-2: oklch(80% 0.12 225 / 0.18);
 
   --color-accent: oklch(80% 0.12 225);
-  --color-accent-soft: oklch(24% 0.06 225);
-  --color-accent-ink: oklch(12% 0.035 260);
+  --color-accent-ink: oklch(13% 0.035 260);
   --color-focus: oklch(82% 0.13 225);
 
-  --color-ok: oklch(76% 0.15 150);
-  --color-ok-soft: oklch(22% 0.05 150);
-  --color-bad: oklch(65% 0.18 25);
-  --color-bad-soft: oklch(22% 0.05 25);
+  --font-display: "Chakra Petch", ui-sans-serif, sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-outlier: "IBM Plex Mono", ui-monospace, monospace;
 
-  --font-display: "Host Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "Host Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-outlier: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
-
-  --radius-card: 10px;
-  --radius-pill: 6px;
-  --radius-button: 8px;
+  --radius-card: 0;
+  --radius-pill: 0;
+  --radius-button: 0;
   --rule-hair: 1px;
+  --rule-heavy: 2px;
   --shadow-card: none;
 
-  --tracking-display: -0.025em;
-  --display-weight: 500;
+  --tracking-display: -0.012em;
+  --display-weight: 600;
+  --sheet-inset: 20px;
+  --tick: 14px;
 }
