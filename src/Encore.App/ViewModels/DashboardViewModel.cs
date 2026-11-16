@@ -63,6 +63,15 @@ public partial class DashboardViewModel : ObservableObject
     private int _detectedWindowsCount;
 
     [ObservableProperty]
+    private string _activeMonitorsLabel = "0 Displays";
+
+    [ObservableProperty]
+    private string _detectedWindowsLabel = "0 Live Windows";
+
+    [ObservableProperty]
+    private string _totalWorkspacesLabel = "0 Stages";
+
+    [ObservableProperty]
     private bool _hasPinnedWorkspaces;
 
     [ObservableProperty]
@@ -152,6 +161,7 @@ public partial class DashboardViewModel : ObservableObject
         var all = await _repository.GetAllWorkspacesAsync();
         TotalWorkspacesCount = all.Count;
         HasAnyWorkspaces = all.Count > 0;
+        TotalWorkspacesLabel = TotalWorkspacesCount == 1 ? "1 Stage" : $"{TotalWorkspacesCount} Stages";
 
         // Pinned Workspaces
         var pinned = all.Where(w => w.IsPinned).Take(6).Select(w => new WorkspaceItemViewModel(w)).ToList();
@@ -166,7 +176,7 @@ public partial class DashboardViewModel : ObservableObject
         foreach (var r in recent) RecentWorkspaces.Add(r);
         HasRecentWorkspaces = RecentWorkspaces.Count > 0;
 
-        // All Workspaces (for quick stage switcher)
+        // All Workspaces (for stage switcher)
         AllWorkspaces.Clear();
         foreach (var w in all.OrderByDescending(x => x.IsPinned).ThenByDescending(x => x.LastRestoredAt ?? x.UpdatedAt).Take(8))
         {
@@ -211,6 +221,7 @@ public partial class DashboardViewModel : ObservableObject
         // Load Displays
         var monitors = _monitorService.GetMonitors();
         ActiveMonitorsCount = monitors.Count;
+        ActiveMonitorsLabel = ActiveMonitorsCount == 1 ? "1 Display" : $"{ActiveMonitorsCount} Displays";
         CurrentMonitors.Clear();
         foreach (var m in monitors)
         {
@@ -218,7 +229,7 @@ public partial class DashboardViewModel : ObservableObject
             {
                 DeviceName = m.DeviceName,
                 ResolutionText = $"{m.Width} × {m.Height}",
-                ScaleText = $"{Math.Round(m.ScaleFactor * 100)}% DPI ({m.DpiX} DPI)",
+                ScaleText = $"{Math.Round(m.ScaleFactor * 100)}% DPI",
                 BoundsText = $"Virtual: ({m.Left}, {m.Top})",
                 WorkAreaText = $"Work Area: {m.WorkWidth} × {m.WorkHeight}",
                 IsPrimary = m.IsPrimary,
@@ -237,8 +248,9 @@ public partial class DashboardViewModel : ObservableObject
             var currentPid = Process.GetCurrentProcess().Id;
             var detected = _windowService.EnumerateVisibleWindows(excludeProcessId: currentPid);
             DetectedWindowsCount = detected.Count;
+            DetectedWindowsLabel = DetectedWindowsCount == 1 ? "1 Live Window" : $"{DetectedWindowsCount} Live Windows";
             LiveActiveWindows.Clear();
-            foreach (var w in detected.Take(8))
+            foreach (var w in detected.Take(12))
             {
                 LiveActiveWindows.Add(new LiveWindowPreviewItem
                 {
@@ -251,7 +263,7 @@ public partial class DashboardViewModel : ObservableObject
                 });
             }
             HasLiveWindows = LiveActiveWindows.Count > 0;
-            LiveDesktopSummary = $"{ActiveMonitorsCount} {(ActiveMonitorsCount == 1 ? "Monitor" : "Monitors")} Connected • {DetectedWindowsCount} Active Windows";
+            LiveDesktopSummary = $"{ActiveMonitorsLabel} Connected • {DetectedWindowsLabel}";
         }
         catch
         {
