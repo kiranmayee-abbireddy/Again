@@ -511,7 +511,7 @@
                                                 BorderBrush="{DynamicResource CardBorderBrush}" 
                                                 BorderThickness="1" 
                                                 CornerRadius="6" 
-                                                Padding="8,5" 
+                                                Padding="8,6" 
                                                 Margin="0,0,0,4">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -520,15 +520,19 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <!-- App Glyph -->
-                                                <TextBlock Grid.Column="0" Text="{Binding IconGlyph}" FontSize="11" Margin="0,0,8,0" VerticalAlignment="Center" />
-                                                <!-- Title & Process -->
-                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Title}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" MaxWidth="180" />
-                                                    <TextBlock Text="{Binding ProcessName}" FontSize="9.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
-                                                </StackPanel>
+                                                <TextBlock Grid.Column="0" Text="{Binding IconGlyph}" FontSize="12" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                                <!-- Title & Process (Both Left-Aligned in bounded Grid) -->
+                                                <Grid Grid.Column="1" VerticalAlignment="Center">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="11.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" />
+                                                    <TextBlock Grid.Row="1" Text="{Binding ProcessName}" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" Margin="0,2,0,0" />
+                                                </Grid>
                                                 <!-- Bounds Pill -->
-                                                <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="18" Padding="5,0" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding BoundsText}" FontSize="8.5" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                <Border Grid.Column="2" Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="4" Height="20" Padding="6,0" VerticalAlignment="Center" Margin="10,0,0,0">
+                                                    <TextBlock Text="{Binding BoundsText}" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" />
                                                 </Border>
                                             </Grid>
                                         </Border>
