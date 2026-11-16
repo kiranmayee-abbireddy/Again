@@ -38,6 +38,7 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
     private readonly IWindowsWindowService _windowService;
     private readonly IMonitorManagementService _monitorService;
     private readonly IWorkspaceRepository _repository;
+    private readonly IApplicationCatalogService? _catalogService;
     private readonly ILogger<WorkspaceRestoreService>? _logger;
 
     public WorkspaceRestoreService(
@@ -45,13 +46,15 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
         IWindowsWindowService windowService,
         IMonitorManagementService monitorService,
         IWorkspaceRepository repository,
-        ILogger<WorkspaceRestoreService>? logger = null)
+        ILogger<WorkspaceRestoreService>? logger = null,
+        IApplicationCatalogService? catalogService = null)
     {
         _processService = processService;
         _windowService = windowService;
         _monitorService = monitorService;
         _repository = repository;
         _logger = logger;
+        _catalogService = catalogService;
     }
 
     public async Task<RestorationSession> RestoreWorkspaceAsync(
@@ -117,13 +120,21 @@ public class WorkspaceRestoreService : IWorkspaceRestoreService
                 // Step 1: Validate executable path
                 if (!File.Exists(app.ExecutablePath))
                 {
-                    item.Status = "Failed";
-                    item.ErrorMessage = $"Executable not found: {app.ExecutablePath}";
-                    failedCount++;
-                    item.CompletedAt = DateTime.UtcNow;
-                    session.Items.Add(item);
-                    _logger?.LogWarning("Restoration validation failed for {ProcessName}: file not found {Path}", app.ProcessName, app.ExecutablePath);
-                    continue;
+                    var resolved = _catalogService?.ResolveExecutablePath(app.ExecutablePath);
+                    if (!string.IsNullOrEmpty(resolved) && File.Exists(resolved))
+                    {
+                        app.ExecutablePath = resolved;
+                    }
+                    else
+                    {
+                        item.Status = "Failed";
+                        item.ErrorMessage = $"Executable not found: {app.ExecutablePath}";
+                        failedCount++;
+                        item.CompletedAt = DateTime.UtcNow;
+                        session.Items.Add(item);
+                        _logger?.LogWarning("Restoration validation failed for {ProcessName}: file not found {Path}", app.ProcessName, app.ExecutablePath);
+                        continue;
+                    }
                 }
 
                 // Step 2: Check if already running AND has an active matching top-level window

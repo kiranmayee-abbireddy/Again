@@ -522,4 +522,41 @@ public class MultiProcessWindowServiceTests
             if (File.Exists(tempDb)) File.Delete(tempDb);
         }
     }
+
+    [Fact]
+    public async Task ApplicationCatalogService_DiscoversInstalledApps()
+    {
+        var catalogService = new ApplicationCatalogService();
+        var apps = await catalogService.GetInstalledApplicationsAsync();
+
+        Assert.NotNull(apps);
+        Assert.NotEmpty(apps);
+
+        // At least system apps like notepad or explorer should be present
+        var hasNotepadOrExplorer = apps.Any(a => a.ProcessName.Equals("notepad", StringComparison.OrdinalIgnoreCase) ||
+                                                 a.ProcessName.Equals("explorer", StringComparison.OrdinalIgnoreCase) ||
+                                                 a.ProcessName.Equals("cmd", StringComparison.OrdinalIgnoreCase));
+        Assert.True(hasNotepadOrExplorer);
+    }
+
+    [Fact]
+    public void ApplicationCatalogService_ResolvesExecutablePath_FindsKnownSystemExe()
+    {
+        var catalogService = new ApplicationCatalogService();
+        var resolved = catalogService.ResolveExecutablePath("notepad.exe");
+
+        Assert.NotNull(resolved);
+        Assert.True(File.Exists(resolved));
+        Assert.EndsWith("notepad.exe", resolved, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void ApplicationCatalogService_GetAppGlyph_ReturnsAppropriateGlyph()
+    {
+        Assert.Equal("🌐", ApplicationCatalogService.GetAppGlyph("chrome"));
+        Assert.Equal("💻", ApplicationCatalogService.GetAppGlyph("Code"));
+        Assert.Equal("📁", ApplicationCatalogService.GetAppGlyph("explorer"));
+        Assert.Equal("⚡", ApplicationCatalogService.GetAppGlyph("powershell"));
+        Assert.Equal("📝", ApplicationCatalogService.GetAppGlyph("notepad"));
+    }
 }

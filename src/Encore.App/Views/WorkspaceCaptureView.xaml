@@ -19,7 +19,7 @@
 
                 <StackPanel Grid.Column="0">
                     <TextBlock Text="Capture Desktop Workspace" Style="{StaticResource HeaderTitleStyle}" />
-                    <TextBlock Text="Snapshot your current screen layout. Review detected windows and select which ones to include." Style="{StaticResource SubheaderStyle}" />
+                    <TextBlock Text="Snapshot your current screen layout or select non-running apps to configure and restore in one click." Style="{StaticResource SubheaderStyle}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
@@ -61,7 +61,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Detected Windows Header -->
+            <!-- Applications Header & Actions -->
             <Grid Margin="0,0,0,12">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -69,11 +69,18 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Detected Application Windows" Style="{StaticResource SectionTitleStyle}" Margin="0,0,12,0" />
-                    <TextBlock Text="{Binding DetectedWindows.Count, StringFormat='({0} detected)'}" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
+                    <TextBlock Text="Applications in Workspace" Style="{StaticResource SectionTitleStyle}" Margin="0,0,12,0" />
+                    <TextBlock Text="{Binding SummaryCountText}" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Add Non-Running App Button -->
+                    <Button Style="{StaticResource PrimaryButtonStyle}" Command="{Binding ToggleAppPickerCommand}" Height="30" Padding="12,0" Margin="0,0,8,0" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE710;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center" Foreground="#FFFFFF" />
+                            <TextBlock Text="Add Non-Running App" FontSize="11.5" FontWeight="SemiBold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
                     <Button Style="{StaticResource GhostButtonStyle}" Content="Select All" Command="{Binding SelectAllCommand}" Height="30" Padding="8,0" Margin="0,0,6,0" VerticalAlignment="Center" />
                     <Button Style="{StaticResource GhostButtonStyle}" Content="Deselect All" Command="{Binding DeselectAllCommand}" Height="30" Padding="8,0" Margin="0,0,8,0" VerticalAlignment="Center" />
                     <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding ScanWindowsCommand}" Height="30" Padding="12,0" VerticalAlignment="Center">
@@ -85,7 +92,81 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Windows List -->
+            <!-- Collapsible App Picker Panel for Non-Running Apps -->
+            <Border Visibility="{Binding IsAppPickerOpen, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Style="{StaticResource CardBorderStyle}" Background="{DynamicResource WindowBackgroundBrush}" 
+                    BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1.5" CornerRadius="10" Padding="18" Margin="0,0,0,16">
+                <StackPanel>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Select Non-Running Applications" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                            <TextBlock Text="Pick from installed applications on this computer or browse for any executable." FontSize="11.5" Foreground="{DynamicResource TextSecondaryBrush}" />
+                        </StackPanel>
+
+                        <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding BrowseCustomAppCommand}" Height="30" Padding="12,0" Margin="0,0,10,0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE8E5;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Browse Executable (.exe)..." FontSize="11.5" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Grid.Column="2" Style="{StaticResource GhostButtonStyle}" Command="{Binding CloseAppPickerCommand}" Height="30" Width="30" Padding="0" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE711;" FontFamily="{StaticResource SymbolFont}" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Button>
+                    </Grid>
+
+                    <!-- Search installed apps -->
+                    <Grid Margin="0,0,0,12">
+                        <TextBox Text="{Binding CatalogSearchQuery, UpdateSourceTrigger=PropertyChanged}" Height="32" Padding="32,0,10,0" VerticalContentAlignment="Center" />
+                        <TextBlock Text="&#xE721;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" IsHitTestVisible="False" />
+                        <TextBlock Text="Search installed apps (e.g. Chrome, VS Code, Discord, Spotify, Notepad)..." Foreground="{DynamicResource TextMutedBrush}" IsHitTestVisible="False" Margin="32,0,10,0" VerticalAlignment="Center"
+                                   Visibility="{Binding CatalogSearchQuery, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}" />
+                    </Grid>
+
+                    <!-- Scrollable list of catalog apps -->
+                    <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <ItemsControl ItemsSource="{Binding FilteredCatalogApps}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="{x:Type viewmodels:CatalogAppItemViewModel}">
+                                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" CornerRadius="6" Padding="10,8" Margin="0,0,0,6" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding IconGlyph}" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center" />
+
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{Binding ExecutablePath}" FontSize="10.5" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
+                                            </StackPanel>
+
+                                            <Button Grid.Column="2" Style="{StaticResource SecondaryButtonStyle}" Height="26" Padding="10,0" VerticalAlignment="Center"
+                                                    Command="{Binding DataContext.AddCatalogAppCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Text="&#xE710;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                                    <TextBlock Text="Add" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </Border>
+
+            <!-- Applications List -->
             <ItemsControl ItemsSource="{Binding DetectedWindows}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:CapturableWindowItemViewModel}">
@@ -93,15 +174,33 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Margin="0,0,14,0" />
+                                <!-- Checkbox -->
+                                <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Margin="0,0,12,0" />
 
-                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <!-- App Icon -->
+                                <TextBlock Grid.Column="1" Text="{Binding IconGlyph}" FontSize="16" Margin="0,0,12,0" VerticalAlignment="Center" />
+
+                                <!-- App Details -->
+                                <StackPanel Grid.Column="2" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
-                                        <TextBlock Text="{Binding DisplayTitle}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="450" />
+                                        <TextBlock Text="{Binding DisplayTitle}" FontSize="13.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="420" VerticalAlignment="Center" />
+
+                                        <!-- Offline / Not Running Badge -->
+                                        <Border Visibility="{Binding IsNotRunning, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource AccentLightBrush}" BorderThickness="1"
+                                                CornerRadius="4" Height="20" Padding="6,0" Margin="8,0,0,0" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                <TextBlock Text="Not Running (Will Launch on Restore)" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Browser Profile Badge -->
                                         <Border Visibility="{Binding HasBrowserProfile, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                                                 CornerRadius="4" Height="20" Padding="6,0" Margin="8,0,0,0" VerticalAlignment="Center">
@@ -110,6 +209,8 @@
                                                 <TextBlock Text="{Binding BrowserProfile}" FontSize="9.5" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
                                             </StackPanel>
                                         </Border>
+
+                                        <!-- Folder View Path Badge -->
                                         <Border Visibility="{Binding HasFolderViewPath, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                                                 CornerRadius="4" Height="20" Padding="6,0" Margin="8,0,0,0" VerticalAlignment="Center">
@@ -120,6 +221,7 @@
                                         </Border>
                                     </StackPanel>
                                     
+                                    <!-- Browser Tabs Summary -->
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2" Visibility="{Binding HasTabs, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <TextBlock Text="&#xE774;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
                                         <TextBlock Text="{Binding TabsSummary}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="500" VerticalAlignment="Center" />
@@ -128,9 +230,20 @@
                                     <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                    <TextBlock Text="{Binding PlacementText}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Right" />
-                                    <TextBlock Text="{Binding MonitorText}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Right" />
+                                <!-- Placement & Remove Action -->
+                                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                        <TextBlock Text="{Binding PlacementText}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Right" />
+                                        <TextBlock Text="{Binding MonitorText}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Right" />
+                                    </StackPanel>
+
+                                    <!-- Remove Button for Manually Added Non-Running Apps -->
+                                    <Button Visibility="{Binding IsNotRunning, Converter={StaticResource BoolToVisibilityConverter}}"
+                                            Style="{StaticResource GhostButtonStyle}" Height="28" Width="28" Padding="0" VerticalAlignment="Center"
+                                            Command="{Binding DataContext.RemoveWindowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}" ToolTip="Remove from workspace">
+                                        <TextBlock Text="&#xE711;" FontFamily="{StaticResource SymbolFont}" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Button>
                                 </StackPanel>
                             </Grid>
                         </Border>

@@ -119,8 +119,16 @@ public partial class App : System.Windows.Application
         services.AddSingleton<ISystemTrayManager, SystemTrayManager>();
 
         // Application Services
+        services.AddSingleton<IApplicationCatalogService, ApplicationCatalogService>();
         services.AddSingleton<IWorkspaceCaptureService, WorkspaceCaptureService>();
-        services.AddSingleton<IWorkspaceRestoreService, WorkspaceRestoreService>();
+        services.AddSingleton<IWorkspaceRestoreService>(sp =>
+            new WorkspaceRestoreService(
+                sp.GetRequiredService<IWindowsProcessService>(),
+                sp.GetRequiredService<IWindowsWindowService>(),
+                sp.GetRequiredService<IMonitorManagementService>(),
+                sp.GetRequiredService<IWorkspaceRepository>(),
+                sp.GetService<ILogger<WorkspaceRestoreService>>(),
+                sp.GetRequiredService<IApplicationCatalogService>()));
         services.AddSingleton<IRestorationHistoryService, RestorationHistoryService>();
 
         // ViewModels
@@ -146,12 +154,16 @@ public partial class App : System.Windows.Application
                 sp.GetRequiredService<IWorkspaceRestoreService>(),
                 sp.GetRequiredService<IWindowsProcessService>(),
                 sp.GetRequiredService<IConfigurationRepository>(),
+                sp.GetRequiredService<IApplicationCatalogService>(),
+                sp.GetRequiredService<IMonitorManagementService>(),
                 (page, param) => _ = sp.GetRequiredService<MainViewModel>().NavigateToPageAsync(page, param)));
 
         services.AddTransient<WorkspaceCaptureViewModel>(sp =>
             new WorkspaceCaptureViewModel(
                 sp.GetRequiredService<IWorkspaceCaptureService>(),
                 sp.GetRequiredService<IConfigurationRepository>(),
+                sp.GetRequiredService<IApplicationCatalogService>(),
+                sp.GetRequiredService<IMonitorManagementService>(),
                 (page, param) => _ = sp.GetRequiredService<MainViewModel>().NavigateToPageAsync(page, param)));
 
         services.AddTransient<ApplicationManagerViewModel>();

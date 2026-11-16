@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Encore.Core.Domain;
 using Encore.Core.Services;
 using Encore.Core.Storage;
+using Microsoft.Win32;
 
 namespace Encore.App.ViewModels;
 
@@ -15,6 +16,8 @@ public partial class WorkspaceAppItemViewModel : ObservableObject
     public string ExecutablePath => Model.ExecutablePath;
     public string ProcessName => Model.ProcessName;
     public string DisplayTitle => string.IsNullOrWhiteSpace(Model.WindowTitle) ? Model.ProcessName : Model.WindowTitle;
+
+    public string IconGlyph => ApplicationCatalogService.GetAppGlyph(ProcessName, DisplayTitle);
 
     public string? BrowserProfile => Model.BrowserProfile;
     public bool HasBrowserProfile => !string.IsNullOrEmpty(Model.BrowserProfile);
@@ -62,9 +65,14 @@ public partial class WorkspaceAppItemViewModel : ObservableObject
     [ObservableProperty]
     private bool _isEnabled;
 
+    [ObservableProperty]
+    private string _selectedWindowState;
+
+    public ObservableCollection<string> AvailableWindowStates { get; } = new() { "Normal", "Maximized", "Minimized" };
+
     public string WindowBoundsText => Model.Placement != null
-        ? $"{Model.Placement.Width} × {Model.Placement.Height} at ({Model.Placement.X}, {Model.Placement.Y}) [{Model.Placement.WindowState}]"
-        : "Default window placement";
+        ? $"{Model.Placement.Width} × {Model.Placement.Height} at ({Model.Placement.X}, {Model.Placement.Y})"
+        : "Default bounds (1280×720)";
 
     public string MonitorText => !string.IsNullOrEmpty(Model.Placement?.MonitorDeviceId)
         ? MonitorInfoModel.FormatFriendlyName(Model.Placement.MonitorDeviceId)
@@ -76,6 +84,7 @@ public partial class WorkspaceAppItemViewModel : ObservableObject
         _launchArguments = model.LaunchArguments;
         _launchDelayMs = model.LaunchDelayMs;
         _isEnabled = model.IsEnabled;
+        _selectedWindowState = model.Placement?.WindowState ?? "Normal";
     }
 
     public void ApplyChanges()
@@ -83,6 +92,11 @@ public partial class WorkspaceAppItemViewModel : ObservableObject
         Model.LaunchArguments = LaunchArguments;
         Model.LaunchDelayMs = LaunchDelayMs;
         Model.IsEnabled = IsEnabled;
+        if (Model.Placement == null)
+        {
+            Model.Placement = new WindowPlacement();
+        }
+        Model.Placement.WindowState = SelectedWindowState;
     }
 }
 
@@ -92,6 +106,8 @@ public partial class WorkspaceDetailsViewModel : ObservableObject
     private readonly IWorkspaceRestoreService _restoreService;
     private readonly IWindowsProcessService _processService;
     private readonly IConfigurationRepository _configRepo;
+    private readonly IApplicationCatalogService _catalogService;
+    private readonly IMonitorManagementService _monitorService;
     private readonly Action<NavigationPage, object?> _navigateAction;
 
     [ObservableProperty]
@@ -115,20 +131,33 @@ public partial class WorkspaceDetailsViewModel : ObservableObject
     [ObservableProperty]
     private string _statusMessage = string.Empty;
 
+    [ObservableProperty]
+    private bool _isAddAppOpen;
+
+    [ObservableProperty]
+    private string _appSearchQuery = string.Empty;
+
+    private readonly List<CatalogAppItemViewModel> _allCatalogApps = new();
+
     public ObservableCollection<string> Categories { get; } = new();
     public ObservableCollection<WorkspaceAppItemViewModel> Applications { get; } = new();
+    public ObservableCollection<CatalogAppItemViewModel> FilteredCatalogApps { get; } = new();
 
     public WorkspaceDetailsViewModel(
         IWorkspaceRepository repository,
         IWorkspaceRestoreService restoreService,
         IWindowsProcessService processService,
         IConfigurationRepository configRepo,
+        IApplicationCatalogService catalogService,
+        IMonitorManagementService monitorService,
         Action<NavigationPage, object?> navigateAction)
     {
         _repository = repository;
         _restoreService = restoreService;
         _processService = processService;
         _configRepo = configRepo;
+        _catalogService = catalogService;
+        _monitorService = monitorService;
         _navigateAction = navigateAction;
     }
 
@@ -139,6 +168,8 @@ public partial class WorkspaceDetailsViewModel : ObservableObject
         Description = ws.Description;
         SelectedCategory = ws.Category;
         StatusMessage = string.Empty;
+        IsAddAppOpen = false;
+        AppSearchQuery = string.Empty;
 
         var settings = await _configRepo.LoadSettingsAsync();
         Categories.Clear();
@@ -149,6 +180,134 @@ public partial class WorkspaceDetailsViewModel : ObservableObject
         foreach (var app in ws.Applications.OrderBy(a => a.LaunchOrder))
         {
             Applications.Add(new WorkspaceAppItemViewModel(app));
+        }
+    }
+
+    [RelayCommand]
+    private async Task ToggleAddAppAsync()
+    {
+        IsAddAppOpen = !IsAddAppOpen;
+        if (IsAddAppOpen && _allCatalogApps.Count == 0)
+        {
+            await LoadCatalogAsync();
+        }
+    }
+
+    [RelayCommand]
+    private void CloseAddApp()
+    {
+        IsAddAppOpen = false;
+    }
+
+    private async Task LoadCatalogAsync()
+    {
+        try
+        {
+            var installed = await _catalogService.GetInstalledApplicationsAsync();
+            _allCatalogApps.Clear();
+            foreach (var app in installed)
+            {
+                _allCatalogApps.Add(new CatalogAppItemViewModel(app));
+            }
+            ApplyCatalogFilter();
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Failed to load installed apps: {ex.Message}";
+        }
+    }
+
+    partial void OnAppSearchQueryChanged(string value)
+    {
+        ApplyCatalogFilter();
+    }
+
+    private void ApplyCatalogFilter()
+    {
+        FilteredCatalogApps.Clear();
+        var query = AppSearchQuery.Trim();
+        var items = string.IsNullOrEmpty(query)
+            ? _allCatalogApps
+            : _allCatalogApps.Where(a =>
+                a.Name.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                a.ProcessName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                a.ExecutablePath.Contains(query, StringComparison.OrdinalIgnoreCase));
+
+        foreach (var item in items)
+        {
+            FilteredCatalogApps.Add(item);
+        }
+    }
+
+    [RelayCommand]
+    private void AddCatalogApp(CatalogAppItemViewModel? item)
+    {
+        if (item == null || Workspace == null) return;
+
+        var primary = _monitorService.GetPrimaryMonitor();
+        int width = primary != null && primary.WorkWidth > 0 ? (int)(primary.WorkWidth * 0.75) : 1280;
+        int height = primary != null && primary.WorkHeight > 0 ? (int)(primary.WorkHeight * 0.75) : 720;
+        int left = primary != null ? primary.WorkLeft + 60 : 100;
+        int top = primary != null ? primary.WorkTop + 60 : 100;
+
+        var app = new WorkspaceApplication
+        {
+            Id = Guid.NewGuid(),
+            WorkspaceId = Workspace.Id,
+            ExecutablePath = item.ExecutablePath,
+            ProcessName = item.ProcessName,
+            WindowTitle = item.Name,
+            LaunchArguments = item.Arguments,
+            LaunchOrder = Applications.Count,
+            LaunchDelayMs = 250,
+            IsEnabled = true,
+            Placement = new WindowPlacement
+            {
+                Id = Guid.NewGuid(),
+                X = left,
+                Y = top,
+                Width = width,
+                Height = height,
+                WindowState = "Normal",
+                MonitorDeviceId = primary?.DeviceId,
+                MonitorBounds = primary?.BoundsString
+            }
+        };
+
+        Applications.Add(new WorkspaceAppItemViewModel(app));
+        StatusMessage = $"Added {item.Name} to workspace.";
+    }
+
+    [RelayCommand]
+    private void BrowseApp()
+    {
+        var openFileDialog = new OpenFileDialog
+        {
+            Title = "Select Application Executable or Shortcut",
+            Filter = "Executables and Shortcuts (*.exe;*.lnk;*.bat;*.cmd)|*.exe;*.lnk;*.bat;*.cmd|All files (*.*)|*.*"
+        };
+
+        if (openFileDialog.ShowDialog() == true)
+        {
+            var resolved = _catalogService.ResolveApplicationFromPath(openFileDialog.FileName);
+            if (resolved != null)
+            {
+                AddCatalogApp(new CatalogAppItemViewModel(resolved));
+            }
+            else
+            {
+                string path = openFileDialog.FileName;
+                string procName = Path.GetFileNameWithoutExtension(path);
+                var customInfo = new CatalogApplicationInfo
+                {
+                    Name = procName,
+                    ExecutablePath = path,
+                    ProcessName = procName,
+                    IconGlyph = ApplicationCatalogService.GetAppGlyph(procName),
+                    Source = "Custom"
+                };
+                AddCatalogApp(new CatalogAppItemViewModel(customInfo));
+            }
         }
     }
 
