@@ -27,3 +27,5 @@ bld/
 *.db-shm
 *.db-wal
 *.tmp
+*.log
+TestResults/
