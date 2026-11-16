@@ -1,7 +1,7 @@
-/* Hallmark · shape: workbench · genre: atmospheric · theme: custom · job: try · idea: "A precision workspace restorer for Windows that remembers every process, position, and tab without duplicate windows." · vibe: "obsidian, nordic teal, surgical, calm"
- * paper: oklch(13% 0.035 260) · accent: oklch(80% 0.12 225) · display: Plus Jakarta Sans · body: Plus Jakarta Sans · hero: stage workbench with live detected windows inspector · nav: edge-aligned · footer: mast · imagery: none · signature: real-time detected window topology inspector with process icons and resolution tags
- * axes: dark/geometric-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · weakest: H, hero fits 1280x800 fold with concise 10-word lede and compact live inspector */
+/* Hallmark · shape: narrative-workflow · genre: atmospheric · theme: custom · job: try · idea: "A deterministic desktop workspace console for Windows that eliminates duplicate instances and recovers multi-monitor states." · vibe: "obsidian, nordic teal, surgical, console"
+ * paper: oklch(13% 0.035 260) · accent: oklch(80% 0.12 225) · display: Rethink Sans · body: Rethink Sans · hero: dual-display topology console with interactive process registry · nav: edge-aligned · footer: mast · imagery: none · signature: multi-monitor virtual topology canvas with live process deduplication
+ * axes: dark/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V5 · weakest: R, added responsive rem-based breakpoints with dedicated 320px fluid layouts */
 @import url("./tokens.css");
 @import url("./base.css");
 
@@ -104,10 +104,34 @@ h3 {
   gap: var(--space-md);
 }
 
+@media (max-width: 40rem) {
+  .btn-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn-row .btn,
+  .btn-row .copy-box {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .copy-box {
+    min-height: 48px;
+  }
+  .filter-btn {
+    min-height: 36px;
+    padding: var(--space-xs) var(--space-sm);
+  }
+}
+
 /* ── Copy snippet ── */
 .copy-box {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-sm);
   padding: var(--space-xs) var(--space-md);
   background: var(--color-paper-2);
@@ -147,10 +171,13 @@ h3 {
 
 /* ── Header ── */
 .masthead {
-  padding-block: var(--space-lg);
+  padding-block: var(--space-md);
   border-bottom: var(--rule-hair) solid var(--color-rule);
   background: var(--color-paper);
   color: var(--color-ink);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky-nav);
 }
 
 .masthead-bar {
@@ -185,12 +212,15 @@ h3 {
   color: var(--color-ink);
 }
 
-.release-pill {
+.status-pill {
   font-size: var(--text-xs);
   color: var(--color-accent);
   background: var(--color-accent-soft);
   padding: var(--space-3xs) var(--space-xs);
   border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2xs);
 }
 
 .nav-links {
@@ -199,10 +229,17 @@ h3 {
   gap: var(--space-lg);
 }
 
+@media (max-width: 60rem) {
+  .nav-links .nav-item {
+    display: none;
+  }
+}
+
 .nav-item {
   font-size: var(--text-sm);
   color: var(--color-muted);
   text-decoration: none;
+  white-space: nowrap;
   transition: color var(--dur-short) var(--ease-out);
 }
 
@@ -219,61 +256,161 @@ h3 {
   outline-offset: 2px;
 }
 
-/* ── Hero Section (Workbench Stage) ── */
+/* ── Hero Section (Dual-Display Topology Console) ── */
 .hero-stage {
   padding-block: var(--space-3xl) var(--space-2xl);
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.25fr);
-  gap: var(--space-2xl);
-  align-items: center;
-}
-
-@media (max-width: 68rem) {
-  .hero-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-xl);
-  }
-}
-
-.hero-prose {
+.hero-prose-centered {
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  align-items: center;
+  text-align: center;
+  gap: var(--space-md);
+  max-width: 760px;
+  margin-inline: auto;
+  margin-bottom: var(--space-2xl);
 }
 
-/* ── Live Detected Windows Inspector (The App Component) ── */
-.window-inspector {
+.topology-console {
   background: var(--color-paper-2);
   border: var(--rule-hair) solid var(--color-rule);
   border-radius: var(--radius-card);
   padding: var(--space-lg);
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-lg);
   color: var(--color-ink);
 }
 
-.inspector-header {
+/* ── Virtual Monitor Diagram ── */
+.monitors-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--space-md);
+}
+
+@media (max-width: 54rem) {
+  .monitors-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.monitor-frame {
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: 8px;
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-height: 180px;
+}
+
+.monitor-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: var(--space-xs);
+  padding-bottom: var(--space-2xs);
   border-bottom: var(--rule-hair) solid var(--color-rule);
 }
 
-.inspector-title {
-  font-size: var(--text-sm);
+.monitor-name {
+  font-size: var(--text-xs);
   font-weight: 600;
   color: var(--color-ink-2);
 }
 
-.inspector-meta {
-  font-size: var(--text-xs);
+.monitor-dpi {
   font-family: var(--font-outlier);
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+}
+
+.monitor-screen {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xs);
+  align-content: start;
+}
+
+.screen-app-tile {
+  background: var(--color-paper-2);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: 6px;
+  padding: var(--space-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--text-xs);
+  color: var(--color-ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.screen-app-tile.span-2 {
+  grid-column: span 2;
+}
+
+.screen-app-tile svg {
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
+/* ── Live Detected Windows Registry ── */
+.registry-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-xs);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+
+.registry-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.filter-btn {
+  padding: var(--space-3xs) var(--space-xs);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  background: var(--color-paper);
   color: var(--color-muted);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
+}
+
+.filter-btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.filter-btn.active {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-paper-3);
+}
+
+.filter-btn:disabled,
+.filter-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .window-list {
@@ -297,6 +434,32 @@ h3 {
   color: var(--color-ink);
   transition: border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
   cursor: pointer;
+}
+
+@media (max-width: 44rem) {
+  .window-item {
+    grid-template-columns: 24px minmax(0, 1fr);
+    grid-template-areas:
+      "icon proc"
+      "icon title"
+      "res res";
+    gap: var(--space-2xs);
+    padding: var(--space-sm);
+  }
+  .window-icon {
+    grid-area: icon;
+  }
+  .proc-label {
+    grid-area: proc;
+  }
+  .title-label {
+    grid-area: title;
+  }
+  .res-pill {
+    grid-area: res;
+    justify-self: start;
+    margin-top: var(--space-3xs);
+  }
 }
 
 .window-item:hover {
@@ -348,6 +511,7 @@ h3 {
   border: var(--rule-hair) solid var(--color-rule);
   border-radius: var(--radius-pill);
   color: var(--color-muted);
+  white-space: nowrap;
 }
 
 /* ── Section Structure ── */
@@ -364,110 +528,119 @@ h3 {
   max-width: 60ch;
 }
 
-/* ── Architectural Features Grid (Shelves instead of cards) ── */
-.features-grid {
+/* ── Narrative Workflow: 3-Stage Pipeline ── */
+.pipeline-flow {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-xl);
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: var(--space-lg);
 }
 
-@media (max-width: 58rem) {
-  .features-grid {
+@media (max-width: 60rem) {
+  .pipeline-flow {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
-.feature-panel {
-  background: var(--color-paper);
-  border-top: 2px solid var(--color-rule-2);
-  border-left: var(--rule-hair) solid var(--color-rule);
-  border-right: none;
-  border-bottom: none;
-  border-radius: 0;
-  padding: var(--space-lg) var(--space-md) 0 var(--space-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-  color: var(--color-ink);
-}
-
-.feature-status {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-.feature-panel h3 {
-  color: var(--color-ink);
-}
-
-.feature-panel p {
-  font-size: var(--text-sm);
-  line-height: 1.55;
-  color: var(--color-muted);
-}
-
-/* ── Smart Instance Reuse Comparison ── */
-.reuse-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-xl);
-}
-
-@media (max-width: 50rem) {
-  .reuse-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.behavior-panel {
-  padding: var(--space-xl);
-  border-radius: 4px;
-  border: var(--rule-hair) solid var(--color-rule);
+.stage-card {
   background: var(--color-paper-2);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   color: var(--color-ink);
 }
 
-.behavior-tag {
-  font-size: var(--text-xs);
-  font-weight: 600;
+.stage-card:first-child {
+  border-color: var(--color-accent);
+}
+
+.stage-card h3 {
+  color: var(--color-ink);
+}
+
+.stage-card p {
+  font-size: var(--text-sm);
+  line-height: 1.55;
   color: var(--color-muted);
 }
 
-.behavior-tag.tag-again {
+.stage-timing {
+  margin-top: auto;
+  font-family: var(--font-outlier);
+  font-size: var(--text-xs);
   color: var(--color-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
-.behavior-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+/* ── Asymmetric Technical Bento Grid ── */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+@media (max-width: 60rem) {
+  .bento-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.bento-tile {
+  background: var(--color-paper-2);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  color: var(--color-ink);
 }
 
-.behavior-item {
+.bento-tile.span-2 {
+  grid-column: span 2;
+}
+
+@media (max-width: 60rem) {
+  .bento-tile.span-2 {
+    grid-column: span 1;
+  }
+}
+
+.bento-badge {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-accent);
+  align-self: flex-start;
+}
+
+.bento-tile h3 {
+  color: var(--color-ink);
+}
+
+.bento-tile p {
   font-size: var(--text-sm);
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--color-muted);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-sm);
 }
 
-.behavior-item svg {
-  flex-shrink: 0;
-  margin-top: var(--space-2xs);
+.code-snippet {
+  font-family: var(--font-outlier);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  padding: var(--space-md);
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: 6px;
+  color: var(--color-ink-2);
+  overflow-x: auto;
+  margin: 0;
 }
 
-/* ── Hotkey Cluster ── */
+/* ── Global Shortcuts Matrix ── */
 .hotkey-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -493,6 +666,7 @@ h3 {
 
 .key-cluster {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-xs);
 }
@@ -522,7 +696,8 @@ h3 {
 .spec-frame {
   border: var(--rule-hair) solid var(--color-rule);
   border-radius: var(--radius-card);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   background: var(--color-paper-2);
   color: var(--color-ink);
 }
@@ -532,6 +707,7 @@ h3 {
   border-collapse: collapse;
   text-align: left;
   font-size: var(--text-sm);
+  min-width: 480px;
 }
 
 .spec-table th {
@@ -541,6 +717,7 @@ h3 {
   color: var(--color-ink);
   background: var(--color-paper-3);
   border-bottom: var(--rule-hair) solid var(--color-rule);
+  white-space: nowrap;
 }
 
 .spec-table td {
@@ -626,6 +803,17 @@ h3 {
   gap: var(--space-lg);
 }
 
+@media (max-width: 40rem) {
+  .footer-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-nav {
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+}
+
 .footer-copy {
   font-size: var(--text-xs);
   color: var(--color-muted);
@@ -641,6 +829,7 @@ h3 {
   font-size: var(--text-xs);
   color: var(--color-muted);
   text-decoration: none;
+  white-space: nowrap;
   transition: color var(--dur-short) var(--ease-out);
 }
 

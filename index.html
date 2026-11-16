@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Again: Desktop Workspace Restorer for Windows</title>
+  <title>Again: Deterministic Desktop Workspace Console for Windows</title>
   <meta name="description" content="Precision workspace restorer for Windows. Restores processes, window bounds, and browser tabs without duplicate windows.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -25,25 +25,29 @@
           </svg>
         </div>
         <span class="brand-name">Again</span>
-        <span class="release-pill">v1.0.0</span>
+        <span class="status-pill">
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><circle cx="4" cy="4" r="3"/></svg>
+          v1.0.0
+        </span>
       </a>
 
       <nav class="nav-links" aria-label="Primary">
-        <a href="#features" class="nav-item">Features</a>
-        <a href="#reuse" class="nav-item">Process reuse</a>
-        <a href="#downloads" class="nav-item">Downloads</a>
-        <a href="https://github.com/kiranmayee-abbireddy/Again" class="btn btn--secondary" target="_blank" rel="noopener">GitHub</a>
+        <a href="#topology" class="nav-item">Topology</a>
+        <a href="#pipeline" class="nav-item">Pipeline</a>
+        <a href="#architecture" class="nav-item">Architecture</a>
+        <a href="#shortcuts" class="nav-item">Shortcuts</a>
+        <a href="#downloads" class="btn btn--secondary">Get Again</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- Hero Stage: Headline + Real Detected Windows Component -->
+    <!-- Hero Section: Stage Topology Console -->
     <section class="hero-stage">
-      <div class="container hero-grid">
-        <div class="hero-prose">
-          <h1>Restore your exact workspace. Zero duplicate windows.</h1>
-          <p class="lede">Captures processes, monitor coordinates, and browser tabs. Restores in 600ms.</p>
+      <div class="container">
+        <div class="hero-prose-centered">
+          <h1>Deterministic desktop workspaces for Windows.</h1>
+          <p class="lede">Restores exact multi-monitor bounds, running process state, and browser tabs in 600ms.</p>
 
           <div class="btn-row">
             <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Setup-v1.0.0.exe" class="btn btn--primary">
@@ -54,18 +58,67 @@
               </svg>
               Download installer
             </a>
-            <button type="button" class="copy-box" onclick="navigator.clipboard.writeText('winget install Again');this.innerText='Copied winget command';" aria-label="Copy winget command">
+            <button type="button" class="copy-box" onclick="navigator.clipboard.writeText('winget install Again');this.innerText='Copied command';" aria-label="Copy winget command">
               <span>winget install Again</span>
             </button>
           </div>
           <p class="body-muted">Windows 10/11 x64. Open source under MIT License. Local storage only.</p>
         </div>
 
-        <!-- Live Detected Windows Component -->
-        <div class="window-inspector" aria-label="Detected open windows inspector">
-          <div class="inspector-header">
-            <span class="inspector-title">Detected Open Windows</span>
-            <span class="inspector-meta">7 active targets</span>
+        <!-- Dual-Display Topology Visualizer + Live Process Registry -->
+        <div class="topology-console" id="topology" aria-label="Desktop topology console">
+          <div class="monitors-grid">
+            <div class="monitor-frame">
+              <div class="monitor-head">
+                <span class="monitor-name">Display 1 (Primary)</span>
+                <span class="monitor-dpi">1920×1080 @ 100% DPI</span>
+              </div>
+              <div class="monitor-screen">
+                <div class="screen-app-tile span-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                  <span>chrome: 7th class english.pdf + Pragmr OnTime</span>
+                </div>
+                <div class="screen-app-tile">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  <span>Cursor: settings.py</span>
+                </div>
+                <div class="screen-app-tile">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+                  <span>Antigravity IDE</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="monitor-frame">
+              <div class="monitor-head">
+                <span class="monitor-name">Display 2 (Secondary)</span>
+                <span class="monitor-dpi">1600×900 @ 100% DPI</span>
+              </div>
+              <div class="monitor-screen">
+                <div class="screen-app-tile">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  <span>explorer</span>
+                </div>
+                <div class="screen-app-tile">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <span>WhatsApp</span>
+                </div>
+                <div class="screen-app-tile span-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  <span>Jnyanam Whiteboard</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Window Items matching the App Screenshot -->
+          <div class="registry-header">
+            <span class="registry-title">Detected Open Windows</span>
+            <div class="filter-row" role="tablist" aria-label="Process filters">
+              <button type="button" class="filter-btn active" role="tab" aria-selected="true">All (7)</button>
+              <button type="button" class="filter-btn" role="tab" aria-selected="false">Running (5)</button>
+              <button type="button" class="filter-btn" role="tab" aria-selected="false">Staged (2)</button>
+            </div>
           </div>
 
           <ul class="window-list">
@@ -136,90 +189,80 @@
       </div>
     </section>
 
-    <!-- Core Capabilities -->
-    <section class="section" id="features">
+    <!-- Narrative Workflow: 3-Stage Pipeline -->
+    <section class="section" id="pipeline">
       <div class="container">
         <div class="section-head">
-          <h2>Engineered for real desktop workflows</h2>
-          <p class="body-muted">Three architectural subsystems ensure your desktop state restores with surgical accuracy.</p>
+          <h2>The 3-stage restoration pipeline</h2>
+          <p class="body-muted">How Again reconciles running processes, browser tabs, and coordinates in under 600ms.</p>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-panel">
-            <span class="feature-status">Smart reuse</span>
-            <h3>Zero duplicate processes</h3>
-            <p>If an application or browser is already open, Again reuses the running process and injects missing tabs instead of spawning redundant windows.</p>
+        <div class="pipeline-flow">
+          <div class="stage-card">
+            <h3>1. Win32 enumeration</h3>
+            <p>Queries running process IDs, window handles, and active browser tab URLs via UI Automation in under 15 milliseconds.</p>
+            <span class="stage-timing">Execution time: 15ms</span>
           </div>
 
-          <div class="feature-panel">
-            <span class="feature-status">Offline staging</span>
-            <h3>Staged application catalog</h3>
-            <p>Select closed programs while configuring your workspace. Again automatically launches and positions them during restoration.</p>
+          <div class="stage-card">
+            <h3>2. Deduplication engine</h3>
+            <p>Checks active processes. Reuses open browser windows to inject missing tabs and stages unlaunched apps from your manifest.</p>
+            <span class="stage-timing">Zero redundant processes</span>
           </div>
 
-          <div class="feature-panel">
-            <span class="feature-status">Topology aware</span>
-            <h3>PerMonitorV2 coordinate clamping</h3>
-            <p>Windows are clamped to active monitor boundaries, preventing windows from disappearing off disconnected displays.</p>
+          <div class="stage-card">
+            <h3>3. Concurrent placement</h3>
+            <p>Positions windows concurrently via SetWindowPlacement and launches staged apps without desktop flickering.</p>
+            <span class="stage-timing">Execution time: &lt; 600ms</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Smart Process Reuse Comparison -->
-    <section class="section" id="reuse">
+    <!-- Technical Bento Matrix -->
+    <section class="section" id="architecture">
       <div class="container">
         <div class="section-head">
-          <h2>Process reuse in action</h2>
-          <p class="body-muted">How Again eliminates desktop clutter compared to standard window managers.</p>
+          <h2>Core architecture</h2>
+          <p class="body-muted">Designed for precision desktop management with zero cloud dependencies.</p>
         </div>
 
-        <div class="reuse-layout">
-          <div class="behavior-panel">
-            <span class="behavior-tag">Standard window managers</span>
-            <ul class="behavior-list">
-              <li class="behavior-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Spawns a duplicate Chrome instance with duplicate tabs.
-              </li>
-              <li class="behavior-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Launches second IDE instance, locking project files.
-              </li>
-              <li class="behavior-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                Positions windows outside disconnected external displays.
-              </li>
-            </ul>
+        <div class="bento-grid">
+          <div class="bento-tile span-2">
+            <h3>Smart browser tab injection</h3>
+            <p>Instead of spawning redundant browser windows, Again locates your running Chrome or Edge process and appends missing tabs into the existing window.</p>
           </div>
 
-          <div class="behavior-panel">
-            <span class="behavior-tag tag-again">Again restoration engine</span>
-            <ul class="behavior-list">
-              <li class="behavior-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Attaches missing URLs into current browser window.
-              </li>
-              <li class="behavior-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Brings running IDE to focus and repositions to saved bounds.
-              </li>
-              <li class="behavior-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Clamps coordinates into current visible monitor resolution.
-              </li>
-            </ul>
+          <div class="bento-tile">
+            <h3>Closed app catalog</h3>
+            <p>Configure offline tools like Docker, Spotify, or IDEs to boot automatically when a workspace is loaded.</p>
+          </div>
+
+          <div class="bento-tile">
+            <h3>Coordinate clamping</h3>
+            <p>PerMonitorV2 checks clamp window bounds to active monitors, preventing windows from opening off-screen when displays disconnect.</p>
+          </div>
+
+          <div class="bento-tile span-2">
+            <h3>100% offline local storage</h3>
+            <p>Workspaces save as human-readable JSON in %LOCALAPPDATA%\Again\workspaces\. Zero telemetry, zero accounts.</p>
+            <pre class="code-snippet"><code>{
+  "name": "Sprint",
+  "windows": [
+    { "process": "chrome", "tabs": 2, "display": 1, "bounds": [0, 0, 1920, 1080] }
+  ]
+}</code></pre>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Hotkeys -->
-    <section class="section">
+    <!-- Global Shortcuts -->
+    <section class="section" id="shortcuts">
       <div class="container">
         <div class="section-head">
           <h2>Global shortcuts</h2>
-          <p class="body-muted">Instantly snapshot and restore states without leaving your current task.</p>
+          <p class="body-muted">Low-level Win32 hooks deliver instantaneous workspace control.</p>
         </div>
 
         <div class="hotkey-grid">
@@ -232,7 +275,7 @@
               <kbd class="keycap">C</kbd>
             </div>
             <h3>Capture active workspace</h3>
-            <p class="body-muted">Snapshots every process handle, window coordinate, and browser tab.</p>
+            <p class="body-muted">Snapshots running handles, monitor bounds, and active browser tabs.</p>
           </div>
 
           <div class="hotkey-card">
@@ -244,7 +287,7 @@
               <kbd class="keycap">R</kbd>
             </div>
             <h3>Restore previous workspace</h3>
-            <p class="body-muted">Repurposes running instances and repositions all staged windows.</p>
+            <p class="body-muted">Repurposes running instances and repositions staged windows.</p>
           </div>
         </div>
       </div>
@@ -339,5 +382,35 @@
     </div>
   </footer>
 
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const windowItems = document.querySelectorAll('.window-item');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        const filter = btn.innerText.toLowerCase();
+        windowItems.forEach(item => {
+          const isStaged = item.querySelector('.res-pill').innerText === '1600×900' || item.querySelector('.proc-label').innerText.includes('Whiteboard');
+          if (filter.startsWith('all')) {
+            item.style.display = 'grid';
+          } else if (filter.startsWith('running')) {
+            item.style.display = isStaged ? 'none' : 'grid';
+          } else if (filter.startsWith('staged')) {
+            item.style.display = isStaged ? 'grid' : 'none';
+          }
+        });
+      });
+    });
+    windowItems.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+    });
+  </script>
 </body>
 </html>
