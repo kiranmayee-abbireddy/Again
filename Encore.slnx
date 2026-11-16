@@ -1,9 +1,0 @@
-<Solution>
-  <Folder Name="/src/">
-    <Project Path="src/Encore.App/Encore.App.csproj" />
-    <Project Path="src/Encore.Core/Encore.Core.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/Encore.Tests/Encore.Tests.csproj" />
-  </Folder>
-</Solution>
