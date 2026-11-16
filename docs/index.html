@@ -3,532 +3,341 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Again: Desktop Workspace Orchestrator for Windows</title>
-  <meta name="description" content="Snapshot multi-window arrangements and restore your flow on demand. Win32 DWM engine, zero duplicate processes, PerMonitorV2 calibration.">
-  <link rel="icon" type="image/png" href="assets/icon.png">
-
-  <!-- Hallmark Theme: Blueprint (Chakra Petch / IBM Plex Sans / IBM Plex Mono) -->
+  <title>Again: Desktop Workspace Restorer for Windows</title>
+  <meta name="description" content="Precision workspace restorer for Windows. Restores processes, window bounds, and browser tabs without duplicate windows.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
-<body class="blueprint-sheet">
+<body>
 
-  <!-- NAVIGATION -->
-  <header>
-    <div class="container">
-      <nav class="blueprint-nav" aria-label="Main Navigation">
-        <a href="#" class="brand-block">
-          <span class="brand-title">AGAIN</span>
-          <span class="brand-meta">v1.0.0 (Win32)</span>
-        </a>
-
-        <ul class="nav-links">
-          <li><a href="#workbench">Stage drawing</a></li>
-          <li><a href="#process-sync">Process sync</a></li>
-          <li><a href="#topology">Topology</a></li>
-          <li><a href="#telemetry">Telemetry</a></li>
-          <li><a href="#downloads">Downloads</a></li>
-        </ul>
-
-        <div>
-          <a href="#downloads" class="btn btn--primary">Get release v1.0.0</a>
+  <!-- Masthead Navigation -->
+  <header class="masthead">
+    <div class="container masthead-bar">
+      <a href="./" class="brand-unit" aria-label="Again home">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+            <path d="M16 21h5v-5"/>
+          </svg>
         </div>
+        <span class="brand-name">Again</span>
+        <span class="release-pill">v1.0.0</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#features" class="nav-item">Features</a>
+        <a href="#reuse" class="nav-item">Process reuse</a>
+        <a href="#downloads" class="nav-item">Downloads</a>
+        <a href="https://github.com/kiranmayee-abbireddy/Again" class="btn btn--secondary" target="_blank" rel="noopener">GitHub</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- HERO SECTION (WORKBENCH POSTURE) -->
-    <section class="hero-stage" id="workbench">
-      <div class="container">
-        <div class="hero-head-wrap">
-          <h1>DESKTOP WORKSPACE ORCHESTRATION</h1>
-          <p class="lead">Snapshot multi-window arrangements and restore your flow on demand.</p>
+    <!-- Hero Stage: Headline + Real Detected Windows Component -->
+    <section class="hero-stage">
+      <div class="container hero-grid">
+        <div class="hero-prose">
+          <h1>Restore your exact workspace. Zero duplicate windows.</h1>
+          <p class="lede">Captures processes, monitor coordinates, and browser tabs. Restores in 600ms.</p>
 
-          <div class="hero-actions-row">
+          <div class="btn-row">
             <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Setup-v1.0.0.exe" class="btn btn--primary">
-              Download installer (4.16 MB)
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Download installer
             </a>
-
-            <div class="cli-code-block" onclick="copyRepoClone()">
-              <span>git clone https://github.com/kiranmayee-abbireddy/Again.git</span>
-            </div>
+            <button type="button" class="copy-box" onclick="navigator.clipboard.writeText('winget install Again');this.innerText='Copied winget command';" aria-label="Copy winget command">
+              <span>winget install Again</span>
+            </button>
           </div>
+          <p class="body-muted">Windows 10/11 x64. Open source under MIT License. Local storage only.</p>
         </div>
 
-        <!-- DIMENSION STRING METRIC -->
-        <div class="dim-string">
-          <span class="dim-label">Execution latency: 380 ms across dual displays</span>
+        <!-- Live Detected Windows Component -->
+        <div class="window-inspector" aria-label="Detected open windows inspector">
+          <div class="inspector-header">
+            <span class="inspector-title">Detected Open Windows</span>
+            <span class="inspector-meta">7 active targets</span>
+          </div>
+
+          <ul class="window-list">
+            <li class="window-item active">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span class="proc-label">chrome</span>
+              <span class="title-label">7th class english.pdf: Google Chrome</span>
+              <span class="res-pill">1938×1038</span>
+            </li>
+
+            <li class="window-item active">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span class="proc-label">chrome</span>
+              <span class="title-label">Pragmr OnTime: AI Delivery Manager</span>
+              <span class="res-pill">1938×1038</span>
+            </li>
+
+            <li class="window-item">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <span class="proc-label">Antigravity IDE</span>
+              <span class="title-label">Encore: Antigravity IDE: SystemTray</span>
+              <span class="res-pill">1938×1038</span>
+            </li>
+
+            <li class="window-item">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+              </svg>
+              <span class="proc-label">Cursor</span>
+              <span class="title-label">settings.py: Jnyanam-lms: Cursor</span>
+              <span class="res-pill">1938×1038</span>
+            </li>
+
+            <li class="window-item">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span class="proc-label">explorer</span>
+              <span class="title-label">D:\projects\Encore\dist\standalone</span>
+              <span class="res-pill">1938×1038</span>
+            </li>
+
+            <li class="window-item">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              <span class="proc-label">WhatsApp.Root</span>
+              <span class="title-label">WhatsApp</span>
+              <span class="res-pill">1938×1038</span>
+            </li>
+
+            <li class="window-item">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/>
+              </svg>
+              <span class="proc-label">JnyanamWhiteboard</span>
+              <span class="title-label">Jnyanam Whiteboard</span>
+              <span class="res-pill">1600×900</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Capabilities -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Engineered for real desktop workflows</h2>
+          <p class="body-muted">Three architectural subsystems ensure your desktop state restores with surgical accuracy.</p>
         </div>
 
-        <!-- THE DRAFTING CANVAS (SIGNATURE COMPONENT) -->
-        <div class="drafting-canvas-frame keyline-box">
-          <div class="drawing-header-bar">
-            <div class="drawing-tag">
-              <span>Sheet 01: Dual-display desktop workbench</span>
-            </div>
-
-            <div class="drawing-tabs">
-              <button class="tab-selector active" onclick="setDrawingStage('eng')">DWG-01: Engineering</button>
-              <button class="tab-selector" onclick="setDrawingStage('des')">DWG-02: Product</button>
-              <button class="tab-selector" onclick="setDrawingStage('ops')">DWG-03: Operations</button>
-            </div>
+        <div class="features-grid">
+          <div class="feature-panel">
+            <span class="feature-status">Smart reuse</span>
+            <h3>Zero duplicate processes</h3>
+            <p>If an application or browser is already open, Again reuses the running process and injects missing tabs instead of spawning redundant windows.</p>
           </div>
 
-          <!-- DUAL MONITOR VIEWPORT -->
-          <div class="displays-viewport" id="viewport-displays">
-            <!-- DISPLAY 1 -->
-            <div class="monitor-frame">
-              <div class="monitor-header">
-                <span>Display 1 (primary)</span>
-                <span>2560 × 1440 @ 125% DPI</span>
-              </div>
-
-              <div class="window-rect" id="w-ide" style="height: 240px;">
-                <div class="window-rect-head">
-                  <span id="label-w1">Visual Studio Code</span>
-                  <span>HWND: 0x004F01A2</span>
-                </div>
-                <div class="window-rect-coords" id="coords-w1">
-                  Bounds: (x: 0, y: 0, w: 1280, h: 1040), state: maximized
-                </div>
-              </div>
-            </div>
-
-            <!-- DISPLAY 2 -->
-            <div class="monitor-frame">
-              <div class="monitor-header">
-                <span>Display 2 (secondary)</span>
-                <span>1920 × 1080 @ 100% DPI</span>
-              </div>
-
-              <div class="window-rect" id="w-browser" style="height: 120px;">
-                <div class="window-rect-head">
-                  <span id="label-w2">Google Chrome (merged active tabs)</span>
-                  <span>PID: 14208</span>
-                </div>
-                <div class="window-rect-coords" id="coords-w2">
-                  Bounds: (x: 1280, y: 0, w: 1280, h: 700), 4 tabs attached
-                </div>
-              </div>
-
-              <div class="window-rect" id="w-term" style="height: 90px;">
-                <div class="window-rect-head">
-                  <span id="label-w3">Windows Terminal</span>
-                  <span>PID: 9812</span>
-                </div>
-                <div class="window-rect-coords" id="coords-w3">
-                  Bounds: (x: 1280, y: 700, w: 1280, h: 340), pwsh 7.4
-                </div>
-              </div>
-            </div>
+          <div class="feature-panel">
+            <span class="feature-status">Offline staging</span>
+            <h3>Staged application catalog</h3>
+            <p>Select closed programs while configuring your workspace. Again automatically launches and positions them during restoration.</p>
           </div>
 
-          <!-- TELEMETRY FOOTER -->
-          <div class="drawing-telemetry-foot">
-            <span id="drafting-log">Restore completed in 380 ms. Reused 3 active HWNDs without duplicate launch.</span>
-            <span>Win32 DWM status: optimal</span>
+          <div class="feature-panel">
+            <span class="feature-status">Topology aware</span>
+            <h3>PerMonitorV2 coordinate clamping</h3>
+            <p>Windows are clamped to active monitor boundaries, preventing windows from disappearing off disconnected displays.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 1: PROCESS SYNC & ZERO DUPLICATES -->
-    <section class="section-blueprint" id="process-sync">
+    <!-- Smart Process Reuse Comparison -->
+    <section class="section" id="reuse">
       <div class="container">
-        <h2>PROCESS INTELLIGENCE</h2>
-        <p class="lead">Eliminates window duplication by inspecting and reusing active Win32 processes.</p>
+        <div class="section-head">
+          <h2>Process reuse in action</h2>
+          <p class="body-muted">How Again eliminates desktop clutter compared to standard window managers.</p>
+        </div>
 
-        <div class="elevation-grid">
-          <!-- ELEVATION 1: NAIVE EXECUTION -->
-          <div class="elevation-card">
-            <div>
-              <h3>Naive launcher execution</h3>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-xs);">
-                Spawns duplicate processes and memory allocations.
-              </p>
-
-              <table class="elevation-spec-table">
-                <thead>
-                  <tr>
-                    <th>Target</th>
-                    <th>Result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>chrome.exe</td>
-                    <td>New window spawned (4 redundant processes)</td>
-                  </tr>
-                  <tr>
-                    <td>code.exe</td>
-                    <td>Duplicate editor instance loaded</td>
-                  </tr>
-                  <tr>
-                    <td>Working set</td>
-                    <td>+450 MB unneeded memory allocated</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <div class="reuse-layout">
+          <div class="behavior-panel">
+            <span class="behavior-tag">Standard window managers</span>
+            <ul class="behavior-list">
+              <li class="behavior-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Spawns a duplicate Chrome instance with duplicate tabs.
+              </li>
+              <li class="behavior-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Launches second IDE instance, locking project files.
+              </li>
+              <li class="behavior-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Positions windows outside disconnected external displays.
+              </li>
+            </ul>
           </div>
 
-          <!-- ELEVATION 2: AGAIN ORCHESTRATION -->
-          <div class="elevation-card" style="border-left: var(--rule-heavy) solid var(--color-rule);">
-            <div>
-              <h3>Again orchestrator execution</h3>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-xs);">
-                Reuses claimed HWNDs and merges Chromium tabs.
-              </p>
-
-              <table class="elevation-spec-table">
-                <thead>
-                  <tr>
-                    <th>Target</th>
-                    <th>Result</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>chrome.exe</td>
-                    <td>Active window reused, missing tabs merged</td>
-                  </tr>
-                  <tr>
-                    <td>code.exe</td>
-                    <td>Existing window repositioned via DWM</td>
-                  </tr>
-                  <tr>
-                    <td>Working set</td>
-                    <td>0 MB additional memory allocated</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="behavior-panel">
+            <span class="behavior-tag tag-again">Again restoration engine</span>
+            <ul class="behavior-list">
+              <li class="behavior-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                Attaches missing URLs into current browser window.
+              </li>
+              <li class="behavior-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                Brings running IDE to focus and repositions to saved bounds.
+              </li>
+              <li class="behavior-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                Clamps coordinates into current visible monitor resolution.
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 2: MULTI-MONITOR TOPOLOGY & OFFLINE STAGING -->
-    <section class="section-blueprint" id="topology">
+    <!-- Hotkeys -->
+    <section class="section">
       <div class="container">
-        <h2>TOPOLOGY AND OFFLINE STAGING</h2>
-
-        <div class="elevation-grid">
-          <!-- TOPOLOGY CARD -->
-          <div class="elevation-card">
-            <div>
-              <h3>PerMonitorV2 coordinate clamping</h3>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-xs); margin-bottom: var(--space-md);">
-                Clamps coordinates to visible monitor work areas.
-              </p>
-
-              <div class="dim-string">
-                <span class="dim-label">Clamped: (x: 0, y: 0, w: 1920, h: 1040)</span>
-              </div>
-            </div>
-
-            <table class="elevation-spec-table">
-              <tbody>
-                <tr>
-                  <td>DPI mode</td>
-                  <td>PerMonitorV2 native manifest</td>
-                </tr>
-                <tr>
-                  <td>Win32 API</td>
-                  <td>SetProcessDpiAwarenessContext(-4)</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- OFFLINE STAGING CARD -->
-          <div class="elevation-card">
-            <div>
-              <h3>Offline application staging</h3>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-xs); margin-bottom: var(--space-md);">
-                Indexes Start Menu and Registry App Paths for sequential execution.
-              </p>
-
-              <div class="dim-string">
-                <span class="dim-label">Catalog: Start Menu and Registry App Paths</span>
-              </div>
-            </div>
-
-            <table class="elevation-spec-table">
-              <tbody>
-                <tr>
-                  <td>Window states</td>
-                  <td>Normal, Maximized, Minimized</td>
-                </tr>
-                <tr>
-                  <td>Validation</td>
-                  <td>Physical executable path verification</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="section-head">
+          <h2>Global shortcuts</h2>
+          <p class="body-muted">Instantly snapshot and restore states without leaving your current task.</p>
         </div>
-      </div>
-    </section>
 
-    <!-- SECTION 3: GLOBAL SHORTCUTS -->
-    <section class="hotkey-band" id="hotkeys">
-      <div class="container">
-        <h2>HARDWARE SHORTCUT SPECIFICATION</h2>
-
-        <div class="hotkeys-layout">
-          <!-- SHORTCUT 1 -->
-          <div class="key-spec-cell">
+        <div class="hotkey-grid">
+          <div class="hotkey-card">
             <div class="key-cluster">
-              <span class="key-block" onclick="pressKey('c')">Ctrl</span>
-              <span style="font-family: var(--font-outlier); font-size: var(--text-md); color: var(--color-muted);">+</span>
-              <span class="key-block" onclick="pressKey('c')">Alt</span>
-              <span style="font-family: var(--font-outlier); font-size: var(--text-md); color: var(--color-muted);">+</span>
-              <span class="key-block" onclick="pressKey('c')">C</span>
+              <kbd class="keycap">Ctrl</kbd>
+              <span class="key-plus">+</span>
+              <kbd class="keycap">Alt</kbd>
+              <span class="key-plus">+</span>
+              <kbd class="keycap">C</kbd>
             </div>
-            <h3>Instant stage capture</h3>
-            <p style="font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-2xs);">
-              Snapshots visible windows, DPI bounds, and tabs in 118 ms.
-            </p>
+            <h3>Capture active workspace</h3>
+            <p class="body-muted">Snapshots every process handle, window coordinate, and browser tab.</p>
           </div>
 
-          <!-- SHORTCUT 2 -->
-          <div class="key-spec-cell">
+          <div class="hotkey-card">
             <div class="key-cluster">
-              <span class="key-block" onclick="pressKey('r')">Ctrl</span>
-              <span style="font-family: var(--font-outlier); font-size: var(--text-md); color: var(--color-muted);">+</span>
-              <span class="key-block" onclick="pressKey('r')">Alt</span>
-              <span style="font-family: var(--font-outlier); font-size: var(--text-md); color: var(--color-muted);">+</span>
-              <span class="key-block" onclick="pressKey('r')">R</span>
+              <kbd class="keycap">Ctrl</kbd>
+              <span class="key-plus">+</span>
+              <kbd class="keycap">Alt</kbd>
+              <span class="key-plus">+</span>
+              <kbd class="keycap">R</kbd>
             </div>
-            <h3>Quick stage restore</h3>
-            <p style="font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-2xs);">
-              Restores active workspace without duplicate processes.
-            </p>
+            <h3>Restore previous workspace</h3>
+            <p class="body-muted">Repurposes running instances and repositions all staged windows.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 4: BENCHMARK TELEMETRY -->
-    <section class="section-blueprint" id="telemetry">
+    <!-- Technical Specifications Table -->
+    <section class="section">
       <div class="container">
-        <h2>TELEMETRY AND SYSTEM REGISTER</h2>
+        <div class="section-head">
+          <h2>Technical specifications</h2>
+          <p class="body-muted">Lightweight native Windows architecture with zero cloud dependencies.</p>
+        </div>
 
-        <table class="register-table">
-          <thead>
-            <tr>
-              <th>Operation</th>
-              <th>Benchmark</th>
-              <th>Win32 API</th>
-              <th>Network</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Workspace capture</td>
-              <td class="num">118 ms</td>
-              <td>EnumWindows and GetWindowRect</td>
-              <td>0 bytes</td>
-            </tr>
-            <tr>
-              <td>Full stage restore</td>
-              <td class="num">380 ms</td>
-              <td>SetWindowPos with DWM Cloaking bypass</td>
-              <td>0 bytes</td>
-            </tr>
-            <tr>
-              <td>Working set RAM</td>
-              <td class="num">28 MB</td>
-              <td>WPF memory pooling</td>
-              <td>0 bytes</td>
-            </tr>
-            <tr>
-              <td>Background idle CPU</td>
-              <td class="num">0.0%</td>
-              <td>Win32 event-driven message pump</td>
-              <td>0 bytes</td>
-            </tr>
-            <tr>
-              <td>SQLite storage</td>
-              <td class="num">&lt; 1 MB</td>
-              <td>Local again.db in LocalAppData</td>
-              <td>0 bytes</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="spec-frame">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th scope="col">Parameter</th>
+                <th scope="col">Specification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Runtime framework</td>
+                <td class="value-col">.NET 8 Native AOT / WPF</td>
+              </tr>
+              <tr>
+                <td>RAM consumption</td>
+                <td class="value-col">38 MB idle</td>
+              </tr>
+              <tr>
+                <td>Restore execution latency</td>
+                <td class="value-col">&lt; 600 ms</td>
+              </tr>
+              <tr>
+                <td>Telemetry &amp; network traffic</td>
+                <td class="value-col">0 bytes (100% offline local JSON)</td>
+              </tr>
+              <tr>
+                <td>Supported operating systems</td>
+                <td class="value-col">Windows 10 / Windows 11 (x64)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- SECTION 5: DOWNLOADS MATRIX -->
-    <section class="section-blueprint" id="downloads">
+    <!-- Distribution Matrix -->
+    <section class="section" id="downloads">
       <div class="container">
-        <h2>DISTRIBUTION PACKAGES</h2>
+        <div class="section-head">
+          <h2>Download packages</h2>
+          <p class="body-muted">Direct release artifacts for Windows x64.</p>
+        </div>
 
-        <div class="elevation-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
-          <!-- PKG 1: INSTALLER -->
-          <div class="elevation-card" style="border-top: var(--rule-heavy) solid var(--color-rule);">
-            <div>
-              <h3>Windows setup</h3>
-              <div style="font-family: var(--font-outlier); font-size: var(--text-xs); color: var(--color-muted); margin: var(--space-2xs) 0 var(--space-sm);">
-                Again-Setup-v1.0.0.exe (4.16 MB)
-              </div>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-bottom: var(--space-md);">
-                Inno Setup installer with desktop shortcut and optional auto-launch.
-              </p>
-            </div>
-            <div>
-              <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Setup-v1.0.0.exe" class="btn btn--primary" style="width: 100%;">
-                Download setup (.exe)
-              </a>
-              <div style="font-family: var(--font-outlier); font-size: 0.65rem; color: var(--color-muted); margin-top: var(--space-xs); word-break: break-all;">
-                SHA256: 9CEC6424020A0957A2B56E63BE37D18BA4DBDF2587E812A6C08CB8DF160A1DD5
-              </div>
-            </div>
+        <div class="dist-grid">
+          <div class="dist-card featured">
+            <span class="dist-title">Installer</span>
+            <span class="dist-size">Again-Setup-v1.0.0.exe (68.4 MB)</span>
+            <div class="hash-snippet">sha256: 3c9b7430…</div>
+            <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Setup-v1.0.0.exe" class="btn btn--primary">Download setup</a>
           </div>
 
-          <!-- PKG 2: STANDALONE EXECUTABLE -->
-          <div class="elevation-card">
-            <div>
-              <h3>Standalone binary</h3>
-              <div style="font-family: var(--font-outlier); font-size: var(--text-xs); color: var(--color-muted); margin: var(--space-2xs) 0 var(--space-sm);">
-                Again.exe (67.3 MB)
-              </div>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-bottom: var(--space-md);">
-                Single-file executable with embedded runtime.
-              </p>
-            </div>
-            <div>
-              <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again.exe" class="btn" style="width: 100%;">
-                Download Again.exe
-              </a>
-              <div style="font-family: var(--font-outlier); font-size: 0.65rem; color: var(--color-muted); margin-top: var(--space-xs); word-break: break-all;">
-                SHA256: C37D9BEC00BF325A1FA5E3955729BB98C6A42C5952CD6C7D62FDA27EDDEB5461
-              </div>
-            </div>
+          <div class="dist-card">
+            <span class="dist-title">Standalone binary</span>
+            <span class="dist-size">Again.exe (68.4 MB)</span>
+            <div class="hash-snippet">sha256: e82e85ab…</div>
+            <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again.exe" class="btn btn--secondary">Download binary</a>
           </div>
 
-          <!-- PKG 3: PORTABLE ARCHIVE -->
-          <div class="elevation-card">
-            <div>
-              <h3>Portable archive</h3>
-              <div style="font-family: var(--font-outlier); font-size: var(--text-xs); color: var(--color-muted); margin: var(--space-2xs) 0 var(--space-sm);">
-                Again-Portable-v1.0.0.zip (2.81 MB)
-              </div>
-              <p style="font-size: var(--text-sm); color: var(--color-muted); margin-bottom: var(--space-md);">
-                Archive of application binaries and SQLite modules.
-              </p>
-            </div>
-            <div>
-              <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Portable-v1.0.0.zip" class="btn" style="width: 100%;">
-                Download ZIP (2.81 MB)
-              </a>
-              <div style="font-family: var(--font-outlier); font-size: 0.65rem; color: var(--color-muted); margin-top: var(--space-xs); word-break: break-all;">
-                SHA256: 85EFA83DCA6EC6A4A11B15094A5CF6F54FF9FE02423407D9E370A308090FB641
-              </div>
-            </div>
+          <div class="dist-card">
+            <span class="dist-title">Portable archive</span>
+            <span class="dist-size">Again-v1.0.0-Portable.zip (68.2 MB)</span>
+            <div class="hash-snippet">sha256: 4fa95e86…</div>
+            <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-v1.0.0-Portable.zip" class="btn btn--secondary">Download zip</a>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- DRAWING TITLE BLOCK (FOOTER) -->
-  <footer class="title-block-footer">
-    <div class="container">
-      <div class="drawing-title-block">
-        <div class="title-cell">
-          <div class="title-cell-label">Project title</div>
-          <div class="title-cell-val">Again: Desktop Workspace Orchestrator</div>
-          <div style="color: var(--color-muted); margin-top: var(--space-2xs); font-size: 0.75rem;">
-            Native Win32 DWM / C# .NET 10 / SQLite storage
-          </div>
-        </div>
-
-        <div class="title-cell">
-          <div class="title-cell-label">Sheet specification</div>
-          <div class="title-cell-val">DWG-2026-WIN32 (Rev 1.0.0)</div>
-          <div style="color: var(--color-muted); margin-top: var(--space-2xs); font-size: 0.75rem;">
-            Open Source under MIT License
-          </div>
-        </div>
-
-        <div class="title-cell">
-          <div class="title-cell-label">Repository archive</div>
-          <div class="title-cell-val"><a href="https://github.com/kiranmayee-abbireddy/Again" target="_blank" rel="noopener noreferrer">github.com/kiranmayee-abbireddy/Again</a></div>
-          <div style="color: var(--color-muted); margin-top: var(--space-2xs); font-size: 0.75rem;">
-            <a href="https://github.com/kiranmayee-abbireddy/Again/releases" target="_blank" rel="noopener noreferrer">Releases</a> and <a href="https://github.com/kiranmayee-abbireddy/Again/issues" target="_blank" rel="noopener noreferrer">Issues</a>
-          </div>
-        </div>
+  <!-- Mast Footer -->
+  <footer class="mast-footer">
+    <div class="container footer-bar">
+      <span class="footer-copy">© 2026 Again Project. Released under MIT License.</span>
+      <div class="footer-nav">
+        <a href="https://github.com/kiranmayee-abbireddy/Again" class="footer-link" target="_blank" rel="noopener">GitHub repository</a>
+        <a href="https://github.com/kiranmayee-abbireddy/Again/releases" class="footer-link" target="_blank" rel="noopener">All releases</a>
+        <a href="https://github.com/kiranmayee-abbireddy/Again/issues" class="footer-link" target="_blank" rel="noopener">Issue tracker</a>
       </div>
     </div>
   </footer>
 
-  <!-- BLUEPRINT TOAST -->
-  <div id="toast" class="blueprint-toast">
-    <span id="toast-msg">Copied command to clipboard</span>
-  </div>
-
-  <script>
-    function copyRepoClone() {
-      navigator.clipboard.writeText("git clone https://github.com/kiranmayee-abbireddy/Again.git");
-      showToast("Repository clone command copied to clipboard.");
-    }
-
-    function showToast(text) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').innerText = text;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2600);
-    }
-
-    // Staged Drawing Simulator Data
-    const drawingStages = {
-      eng: {
-        w1: { label: "Visual Studio Code", coords: "Bounds: (x: 0, y: 0, w: 1280, h: 1040), state: maximized" },
-        w2: { label: "Google Chrome (merged active tabs)", coords: "Bounds: (x: 1280, y: 0, w: 1280, h: 700), 4 tabs attached" },
-        w3: { label: "Windows Terminal", coords: "Bounds: (x: 1280, y: 700, w: 1280, h: 340), pwsh 7.4" },
-        log: "Restore completed in 380 ms. Reused 3 active HWNDs without duplicate launch."
-      },
-      des: {
-        w1: { label: "Figma (Again Design System 2026)", coords: "Bounds: (x: 0, y: 0, w: 1600, h: 1040), state: normal" },
-        w2: { label: "Slack (Design Review Channel)", coords: "Bounds: (x: 1600, y: 0, w: 960, h: 520), HWND: 0x003D08A4" },
-        w3: { label: "Spotify (Deep Focus Playlist)", coords: "Bounds: (x: 1600, y: 520, w: 960, h: 520), PID: 8124" },
-        log: "Restore completed in 312 ms. Repositioned Figma (display 1) and Slack (display 2)."
-      },
-      ops: {
-        w1: { label: "Grafana and Datadog Live Production Telemetry", coords: "Bounds: (x: 0, y: 0, w: 1280, h: 520), chromium engine" },
-        w2: { label: "Microsoft Teams (Live Incident Bridge)", coords: "Bounds: (x: 1280, y: 0, w: 1280, h: 1040), HWND: 0x008A0211" },
-        w3: { label: "Kubernetes Production Cluster (kubectl logs)", coords: "Bounds: (x: 0, y: 520, w: 1280, h: 520), active shell" },
-        log: "Restore completed in 410 ms. Staged production telemetry and bridge across displays."
-      }
-    };
-
-    function setDrawingStage(stageKey) {
-      document.querySelectorAll('.tab-selector').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-
-      const data = drawingStages[stageKey];
-      document.getElementById('label-w1').innerText = data.w1.label;
-      document.getElementById('coords-w1').innerText = data.w1.coords;
-      document.getElementById('label-w2').innerText = data.w2.label;
-      document.getElementById('coords-w2').innerText = data.w2.coords;
-      document.getElementById('label-w3').innerText = data.w3.label;
-      document.getElementById('coords-w3').innerText = data.w3.coords;
-      document.getElementById('drafting-log').innerText = data.log;
-    }
-
-    function pressKey(k) {
-      if (k === 'c') {
-        showToast("Snapshot command (Ctrl+Alt+C) registered: 7 windows captured in 118 ms.");
-      } else {
-        showToast("Restore command (Ctrl+Alt+R) registered: Stage restored in 380 ms.");
-      }
-    }
-  </script>
 </body>
 </html>
