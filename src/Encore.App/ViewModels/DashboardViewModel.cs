@@ -12,6 +12,9 @@ public class LiveMonitorPreviewItem
 {
     public string DeviceName { get; set; } = string.Empty;
     public string ResolutionText { get; set; } = string.Empty;
+    public string ScaleText { get; set; } = "100% DPI";
+    public string BoundsText { get; set; } = "(0, 0)";
+    public string WorkAreaText { get; set; } = string.Empty;
     public bool IsPrimary { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
@@ -22,19 +25,10 @@ public class LiveWindowPreviewItem
 {
     public string Title { get; set; } = string.Empty;
     public string ProcessName { get; set; } = string.Empty;
-    public string IconGlyph { get; set; } = "🖥️";
+    public string IconGlyph { get; set; } = "\uE737";
     public string BoundsText { get; set; } = string.Empty;
     public string StateText { get; set; } = "Normal";
     public string MonitorName { get; set; } = "Display";
-}
-
-public class WorkspacePresetItem
-{
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string IconGlyph { get; set; } = "💻";
-    public string Category { get; set; } = "Development";
-    public string SuggestedApps { get; set; } = string.Empty;
 }
 
 public class RecentHistorySnippetItem
@@ -75,6 +69,9 @@ public partial class DashboardViewModel : ObservableObject
     private bool _hasRecentWorkspaces;
 
     [ObservableProperty]
+    private bool _hasAnyWorkspaces;
+
+    [ObservableProperty]
     private bool _hasLiveWindows;
 
     [ObservableProperty]
@@ -92,11 +89,46 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private string _restoringMessage = string.Empty;
 
+    // Active Stage Spotlight Properties
+    [ObservableProperty]
+    private WorkspaceItemViewModel? _activeStageWorkspace;
+
+    [ObservableProperty]
+    private bool _hasActiveStage;
+
+    [ObservableProperty]
+    private string _activeStageName = "No Stage Active";
+
+    [ObservableProperty]
+    private string _activeStageCategory = "None";
+
+    [ObservableProperty]
+    private string _activeStageRestoredText = "Ready to align";
+
+    [ObservableProperty]
+    private string _activeStageAppCountText = "0 apps";
+
+    [ObservableProperty]
+    private string _activeStageDisplaysText = "1 display";
+
+    // Engine & System Diagnostics
+    [ObservableProperty]
+    private string _engineStatusText = "Active (Win32 DWM)";
+
+    [ObservableProperty]
+    private string _engineDpiModeText = "PerMonitorV2 Calibrated";
+
+    [ObservableProperty]
+    private string _engineDaemonText = "System Tray & Hotkeys Active";
+
+    [ObservableProperty]
+    private string _engineLatencyText = "< 350ms avg restore";
+
     public ObservableCollection<WorkspaceItemViewModel> PinnedWorkspaces { get; } = new();
     public ObservableCollection<WorkspaceItemViewModel> RecentWorkspaces { get; } = new();
+    public ObservableCollection<WorkspaceItemViewModel> AllWorkspaces { get; } = new();
     public ObservableCollection<LiveMonitorPreviewItem> CurrentMonitors { get; } = new();
     public ObservableCollection<LiveWindowPreviewItem> LiveActiveWindows { get; } = new();
-    public ObservableCollection<WorkspacePresetItem> RecommendedPresets { get; } = new();
     public ObservableCollection<RecentHistorySnippetItem> RecentRestorations { get; } = new();
 
     public DashboardViewModel(
@@ -113,62 +145,68 @@ public partial class DashboardViewModel : ObservableObject
         _windowService = windowService;
         _historyService = historyService;
         _navigateAction = navigateAction;
-
-        InitializePresets();
-    }
-
-    private void InitializePresets()
-    {
-        RecommendedPresets.Clear();
-        RecommendedPresets.Add(new WorkspacePresetItem
-        {
-            Title = "Full-Stack Dev",
-            Category = "Development",
-            Description = "Code editor, terminal, browser, and project folder.",
-            IconGlyph = "💻",
-            SuggestedApps = "VS Code • Chrome • Terminal • Explorer"
-        });
-        RecommendedPresets.Add(new WorkspacePresetItem
-        {
-            Title = "Meeting & Calls",
-            Category = "Meetings",
-            Description = "Video conferencing, calendar, and meeting notes.",
-            IconGlyph = "🤝",
-            SuggestedApps = "Teams / Zoom • Chrome • Notepad"
-        });
-        RecommendedPresets.Add(new WorkspacePresetItem
-        {
-            Title = "Deep Focus",
-            Category = "Learning",
-            Description = "Distraction-free editor, documentation, and music.",
-            IconGlyph = "🎯",
-            SuggestedApps = "Editor • Docs • Spotify"
-        });
-        RecommendedPresets.Add(new WorkspacePresetItem
-        {
-            Title = "Design & Creative",
-            Category = "Design",
-            Description = "Design workspace, browser inspection, and assets.",
-            IconGlyph = "🎨",
-            SuggestedApps = "Figma / Tools • Chrome • Assets"
-        });
     }
 
     public async Task LoadAsync()
     {
         var all = await _repository.GetAllWorkspacesAsync();
         TotalWorkspacesCount = all.Count;
+        HasAnyWorkspaces = all.Count > 0;
 
+        // Pinned Workspaces
         var pinned = all.Where(w => w.IsPinned).Take(6).Select(w => new WorkspaceItemViewModel(w)).ToList();
         PinnedWorkspaces.Clear();
         foreach (var p in pinned) PinnedWorkspaces.Add(p);
         PinnedCount = PinnedWorkspaces.Count;
         HasPinnedWorkspaces = PinnedCount > 0;
 
-        var recent = all.OrderByDescending(w => w.LastRestoredAt ?? w.UpdatedAt).Take(4).Select(w => new WorkspaceItemViewModel(w)).ToList();
+        // Recent Workspaces
+        var recent = all.OrderByDescending(w => w.LastRestoredAt ?? w.UpdatedAt).Take(6).Select(w => new WorkspaceItemViewModel(w)).ToList();
         RecentWorkspaces.Clear();
         foreach (var r in recent) RecentWorkspaces.Add(r);
         HasRecentWorkspaces = RecentWorkspaces.Count > 0;
+
+        // All Workspaces (for quick stage switcher)
+        AllWorkspaces.Clear();
+        foreach (var w in all.OrderByDescending(x => x.IsPinned).ThenByDescending(x => x.LastRestoredAt ?? x.UpdatedAt).Take(8))
+        {
+            AllWorkspaces.Add(new WorkspaceItemViewModel(w));
+        }
+
+        // Active Stage Spotlight (last restored or most recent)
+        var activeModel = all
+            .Where(w => w.LastRestoredAt.HasValue)
+            .OrderByDescending(w => w.LastRestoredAt)
+            .FirstOrDefault() ?? all.OrderByDescending(w => w.UpdatedAt).FirstOrDefault();
+
+        if (activeModel != null)
+        {
+            ActiveStageWorkspace = new WorkspaceItemViewModel(activeModel);
+            HasActiveStage = true;
+            ActiveStageName = activeModel.Name;
+            ActiveStageCategory = activeModel.Category;
+            ActiveStageRestoredText = activeModel.LastRestoredAt.HasValue
+                ? $"Restored {GetRelativeTime(activeModel.LastRestoredAt.Value)}"
+                : "Ready to restore";
+            ActiveStageAppCountText = $"{activeModel.Applications.Count} {(activeModel.Applications.Count == 1 ? "app" : "apps")}";
+            
+            var distinctMonitors = activeModel.Applications
+                .Where(a => a.Placement != null && !string.IsNullOrEmpty(a.Placement.MonitorDeviceId))
+                .Select(a => a.Placement!.MonitorDeviceId)
+                .Distinct()
+                .Count();
+            ActiveStageDisplaysText = $"{Math.Max(1, distinctMonitors)} {(Math.Max(1, distinctMonitors) == 1 ? "display" : "displays")}";
+        }
+        else
+        {
+            ActiveStageWorkspace = null;
+            HasActiveStage = false;
+            ActiveStageName = "No Stage Selected";
+            ActiveStageCategory = "None";
+            ActiveStageRestoredText = "Snapshot your current setup to create your first stage";
+            ActiveStageAppCountText = "0 apps";
+            ActiveStageDisplaysText = "0 displays";
+        }
 
         // Load Displays
         var monitors = _monitorService.GetMonitors();
@@ -180,6 +218,9 @@ public partial class DashboardViewModel : ObservableObject
             {
                 DeviceName = m.DeviceName,
                 ResolutionText = $"{m.Width} × {m.Height}",
+                ScaleText = $"{Math.Round(m.ScaleFactor * 100)}% DPI ({m.DpiX} DPI)",
+                BoundsText = $"Virtual: ({m.Left}, {m.Top})",
+                WorkAreaText = $"Work Area: {m.WorkWidth} × {m.WorkHeight}",
                 IsPrimary = m.IsPrimary,
                 Width = m.Width,
                 Height = m.Height
@@ -197,7 +238,7 @@ public partial class DashboardViewModel : ObservableObject
             var detected = _windowService.EnumerateVisibleWindows(excludeProcessId: currentPid);
             DetectedWindowsCount = detected.Count;
             LiveActiveWindows.Clear();
-            foreach (var w in detected.Take(6))
+            foreach (var w in detected.Take(8))
             {
                 LiveActiveWindows.Add(new LiveWindowPreviewItem
                 {
@@ -222,7 +263,7 @@ public partial class DashboardViewModel : ObservableObject
         {
             try
             {
-                var history = await _historyService.GetRecentHistoryAsync(3);
+                var history = await _historyService.GetRecentHistoryAsync(4);
                 RecentRestorations.Clear();
                 foreach (var h in history)
                 {
@@ -236,6 +277,16 @@ public partial class DashboardViewModel : ObservableObject
                     });
                 }
                 HasRestorationHistory = RecentRestorations.Count > 0;
+
+                if (RecentRestorations.Count > 0)
+                {
+                    var avg = (int)RecentRestorations.Average(r => r.DurationMs);
+                    EngineLatencyText = $"{avg}ms avg restoration";
+                }
+                else
+                {
+                    EngineLatencyText = "< 350ms fast restore";
+                }
             }
             catch
             {
@@ -260,15 +311,41 @@ public partial class DashboardViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void UsePreset(WorkspacePresetItem? preset)
+    private async Task RescanDesktopAsync()
     {
-        _navigateAction(NavigationPage.CaptureWorkspace, preset?.Category);
+        await LoadAsync();
+    }
+
+    [RelayCommand]
+    private async Task RealignActiveStageAsync()
+    {
+        var target = ActiveStageWorkspace?.Model ?? RecentWorkspaces.FirstOrDefault()?.Model;
+        if (target == null) return;
+
+        IsRestoring = true;
+        RestoringMessage = $"Re-aligning stage windows for {target.Name}...";
+
+        try
+        {
+            var progress = new Progress<RestorationProgress>(p =>
+            {
+                RestoringMessage = p.Message;
+            });
+
+            await _restoreService.RestoreWorkspaceAsync(target, progress: progress);
+            await LoadAsync();
+        }
+        finally
+        {
+            IsRestoring = false;
+            RestoringMessage = string.Empty;
+        }
     }
 
     [RelayCommand]
     private async Task QuickRestoreAsync(WorkspaceItemViewModel? item)
     {
-        var target = item?.Model ?? RecentWorkspaces.FirstOrDefault()?.Model ?? PinnedWorkspaces.FirstOrDefault()?.Model;
+        var target = item?.Model ?? ActiveStageWorkspace?.Model ?? RecentWorkspaces.FirstOrDefault()?.Model ?? PinnedWorkspaces.FirstOrDefault()?.Model;
         if (target == null) return;
 
         IsRestoring = true;
@@ -294,9 +371,10 @@ public partial class DashboardViewModel : ObservableObject
     [RelayCommand]
     private void OpenWorkspaceDetails(WorkspaceItemViewModel? item)
     {
-        if (item != null)
+        var target = item?.Model ?? ActiveStageWorkspace?.Model;
+        if (target != null)
         {
-            _navigateAction(NavigationPage.WorkspaceDetails, item.Model);
+            _navigateAction(NavigationPage.WorkspaceDetails, target);
         }
     }
 
