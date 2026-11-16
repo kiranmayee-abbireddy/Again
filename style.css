@@ -288,8 +288,20 @@ h3 {
 }
 
 @media (max-width: 60rem) {
+  .nav-links {
+    gap: var(--space-sm);
+  }
   .nav-links .nav-item {
     display: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .sheet-tag {
+    display: none;
+  }
+  .masthead .btn {
+    padding: var(--space-xs) var(--space-md);
   }
 }
 
