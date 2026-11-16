@@ -285,6 +285,17 @@ public class MonitorAdjustmentTests
         var result = MonitorInfoModel.FormatFriendlyName(input, isPrimary);
         Assert.Equal(expected, result);
     }
+
+    [Fact]
+    public void MonitorInfoModel_FriendlyName_ResolvesCleanlyFromDeviceId()
+    {
+        var model = new MonitorInfoModel
+        {
+            DeviceId = @"\\.\DISPLAY1",
+            DeviceName = ""
+        };
+        Assert.Equal("Display 1", model.FriendlyName);
+    }
 }
 
 public class ShortcutParsingTests

@@ -27,7 +27,7 @@ public class MonitorInfoModel
 
     public string BoundsString => $"{Left},{Top},{Width},{Height}";
 
-    public string FriendlyName => FormatFriendlyName(DeviceName, IsPrimary);
+    public string FriendlyName => FormatFriendlyName(!string.IsNullOrWhiteSpace(DeviceName) ? DeviceName : DeviceId, IsPrimary);
 
     public static string FormatFriendlyName(string? rawName, bool isPrimary = false)
     {

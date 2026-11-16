@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Encore.Core.Domain;
 using Encore.Core.Services;
 using Microsoft.Win32;
 
@@ -16,7 +17,9 @@ public partial class RunningWindowItemViewModel : ObservableObject
     public string ExecutablePath => Info.ExecutablePath;
     public string WindowState => Info.WindowState;
     public string BoundsText => $"{Info.Bounds.Width} × {Info.Bounds.Height} at ({Info.Bounds.Left}, {Info.Bounds.Top})";
-    public string MonitorText => Info.Monitor?.DeviceId ?? "Primary Display";
+    public string MonitorText => Info.Monitor != null 
+        ? MonitorInfoModel.FormatFriendlyName(!string.IsNullOrWhiteSpace(Info.Monitor.DeviceName) ? Info.Monitor.DeviceName : Info.Monitor.DeviceId, Info.Monitor.IsPrimary) 
+        : "Primary Display";
 
     public RunningWindowItemViewModel(DetectedWindowInfo info)
     {
