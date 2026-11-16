@@ -6,6 +6,7 @@
 > **Architecture:** MVVM, Modular Services, Local-First  
 > **Storage:** SQLite + Local JSON Configuration  
 > **Repository:** [https://github.com/kiranmayee-abbireddy/Again.git](https://github.com/kiranmayee-abbireddy/Again.git)  
+> **Showcase & Branding Page:** [https://kiranmayee-abbireddy.github.io/Again/](https://kiranmayee-abbireddy.github.io/Again/)  
 > **Distribution:** Standalone Executable & Windows Installer (Inno Setup)
 
 ---
