@@ -7,7 +7,7 @@
   <meta name="description" content="Precision workspace restorer for Windows. Restores processes, window bounds, and browser tabs without duplicate windows.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Rethink+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;500&family=Host+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -33,21 +33,21 @@
 
       <nav class="nav-links" aria-label="Primary">
         <a href="#topology" class="nav-item">Topology</a>
-        <a href="#pipeline" class="nav-item">Pipeline</a>
+        <a href="#trail" class="nav-item">Audit trail</a>
+        <a href="#diff" class="nav-item">Deduplication</a>
         <a href="#architecture" class="nav-item">Architecture</a>
-        <a href="#shortcuts" class="nav-item">Shortcuts</a>
         <a href="#downloads" class="btn btn--secondary">Get Again</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- Hero Section: Stage Topology Console -->
+    <!-- Hero Section: Console Workbench -->
     <section class="hero-stage">
       <div class="container">
         <div class="hero-prose-centered">
           <h1>Deterministic desktop workspaces for Windows.</h1>
-          <p class="lede">Restores exact multi-monitor bounds, running process state, and browser tabs in 600ms.</p>
+          <p class="lede">Restores multi-monitor bounds, running processes, and browser tabs in 600ms.</p>
 
           <div class="btn-row">
             <a href="https://github.com/kiranmayee-abbireddy/Again/releases/download/v1.0.0/Again-Setup-v1.0.0.exe" class="btn btn--primary">
@@ -76,15 +76,15 @@
               <div class="monitor-screen">
                 <div class="screen-app-tile span-2">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-                  <span>chrome: 7th class english.pdf + Pragmr OnTime</span>
+                  <span>chrome: GitHub + Documentation</span>
                 </div>
                 <div class="screen-app-tile">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                  <span>Cursor: settings.py</span>
+                  <span>Code: workspace.ts</span>
                 </div>
                 <div class="screen-app-tile">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
-                  <span>Antigravity IDE</span>
+                  <span>WindowsTerminal</span>
                 </div>
               </div>
             </div>
@@ -97,21 +97,21 @@
               <div class="monitor-screen">
                 <div class="screen-app-tile">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                  <span>explorer</span>
+                  <span>explorer: Projects</span>
                 </div>
                 <div class="screen-app-tile">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                  <span>WhatsApp</span>
+                  <span>Slack</span>
                 </div>
                 <div class="screen-app-tile span-2">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-                  <span>Jnyanam Whiteboard</span>
+                  <span>Figma: UI Kit</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Live Window Items matching the App Screenshot -->
+          <!-- Live Window Registry -->
           <div class="registry-header">
             <span class="registry-title">Detected Open Windows</span>
             <div class="filter-row" role="tablist" aria-label="Process filters">
@@ -127,8 +127,8 @@
                 <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
               </svg>
               <span class="proc-label">chrome</span>
-              <span class="title-label">7th class english.pdf: Google Chrome</span>
-              <span class="res-pill">1938×1038</span>
+              <span class="title-label">GitHub: Pull Requests and Issues</span>
+              <span class="res-pill">1920×1080</span>
             </li>
 
             <li class="window-item active">
@@ -136,26 +136,26 @@
                 <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
               </svg>
               <span class="proc-label">chrome</span>
-              <span class="title-label">Pragmr OnTime: AI Delivery Manager</span>
-              <span class="res-pill">1938×1038</span>
-            </li>
-
-            <li class="window-item">
-              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-              </svg>
-              <span class="proc-label">Antigravity IDE</span>
-              <span class="title-label">Encore: Antigravity IDE: SystemTray</span>
-              <span class="res-pill">1938×1038</span>
+              <span class="title-label">Documentation: Win32 API Reference</span>
+              <span class="res-pill">1920×1080</span>
             </li>
 
             <li class="window-item">
               <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
               </svg>
-              <span class="proc-label">Cursor</span>
-              <span class="title-label">settings.py: Jnyanam-lms: Cursor</span>
-              <span class="res-pill">1938×1038</span>
+              <span class="proc-label">Code</span>
+              <span class="title-label">workspace.ts: frontend runtime</span>
+              <span class="res-pill">1920×1080</span>
+            </li>
+
+            <li class="window-item">
+              <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <span class="proc-label">WindowsTerminal</span>
+              <span class="title-label">pwsh: docker-compose up --build</span>
+              <span class="res-pill">1920×1080</span>
             </li>
 
             <li class="window-item">
@@ -163,25 +163,25 @@
                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
               </svg>
               <span class="proc-label">explorer</span>
-              <span class="title-label">D:\projects\Encore\dist\standalone</span>
-              <span class="res-pill">1938×1038</span>
+              <span class="title-label">C:\Users\Developer\Projects</span>
+              <span class="res-pill">1920×1080</span>
             </li>
 
             <li class="window-item">
               <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
               </svg>
-              <span class="proc-label">WhatsApp.Root</span>
-              <span class="title-label">WhatsApp</span>
-              <span class="res-pill">1938×1038</span>
+              <span class="proc-label">Slack</span>
+              <span class="title-label">#general-engineering</span>
+              <span class="res-pill">1600×900</span>
             </li>
 
             <li class="window-item">
               <svg class="window-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/>
               </svg>
-              <span class="proc-label">JnyanamWhiteboard</span>
-              <span class="title-label">Jnyanam Whiteboard</span>
+              <span class="proc-label">Figma</span>
+              <span class="title-label">Design System v2: UI Kit</span>
               <span class="res-pill">1600×900</span>
             </li>
           </ul>
@@ -189,63 +189,119 @@
       </div>
     </section>
 
-    <!-- Narrative Workflow: 3-Stage Pipeline -->
-    <section class="section" id="pipeline">
+    <!-- Console Audit Trail (Spine Layout) -->
+    <section class="section" id="trail">
       <div class="container">
         <div class="section-head">
-          <h2>The 3-stage restoration pipeline</h2>
-          <p class="body-muted">How Again reconciles running processes, browser tabs, and coordinates in under 600ms.</p>
+          <h2>Restoration audit trail</h2>
+          <p class="body-muted">Measured timeline of a complete workspace restore sequence.</p>
         </div>
 
-        <div class="pipeline-flow">
-          <div class="stage-card">
-            <h3>1. Win32 enumeration</h3>
-            <p>Queries running process IDs, window handles, and active browser tab URLs via UI Automation in under 15 milliseconds.</p>
-            <span class="stage-timing">Execution time: 15ms</span>
-          </div>
+        <div class="trail-card">
+          <div class="trail-spine">
+            <div class="trail-node">
+              <span class="trail-time">00:00.012s</span>
+              <span class="trail-head">Process enumeration</span>
+              <p class="trail-desc">Scans running handles via Win32 EnumWindows.</p>
+            </div>
 
-          <div class="stage-card">
-            <h3>2. Deduplication engine</h3>
-            <p>Checks active processes. Reuses open browser windows to inject missing tabs and stages unlaunched apps from your manifest.</p>
-            <span class="stage-timing">Zero redundant processes</span>
-          </div>
+            <div class="trail-node">
+              <span class="trail-time">00:00.045s</span>
+              <span class="trail-head">Target reconciliation</span>
+              <p class="trail-desc">Reconciles Chrome PID 14820 tabs.</p>
+            </div>
 
-          <div class="stage-card">
-            <h3>3. Concurrent placement</h3>
-            <p>Positions windows concurrently via SetWindowPlacement and launches staged apps without desktop flickering.</p>
-            <span class="stage-timing">Execution time: &lt; 600ms</span>
+            <div class="trail-node">
+              <span class="trail-time">00:00.090s</span>
+              <span class="trail-head">Browser tab injection</span>
+              <p class="trail-desc">Attaches missing URL into existing Chrome window.</p>
+            </div>
+
+            <div class="trail-node">
+              <span class="trail-time">00:00.580s</span>
+              <span class="trail-head">Placement completed</span>
+              <p class="trail-desc">Applies SetWindowPlacement across all 7 targets.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Technical Bento Matrix -->
+    <!-- Diff Comparison -->
+    <section class="section" id="diff">
+      <div class="container">
+        <div class="section-head">
+          <h2>Engine comparison</h2>
+          <p class="body-muted">How Again eliminates desktop clutter versus traditional window managers.</p>
+        </div>
+
+        <div class="diff-container">
+          <div class="diff-col">
+            <span class="diff-title">Standard window managers</span>
+            <ul class="diff-rows">
+              <li class="diff-row">
+                <span class="diff-gutter gutter-bad">-</span>
+                <span>Spawns duplicate Chrome instance.</span>
+              </li>
+              <li class="diff-row">
+                <span class="diff-gutter gutter-bad">-</span>
+                <span>Launches second IDE, locking project files.</span>
+              </li>
+              <li class="diff-row">
+                <span class="diff-gutter gutter-bad">-</span>
+                <span>Positions windows off-screen on disconnected monitors.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="diff-col col-good">
+            <span class="diff-title title-good">Again restoration engine</span>
+            <ul class="diff-rows">
+              <li class="diff-row">
+                <span class="diff-gutter gutter-good">+</span>
+                <span>Attaches missing tabs into existing browser window.</span>
+              </li>
+              <li class="diff-row">
+                <span class="diff-gutter gutter-good">+</span>
+                <span>Focuses running IDE and applies target bounds.</span>
+              </li>
+              <li class="diff-row">
+                <span class="diff-gutter gutter-good">+</span>
+                <span>Clamps coordinates to active display resolution.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Continuous Seam Bento Grid -->
     <section class="section" id="architecture">
       <div class="container">
         <div class="section-head">
           <h2>Core architecture</h2>
-          <p class="body-muted">Designed for precision desktop management with zero cloud dependencies.</p>
+          <p class="body-muted">Engineered for deterministic desktop control with zero cloud dependencies.</p>
         </div>
 
-        <div class="bento-grid">
-          <div class="bento-tile span-2">
+        <div class="bento-surface">
+          <div class="bento-panel span-2">
             <h3>Smart browser tab injection</h3>
-            <p>Instead of spawning redundant browser windows, Again locates your running Chrome or Edge process and appends missing tabs into the existing window.</p>
+            <p>Locates running browser processes and appends missing tabs without opening redundant windows.</p>
           </div>
 
-          <div class="bento-tile">
+          <div class="bento-panel">
             <h3>Closed app catalog</h3>
-            <p>Configure offline tools like Docker, Spotify, or IDEs to boot automatically when a workspace is loaded.</p>
+            <p>Configure closed tools to boot automatically on workspace load.</p>
           </div>
 
-          <div class="bento-tile">
+          <div class="bento-panel">
             <h3>Coordinate clamping</h3>
-            <p>PerMonitorV2 checks clamp window bounds to active monitors, preventing windows from opening off-screen when displays disconnect.</p>
+            <p>Clamps window bounds to active monitors to prevent off-screen coordinates.</p>
           </div>
 
-          <div class="bento-tile span-2">
+          <div class="bento-panel span-2">
             <h3>100% offline local storage</h3>
-            <p>Workspaces save as human-readable JSON in %LOCALAPPDATA%\Again\workspaces\. Zero telemetry, zero accounts.</p>
+            <p>Workspaces save as local JSON. Zero telemetry, zero cloud.</p>
             <pre class="code-snippet"><code>{
   "name": "Sprint",
   "windows": [
@@ -258,7 +314,7 @@
     </section>
 
     <!-- Global Shortcuts -->
-    <section class="section" id="shortcuts">
+    <section class="section">
       <div class="container">
         <div class="section-head">
           <h2>Global shortcuts</h2>
@@ -395,7 +451,7 @@
         btn.setAttribute('aria-selected', 'true');
         const filter = btn.innerText.toLowerCase();
         windowItems.forEach(item => {
-          const isStaged = item.querySelector('.res-pill').innerText === '1600×900' || item.querySelector('.proc-label').innerText.includes('Whiteboard');
+          const isStaged = item.querySelector('.res-pill').innerText === '1600×900';
           if (filter.startsWith('all')) {
             item.style.display = 'grid';
           } else if (filter.startsWith('running')) {
