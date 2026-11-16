@@ -19,7 +19,7 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="Welcome to Encore" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6" />
+                        <TextBlock Text="Welcome to Again" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,6" />
                         <TextBlock Text="Your workspace, back on stage. Save multi-window arrangements and restore your entire desktop instantly." 
                                    FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="620" Margin="0,0,0,18" />
 
@@ -40,21 +40,30 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Metrics Badges -->
-                    <Border Grid.Column="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="10" Padding="16" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                    <!-- Metrics Badges (Secondary statistics: elegant muted tones) -->
+                    <Border Grid.Column="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="10" Padding="18,14" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
                         <StackPanel Orientation="Horizontal">
-                            <StackPanel Margin="8,0,20,0" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding ActiveMonitorsCount}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource AccentCyanBrush}" />
+                            <StackPanel Margin="6,0,18,0" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
+                                    <TextBlock Text="🖥️ " FontSize="13" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding ActiveMonitorsCount}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                                </StackPanel>
                                 <TextBlock Text="Monitors" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <Separator Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,4" />
-                            <StackPanel Margin="20,0,20,0" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding DetectedWindowsCount}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBrush}" />
+                            <Separator Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,2" />
+                            <StackPanel Margin="18,0,18,0" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
+                                    <TextBlock Text="🪟 " FontSize="13" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding DetectedWindowsCount}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                                </StackPanel>
                                 <TextBlock Text="Open Windows" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <Separator Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,4" />
-                            <StackPanel Margin="20,0,8,0" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding TotalWorkspacesCount}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource SuccessBrush}" />
+                            <Separator Width="1" Background="{DynamicResource CardBorderBrush}" Margin="0,2" />
+                            <StackPanel Margin="18,0,6,0" HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,2">
+                                    <TextBlock Text="📦 " FontSize="13" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding TotalWorkspacesCount}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" />
+                                </StackPanel>
                                 <TextBlock Text="Saved Workspaces" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
                         </StackPanel>
@@ -81,17 +90,47 @@
                 <Button Style="{StaticResource GhostButtonStyle}" Content="View All →" Command="{Binding ViewAllWorkspacesCommand}" Grid.Column="1" />
             </Grid>
 
-            <!-- Empty State for Pinned -->
+            <!-- Empty State for Pinned (with personality) -->
             <Border Visibility="{Binding HasPinnedWorkspaces, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
-                    Style="{StaticResource CardBorderStyle}" Padding="24" Margin="0,0,0,24">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock Text="📌 No pinned workspaces yet" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,4" />
-                    <TextBlock Text="Pin your most frequent workspaces from the Workspaces library to access them here and from the system tray." 
-                               FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
-                </StackPanel>
+                    Background="{DynamicResource CardBackgroundBrush}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="12" 
+                    Padding="28,20" 
+                    Margin="0,0,0,24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Width="44" Height="44" CornerRadius="22" 
+                            Background="{DynamicResource SurfaceBackgroundBrush}" 
+                            BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
+                            Margin="0,0,18,0" VerticalAlignment="Center">
+                        <TextBlock Text="📌" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Keep your favorite stages one click away" FontSize="15" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,3" />
+                        <TextBlock Text="Pin your daily workspaces — deep work setup, meeting mode, or research. They'll live right here and in your Windows tray for instant switching." 
+                                   FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" MaxWidth="560" Margin="0,0,0,5" />
+                        <TextBlock Text="💡 Tip: Click the 📌 icon on any workspace card in the library to pin it here." FontSize="11" Foreground="{DynamicResource TextMutedBrush}" />
+                    </StackPanel>
+
+                    <Button Grid.Column="2" Style="{StaticResource SecondaryButtonStyle}" 
+                            Command="{Binding ViewAllWorkspacesCommand}" 
+                            Padding="14,8" VerticalAlignment="Center" Margin="16,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Browse Library" FontWeight="Medium" />
+                            <TextBlock Text=" →" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
             </Border>
 
-            <!-- Pinned Items Grid -->
+            <!-- Pinned Items Grid (with elevated prominence, app icons & compact count) -->
             <ItemsControl ItemsSource="{Binding PinnedWorkspaces}" Margin="0,0,0,24">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -100,7 +139,13 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:WorkspaceItemViewModel}">
-                        <Border Style="{StaticResource CardBorderStyle}" Width="280" Margin="0,0,16,16" Padding="18">
+                        <Border Background="{DynamicResource CardBackgroundBrush}" 
+                                BorderBrush="{DynamicResource AccentLightBrush}" 
+                                BorderThickness="1.5" 
+                                CornerRadius="10" 
+                                Width="295" 
+                                Margin="0,0,16,16" 
+                                Padding="18">
                             <StackPanel>
                                 <Grid Margin="0,0,0,8">
                                     <Grid.ColumnDefinitions>
@@ -108,22 +153,57 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" Grid.Column="0">
-                                        <TextBlock Text="{Binding Category}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
+                                        <TextBlock Text="{Binding Category}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
                                     </Border>
-                                    <TextBlock Text="📌" FontSize="12" Grid.Column="1" VerticalAlignment="Center" />
+                                    <Border Grid.Column="1" Background="{DynamicResource AccentBrush}" CornerRadius="10" Padding="8,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="📌 " FontSize="10" Foreground="#FFFFFF" />
+                                            <TextBlock Text="PINNED" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF" />
+                                        </StackPanel>
+                                    </Border>
                                 </Grid>
 
                                 <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,4" TextTrimming="CharacterEllipsis" />
-                                <TextBlock Text="{Binding Description, TargetNullValue='No description'}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" MaxHeight="36" TextTrimming="CharacterEllipsis" Margin="0,0,0,12" />
+                                <TextBlock Text="{Binding Description, TargetNullValue='No description provided'}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" MaxHeight="36" TextTrimming="CharacterEllipsis" Margin="0,0,0,12" />
 
-                                <TextBlock Text="{Binding AppCountText}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" Margin="0,0,0,14" />
+                                <!-- App Icons & Compact Count -->
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- App Icons Strip -->
+                                    <ItemsControl Grid.Column="0" ItemsSource="{Binding AppPreviews}" VerticalAlignment="Center">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type viewmodels:AppPreviewItem}">
+                                                <Border Width="24" Height="24" CornerRadius="5" 
+                                                        Background="{DynamicResource SurfaceBackgroundBrush}" 
+                                                        BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
+                                                        Margin="0,0,4,0" ToolTip="{Binding DisplayName}">
+                                                    <TextBlock Text="{Binding IconGlyph}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <!-- Compact App Count Pill -->
+                                    <Border Grid.Column="1" Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding CompactAppCountText}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    </Border>
+                                </Grid>
 
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Style="{StaticResource PrimaryButtonStyle}" Content="Restore" 
+                                    <Button Grid.Column="0" Style="{StaticResource RestoreButtonStyle}" Content="Restore" 
                                             Command="{Binding DataContext.QuickRestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                             CommandParameter="{Binding}" Margin="0,0,8,0" />
                                     <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Details" 
@@ -143,7 +223,7 @@
                     Style="{StaticResource CardBorderStyle}" Padding="24">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <TextBlock Text="🚀 Ready to capture your first workspace?" FontSize="14" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,4" />
-                    <TextBlock Text="Arrange your applications on your desktop, click Capture Workspace, and Encore will remember the entire setup." 
+                    <TextBlock Text="Arrange your applications on your desktop, click Capture Workspace, and Again will remember the entire setup." 
                                FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,12" />
                     <Button Style="{StaticResource PrimaryButtonStyle}" Content="Capture Desktop Now" Command="{Binding StartCaptureCommand}" HorizontalAlignment="Center" />
                 </StackPanel>
@@ -164,18 +244,40 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                         <TextBlock Text="{Binding Name}" FontSize="15" FontWeight="SemiBold" Margin="0,0,10,0" />
                                         <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="6,2">
-                                            <TextBlock Text="{Binding Category}" FontSize="10" Foreground="{DynamicResource AccentLightBrush}" FontWeight="SemiBold" />
+                                            <TextBlock Text="{Binding Category}" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" FontWeight="SemiBold" />
                                         </Border>
                                     </StackPanel>
                                     <TextBlock Text="{Binding LastRestoredText}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
                                 </StackPanel>
 
-                                <TextBlock Grid.Column="1" Text="{Binding AppCountText}" FontSize="12" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" Margin="0,0,24,0" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,24,0">
+                                    <ItemsControl ItemsSource="{Binding AppPreviews}" Margin="0,0,8,0">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type viewmodels:AppPreviewItem}">
+                                                <Border Width="22" Height="22" CornerRadius="4" 
+                                                        Background="{DynamicResource SurfaceBackgroundBrush}" 
+                                                        BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
+                                                        Margin="0,0,3,0" ToolTip="{Binding DisplayName}">
+                                                    <TextBlock Text="{Binding IconGlyph}" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding CompactAppCountText}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    </Border>
+                                </StackPanel>
 
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Restore" 
+                                    <Button Style="{StaticResource RestoreButtonStyle}" Content="Restore" 
                                             Command="{Binding DataContext.QuickRestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                            CommandParameter="{Binding}" Margin="0,0,8,0" Padding="16,6" />
+                                            CommandParameter="{Binding}" Margin="0,0,8,0" Padding="18,6" />
                                     <Button Style="{StaticResource SecondaryButtonStyle}" Content="View" 
                                             Command="{Binding DataContext.OpenWorkspaceDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                             CommandParameter="{Binding}" Padding="12,6" />

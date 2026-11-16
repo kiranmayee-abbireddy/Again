@@ -17,10 +17,15 @@
     <SolidColorBrush x:Key="TextMutedBrush" Color="#6E7681" />
 
     <!-- Accents (Emerald & Mint) -->
+    <Color x:Key="AccentColor">#10B981</Color>
     <SolidColorBrush x:Key="AccentBrush" Color="#10B981" />
     <SolidColorBrush x:Key="AccentHoverBrush" Color="#059669" />
     <SolidColorBrush x:Key="AccentLightBrush" Color="#34D399" />
     <SolidColorBrush x:Key="AccentCyanBrush" Color="#14B8A6" />
+
+    <!-- Navigation Active Accent -->
+    <SolidColorBrush x:Key="NavActiveBackgroundBrush" Color="#16382C" />
+    <SolidColorBrush x:Key="NavActiveBorderBrush" Color="#1E5440" />
 
     <!-- States -->
     <SolidColorBrush x:Key="SuccessBrush" Color="#10B981" />

@@ -57,7 +57,7 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
                             <TextBlock Text="Minimize to System Tray on Close" FontSize="13" FontWeight="SemiBold" />
-                            <TextBlock Text="Keep Encore running in the system tray when closing the main window." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <TextBlock Text="Keep Again running in the system tray when closing the main window." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
                         <CheckBox Grid.Column="1" IsChecked="{Binding MinimizeToTrayOnClose}" VerticalAlignment="Center" />
                     </Grid>
@@ -70,8 +70,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="Launch Encore on Windows Startup" FontSize="13" FontWeight="SemiBold" />
-                            <TextBlock Text="Automatically start Encore in the background when logging into Windows." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <TextBlock Text="Launch Again on Windows Startup" FontSize="13" FontWeight="SemiBold" />
+                            <TextBlock Text="Automatically start Again in the background when logging into Windows." FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
                         <CheckBox Grid.Column="1" IsChecked="{Binding StartWithWindows}" VerticalAlignment="Center" />
                     </Grid>
@@ -157,7 +157,7 @@
             <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,20">
                 <StackPanel>
                     <TextBlock Text="Global Keyboard Shortcuts" Style="{StaticResource SectionTitleStyle}" />
-                    <TextBlock Text="Press these keys anywhere in Windows to trigger Encore actions." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,14" />
+                    <TextBlock Text="Press these keys anywhere in Windows to trigger Again actions." FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,14" />
 
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
@@ -193,7 +193,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <TextBlock Text="Show / Hide Encore Dashboard" FontSize="13" FontWeight="SemiBold" />
+                            <TextBlock Text="Show / Hide Again Dashboard" FontSize="13" FontWeight="SemiBold" />
                             <TextBlock Text="Default: Ctrl+Alt+E" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
                         </StackPanel>
                         <TextBox Grid.Column="1" Text="{Binding ShowHideHotkey, UpdateSourceTrigger=PropertyChanged}" Width="160" HorizontalContentAlignment="Center" />

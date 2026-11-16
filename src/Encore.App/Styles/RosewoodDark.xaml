@@ -13,10 +13,15 @@
     <SolidColorBrush x:Key="TextSecondaryBrush" Color="#FDA4AF" />
     <SolidColorBrush x:Key="TextMutedBrush" Color="#9F1239" />
 
+    <Color x:Key="AccentColor">#F43F5E</Color>
     <SolidColorBrush x:Key="AccentBrush" Color="#F43F5E" />
     <SolidColorBrush x:Key="AccentHoverBrush" Color="#E11D48" />
     <SolidColorBrush x:Key="AccentLightBrush" Color="#FB7185" />
     <SolidColorBrush x:Key="AccentCyanBrush" Color="#F43F5E" />
+
+    <!-- Navigation Active Accent -->
+    <SolidColorBrush x:Key="NavActiveBackgroundBrush" Color="#331422" />
+    <SolidColorBrush x:Key="NavActiveBorderBrush" Color="#66203F" />
 
     <SolidColorBrush x:Key="SuccessBrush" Color="#10B981" />
     <SolidColorBrush x:Key="WarningBrush" Color="#F59E0B" />

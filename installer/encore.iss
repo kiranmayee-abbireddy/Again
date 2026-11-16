@@ -1,7 +1,7 @@
-; Script generated for Encore Windows Workspace Manager
-#define MyAppName "Encore"
+; Script generated for Again Windows Workspace Manager
+#define MyAppName "Again"
 #define MyAppVersion "1.0.0"
-#define MyAppPublisher "Encore Team"
+#define MyAppPublisher "Again Team"
 #define MyAppExeName "Encore.App.exe"
 
 [Setup]
@@ -13,7 +13,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=..\dist\installer
-OutputBaseFilename=Encore-Setup-v1.0.0
+OutputBaseFilename=Again-Setup-v1.0.0
 SetupIconFile=..\src\Encore.App\Assets\app.ico
 Compression=lzma2/max
 SolidCompression=yes
@@ -27,7 +27,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "startwithwindows"; Description: "Launch Encore when Windows starts"; GroupDescription: "Startup options:"
+Name: "startwithwindows"; Description: "Launch Again when Windows starts"; GroupDescription: "Startup options:"
 
 [Files]
 Source: "..\dist\standalone\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
@@ -39,7 +39,7 @@ Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\app.ico"; Tasks: desktopicon
 
 [Registry]
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "EncoreWorkspaceManager"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: startwithwindows
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "AgainWorkspaceManager"; ValueData: """{app}\{#MyAppExeName}"""; Tasks: startwithwindows
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

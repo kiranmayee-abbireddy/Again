@@ -10,7 +10,7 @@ namespace Encore.App.ViewModels;
 public partial class SettingsViewModel : ObservableObject
 {
     private const string RunRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private const string AppRegistryName = "EncoreWorkspaceManager";
+    private const string AppRegistryName = "AgainWorkspaceManager";
 
     private readonly IConfigurationRepository _configRepo;
 

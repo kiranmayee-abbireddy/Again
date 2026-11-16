@@ -67,6 +67,50 @@
         </Setter>
     </Style>
 
+    <!-- Dedicated Restore Button Style with Emerald Hover Glow & Smooth Elevation -->
+    <Style x:Key="RestoreButtonStyle" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource MainFont}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="#FFFFFF" />
+        <Setter Property="Background" Value="{DynamicResource AccentBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="16,8" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <!-- Glow Layer (visible on hover) -->
+                        <Border x:Name="glowLayer" CornerRadius="6" Background="{DynamicResource AccentBrush}" Opacity="0">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="16" ShadowDepth="0" Color="{DynamicResource AccentColor}" Opacity="0.75" />
+                            </Border.Effect>
+                        </Border>
+
+                        <!-- Inner Button Face -->
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentHoverBrush}" />
+                            <Setter TargetName="glowLayer" Property="Opacity" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}" />
+                            <Setter TargetName="glowLayer" Property="Opacity" Value="0.4" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Secondary Button -->
     <Style x:Key="SecondaryButtonStyle" TargetType="Button">
         <Setter Property="FontFamily" Value="{StaticResource MainFont}" />

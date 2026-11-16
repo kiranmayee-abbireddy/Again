@@ -124,7 +124,17 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:WorkspaceItemViewModel}">
-                        <Border Style="{StaticResource CardBorderStyle}" Width="310" Margin="0,0,16,16" Padding="20">
+                        <Border Width="315" Margin="0,0,16,16" Padding="20" CornerRadius="10">
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource CardBorderStyle}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                                            <Setter Property="BorderBrush" Value="{DynamicResource AccentLightBrush}" />
+                                            <Setter Property="BorderThickness" Value="1.5" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -141,9 +151,15 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left" Grid.Column="0">
-                                        <TextBlock Text="{Binding Category}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
-                                    </Border>
+                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                        <Border Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="4" Padding="8,3" Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding Category}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        </Border>
+                                        <Border Visibility="{Binding IsPinned, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                Background="{DynamicResource AccentBrush}" CornerRadius="10" Padding="8,2" VerticalAlignment="Center">
+                                            <TextBlock Text="📌 PINNED" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF" />
+                                        </Border>
+                                    </StackPanel>
 
                                     <Button Grid.Column="1" Style="{StaticResource GhostButtonStyle}" Padding="6,2"
                                             Command="{Binding DataContext.TogglePinCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -158,15 +174,40 @@
                                 <!-- Description -->
                                 <TextBlock Grid.Row="2" Text="{Binding Description, TargetNullValue='No description provided'}" 
                                            FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" 
-                                           TextWrapping="Wrap" MaxHeight="38" TextTrimming="CharacterEllipsis" Margin="0,0,0,14" />
+                                           TextWrapping="Wrap" MaxHeight="38" TextTrimming="CharacterEllipsis" Margin="0,0,0,12" />
 
-                                <!-- Metadata -->
+                                <!-- App Icons & Metadata -->
                                 <Grid Grid.Row="3" Margin="0,0,0,14">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding AppCountText}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
+
+                                    <!-- App Icons Strip & Compact Count -->
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <ItemsControl ItemsSource="{Binding AppPreviews}" Margin="0,0,6,0">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type viewmodels:AppPreviewItem}">
+                                                    <Border Width="22" Height="22" CornerRadius="4" 
+                                                            Background="{DynamicResource SurfaceBackgroundBrush}" 
+                                                            BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" 
+                                                            Margin="0,0,3,0" ToolTip="{Binding DisplayName}">
+                                                        <TextBlock Text="{Binding IconGlyph}" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Border Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="7,2" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding CompactAppCountText}" FontSize="10.5" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        </Border>
+                                    </StackPanel>
+
                                     <TextBlock Grid.Column="1" Text="{Binding LastRestoredText}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
                                 </Grid>
 
@@ -179,7 +220,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Button Grid.Column="0" Style="{StaticResource PrimaryButtonStyle}" Content="Restore" 
+                                    <Button Grid.Column="0" Style="{StaticResource RestoreButtonStyle}" Content="Restore" 
                                             Command="{Binding DataContext.RestoreCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                             CommandParameter="{Binding}" Margin="0,0,6,0" />
 

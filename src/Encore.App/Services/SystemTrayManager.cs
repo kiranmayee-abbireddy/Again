@@ -37,24 +37,33 @@ public class SystemTrayManager : ISystemTrayManager
         Icon? icon = null;
         try
         {
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Encore.App.Assets.app.ico");
-            if (stream != null)
+            var resUri = new Uri("pack://application:,,,/Assets/app.ico", UriKind.Absolute);
+            var streamInfo = System.Windows.Application.GetResourceStream(resUri);
+            if (streamInfo != null)
             {
-                icon = new Icon(stream);
-            }
-            else
-            {
-                icon = SystemIcons.Application;
+                icon = new Icon(streamInfo.Stream);
             }
         }
-        catch
+        catch { }
+
+        if (icon == null)
         {
-            icon = SystemIcons.Application;
+            try
+            {
+                var exePath = Environment.ProcessPath;
+                if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+                {
+                    icon = Icon.ExtractAssociatedIcon(exePath);
+                }
+            }
+            catch { }
         }
+
+        icon ??= SystemIcons.Application;
 
         var contextMenu = new ContextMenuStrip();
 
-        var openItem = new ToolStripMenuItem("Open Encore", null, (s, e) => ShowMainWindow());
+        var openItem = new ToolStripMenuItem("Open Again", null, (s, e) => ShowMainWindow());
         openItem.Font = new Font(openItem.Font, System.Drawing.FontStyle.Bold);
         contextMenu.Items.Add(openItem);
 
@@ -83,7 +92,7 @@ public class SystemTrayManager : ISystemTrayManager
             await openSettingsAction();
         }));
 
-        contextMenu.Items.Add(new ToolStripMenuItem("Exit Encore", null, (s, e) =>
+        contextMenu.Items.Add(new ToolStripMenuItem("Exit Again", null, (s, e) =>
         {
             _notifyIcon?.Dispose();
             _notifyIcon = null;
@@ -93,7 +102,7 @@ public class SystemTrayManager : ISystemTrayManager
         _notifyIcon = new NotifyIcon
         {
             Icon = icon,
-            Text = "Encore — Workspace Manager",
+            Text = "Again — Workspace Manager",
             Visible = true,
             ContextMenuStrip = contextMenu
         };
@@ -118,9 +127,9 @@ public class SystemTrayManager : ISystemTrayManager
         {
             var item = new ToolStripMenuItem(ws.Name, null, async (s, e) =>
             {
-                ShowNotification("Encore", $"Restoring workspace: {ws.Name}...", ToolTipIcon.Info);
+                ShowNotification("Again", $"Restoring workspace: {ws.Name}...", ToolTipIcon.Info);
                 var session = await _restoreService.RestoreWorkspaceAsync(ws);
-                ShowNotification("Encore", $"Restored '{ws.Name}' in {session.DurationMs ?? 0}ms ({session.Status}).", ToolTipIcon.Info);
+                ShowNotification("Again", $"Restored '{ws.Name}' in {session.DurationMs ?? 0}ms ({session.Status}).", ToolTipIcon.Info);
             });
             _pinnedSubMenu.DropDownItems.Add(item);
         }

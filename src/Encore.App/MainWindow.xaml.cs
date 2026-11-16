@@ -120,7 +120,7 @@ public partial class MainWindow : Window
 
             if (!_hasShownTrayNotice)
             {
-                _trayManager.ShowNotification("Encore", "Encore is running in the system tray. Double-click the tray icon or press Ctrl+Alt+E to reopen.");
+                _trayManager.ShowNotification("Again", "Again is running in the system tray. Double-click the tray icon or press Ctrl+Alt+E to reopen.");
                 _hasShownTrayNotice = true;
             }
         }

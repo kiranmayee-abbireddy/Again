@@ -48,9 +48,27 @@ public partial class App : System.Windows.Application
 
         // App Data Paths
         string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string encoreDir = Path.Combine(localAppData, "Encore");
-        string dbPath = Path.Combine(encoreDir, "encore.db");
-        string settingsPath = Path.Combine(encoreDir, "settings.json");
+        string againDir = Path.Combine(localAppData, "Again");
+        string legacyDir = Path.Combine(localAppData, "Encore");
+
+        if (!Directory.Exists(againDir) && Directory.Exists(legacyDir))
+        {
+            try
+            {
+                Directory.Move(legacyDir, againDir);
+            }
+            catch
+            {
+                againDir = legacyDir;
+            }
+        }
+
+        string dbPath = Path.Combine(againDir, "again.db");
+        if (!File.Exists(dbPath) && File.Exists(Path.Combine(againDir, "encore.db")))
+        {
+            try { File.Move(Path.Combine(againDir, "encore.db"), dbPath); } catch { dbPath = Path.Combine(againDir, "encore.db"); }
+        }
+        string settingsPath = Path.Combine(againDir, "settings.json");
 
         // Storage
         services.AddSingleton<IWorkspaceRepository>(sp =>
