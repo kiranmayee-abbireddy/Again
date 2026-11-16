@@ -52,7 +52,7 @@ public class PinGlyphConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         bool pinned = value is true;
-        return pinned ? "📌" : "📍";
+        return pinned ? "\uE718" : "\uE840";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

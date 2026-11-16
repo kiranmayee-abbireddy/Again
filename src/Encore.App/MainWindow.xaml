@@ -92,9 +92,9 @@
                                 Command="{Binding QuickCaptureCommand}" 
                                 Margin="0,0,8,0" Padding="12,5"
                                 WindowChrome.IsHitTestVisibleInChrome="True">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="📸 " FontSize="12" />
-                                <TextBlock Text="Capture" FontSize="12" />
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE722;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Capture" FontSize="12" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
 
@@ -102,9 +102,9 @@
                                 Command="{Binding QuickRestoreLastUsedCommand}" 
                                 Padding="14,5"
                                 WindowChrome.IsHitTestVisibleInChrome="True">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="⚡ " FontSize="12" />
-                                <TextBlock Text="Quick Restore" FontSize="12" />
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE768;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Quick Restore" FontSize="12" VerticalAlignment="Center" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
@@ -198,7 +198,7 @@
                                                                 </Grid.ColumnDefinitions>
                                                                 <!-- Subtle Left Indicator Bar -->
                                                                 <Border x:Name="activeIndicator" Grid.Column="0" Width="3" Height="18" CornerRadius="1.5" Background="{DynamicResource AccentBrush}" Margin="0,0,8,0" Visibility="Collapsed" />
-                                                                <TextBlock x:Name="navGlyph" Grid.Column="1" Text="{Binding Glyph}" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                                                <TextBlock x:Name="navGlyph" Grid.Column="1" Text="{Binding Glyph}" FontFamily="{StaticResource SymbolFont}" FontSize="15" Margin="0,0,10,0" VerticalAlignment="Center" />
                                                                 <TextBlock x:Name="navTitle" Grid.Column="2" Text="{Binding Title}" FontSize="13" FontWeight="Medium" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" />
                                                             </Grid>
                                                         </Border>

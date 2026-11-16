@@ -3,6 +3,16 @@
 
     <!-- Base Font -->
     <FontFamily x:Key="MainFont">Segoe UI Variable, Segoe UI, sans-serif</FontFamily>
+    <!-- Native Windows Vector Icon Font (Segoe Fluent Icons / Segoe MDL2 Assets) -->
+    <FontFamily x:Key="SymbolFont">Segoe Fluent Icons, Segoe MDL2 Assets, Segoe UI Symbol</FontFamily>
+
+    <!-- Symbol Icon Style -->
+    <Style x:Key="SymbolIconStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource SymbolFont}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 
     <!-- Base TextBlock Style -->
     <Style TargetType="TextBlock">

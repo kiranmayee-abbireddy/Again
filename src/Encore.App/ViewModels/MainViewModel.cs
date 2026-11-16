@@ -81,11 +81,11 @@ public partial class MainViewModel : ObservableObject
 
     private void InitializeNavigation()
     {
-        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Dashboard, Title = "Home", Glyph = "🏠" });
-        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Workspaces, Title = "Workspaces", Glyph = "📁" });
-        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Applications, Title = "Applications", Glyph = "🖥️" });
-        NavigationItems.Add(new NavigationItem { Page = NavigationPage.History, Title = "History", Glyph = "📜" });
-        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Settings, Title = "Settings", Glyph = "⚙️" });
+        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Dashboard, Title = "Home", Glyph = "\uE80F" });
+        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Workspaces, Title = "Workspaces", Glyph = "\uE8F1" });
+        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Applications, Title = "Applications", Glyph = "\uE71D" });
+        NavigationItems.Add(new NavigationItem { Page = NavigationPage.History, Title = "History", Glyph = "\uE81C" });
+        NavigationItems.Add(new NavigationItem { Page = NavigationPage.Settings, Title = "Settings", Glyph = "\uE713" });
 
         SelectedNavigation = NavigationItems[0];
     }

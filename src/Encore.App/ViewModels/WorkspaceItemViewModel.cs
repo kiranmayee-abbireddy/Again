@@ -32,6 +32,20 @@ public partial class WorkspaceItemViewModel : ObservableObject
     public string AppCountText => $"{AppCount} {(AppCount == 1 ? "app" : "apps")}";
     public string CompactAppCountText => $"{AppCount} {(AppCount == 1 ? "app" : "apps")}";
 
+    public int MonitorCount
+    {
+        get
+        {
+            var distinct = Model.Applications
+                .Select(a => a.Placement?.MonitorDeviceId)
+                .Where(m => !string.IsNullOrEmpty(m))
+                .Distinct()
+                .Count();
+            return distinct > 0 ? distinct : 1;
+        }
+    }
+    public string MonitorSummaryText => $"{MonitorCount} {(MonitorCount == 1 ? "Display" : "Displays")}";
+
     public IReadOnlyList<AppPreviewItem> AppPreviews { get; }
     public int AdditionalAppsCount { get; }
     public bool HasAdditionalApps => AdditionalAppsCount > 0;

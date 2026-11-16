@@ -23,9 +23,9 @@
                 </StackPanel>
 
                 <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding RefreshWindowsCommand}" Padding="14,8" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🔄 " />
-                        <TextBlock Text="Refresh Windows" />
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Refresh Windows" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
             </Grid>
@@ -79,10 +79,12 @@
             <!-- Search Filter Bar -->
             <Border Style="{StaticResource CardBorderStyle}" Padding="14" Margin="0,0,0,16">
                 <Grid>
-                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Padding="10,8" />
-                    <TextBlock Text="🔍 Filter running windows by title, process name, or path..." 
+                    <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" Padding="34,8,10,8" />
+                    <TextBlock Text="&#xE721;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Foreground="{DynamicResource TextMutedBrush}" 
+                               HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False" />
+                    <TextBlock Text="Filter running windows by title, process name, or path..." 
                                Foreground="{DynamicResource TextMutedBrush}" 
-                               IsHitTestVisible="False" Margin="12,8"
+                               IsHitTestVisible="False" Margin="36,8,12,8"
                                Visibility="{Binding SearchQuery, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=invert}">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">

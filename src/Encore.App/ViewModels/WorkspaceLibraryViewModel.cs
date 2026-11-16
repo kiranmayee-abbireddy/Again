@@ -27,6 +27,12 @@ public partial class WorkspaceLibraryViewModel : ObservableObject
     [ObservableProperty]
     private string _restoringStatusText = string.Empty;
 
+    [ObservableProperty]
+    private bool _hasWorkspaces;
+
+    [ObservableProperty]
+    private int _totalWorkspacesCount;
+
     public ObservableCollection<string> Categories { get; } = new() { "All" };
     public ObservableCollection<WorkspaceItemViewModel> FilteredWorkspaces { get; } = new();
 
@@ -89,6 +95,16 @@ public partial class WorkspaceLibraryViewModel : ObservableObject
         {
             FilteredWorkspaces.Add(new WorkspaceItemViewModel(ws));
         }
+
+        TotalWorkspacesCount = _allWorkspaces.Count;
+        HasWorkspaces = FilteredWorkspaces.Count > 0;
+    }
+
+    [RelayCommand]
+    private void ClearFilter()
+    {
+        SearchQuery = string.Empty;
+        SelectedCategory = "All";
     }
 
     [RelayCommand]

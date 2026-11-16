@@ -8,50 +8,56 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:WorkspaceDetailsViewModel}">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="32,24,32,32">
+        <StackPanel Margin="32,24,32,40">
 
             <!-- Top Navigation & Action Header -->
-            <Grid Margin="0,0,0,20">
+            <Grid Margin="0,0,0,22">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding GoBackCommand}" Margin="0,0,16,0" Padding="12,8">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="← " />
-                        <TextBlock Text="Back to Library" />
+                <!-- Back to Library Button (Clean, No Arrows) -->
+                <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Command="{Binding GoBackCommand}" Margin="0,0,16,0" Padding="14,8">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE72B;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,8,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Back to Library" FontWeight="Medium" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
 
                 <TextBlock Grid.Column="1" Text="Workspace Configuration" Style="{StaticResource HeaderTitleStyle}" VerticalAlignment="Center" />
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Save Changes" Command="{Binding SaveCommand}" Margin="0,0,8,0" Padding="16,8" />
-                    <Button Style="{StaticResource PrimaryButtonStyle}" Content="Restore Workspace Now" Command="{Binding RestoreNowCommand}" Padding="18,8" />
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="Save Changes" Command="{Binding SaveCommand}" Margin="0,0,10,0" Padding="16,8" />
+                    <Button Style="{StaticResource RestoreButtonStyle}" Command="{Binding RestoreNowCommand}" Padding="18,8">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE768;" FontFamily="{StaticResource SymbolFont}" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center" />
+                            <TextBlock Text="Restore Workspace Now" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
 
             <!-- Status Banner -->
             <Border Visibility="{Binding StatusMessage, Converter={StaticResource BoolToVisibilityConverter}}" 
-                    Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" CornerRadius="6" Padding="14,10" Margin="0,0,0,18">
+                    Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,0,0,18">
                 <TextBlock Text="{Binding StatusMessage}" FontSize="13" Foreground="{DynamicResource AccentLightBrush}" />
             </Border>
 
             <!-- Restoring Banner -->
             <Border Visibility="{Binding IsRestoring, Converter={StaticResource BoolToVisibilityConverter}}" 
-                    Background="{DynamicResource AccentBrush}" CornerRadius="6" Padding="14,10" Margin="0,0,0,18">
+                    Background="{DynamicResource AccentBrush}" CornerRadius="8" Padding="14,10" Margin="0,0,0,18">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="⏳ " Foreground="#FFFFFF" />
-                    <TextBlock Text="{Binding RestoringMessage}" Foreground="#FFFFFF" FontWeight="SemiBold" />
+                    <TextBlock Text="&#xE768;" FontFamily="{StaticResource SymbolFont}" FontSize="14" Foreground="#FFFFFF" Margin="0,0,8,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding RestoringMessage}" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" />
                 </StackPanel>
             </Border>
 
             <!-- Workspace Metadata Card -->
-            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,24">
+            <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,24" CornerRadius="12" Padding="20">
                 <StackPanel>
-                    <TextBlock Text="General Details" Style="{StaticResource SectionTitleStyle}" />
+                    <TextBlock Text="General Details" Style="{StaticResource SectionTitleStyle}" Margin="0,0,0,14" />
 
                     <Grid Margin="0,0,0,14">
                         <Grid.ColumnDefinitions>
@@ -76,19 +82,22 @@
             </Border>
 
             <!-- Applications List Section -->
-            <Grid Margin="0,0,0,12">
+            <Grid Margin="0,0,0,14">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Configured Applications &amp; Windows" Style="{StaticResource SectionTitleStyle}" Grid.Column="0" />
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE71D;" FontFamily="{StaticResource SymbolFont}" FontSize="15" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{DynamicResource AccentLightBrush}" />
+                    <TextBlock Text="Configured Applications &amp; Windows" Style="{StaticResource SectionTitleStyle}" Margin="0" />
+                </StackPanel>
                 <TextBlock Text="{Binding Applications.Count, StringFormat='{}{0} applications'}" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center" Grid.Column="1" />
             </Grid>
 
             <ItemsControl ItemsSource="{Binding Applications}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="{x:Type viewmodels:WorkspaceAppItemViewModel}">
-                        <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12" Padding="16">
+                        <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,14" Padding="18" CornerRadius="10">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -97,7 +106,7 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- Top row: Checkbox, Name, Order Buttons, Action Buttons -->
-                                <Grid Grid.Row="0" Margin="0,0,0,10">
+                                <Grid Grid.Row="0" Margin="0,0,0,12">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="*" />
@@ -105,62 +114,91 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" Margin="0,0,12,0" />
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled}" VerticalAlignment="Center" Margin="0,0,14,0" />
 
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
                                             <TextBlock Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxWidth="400" />
+                                            
+                                            <!-- Browser Profile Badge -->
                                             <Border Visibility="{Binding HasBrowserProfile, Converter={StaticResource BoolToVisibilityConverter}}"
                                                     Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                                                     CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding BrowserProfile, StringFormat='👤 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Text="&#xE77B;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{Binding BrowserProfile}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                </StackPanel>
                                             </Border>
+                                            
+                                            <!-- Explorer Folder View Path Badge -->
                                             <Border Visibility="{Binding HasFolderViewPath, Converter={StaticResource BoolToVisibilityConverter}}"
                                                     Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                                                     CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding FolderViewPath, StringFormat='📁 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" />
+                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                    <TextBlock Text="&#xE8B7;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{Binding FolderViewPath}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" VerticalAlignment="Center" />
+                                                </StackPanel>
                                             </Border>
                                         </StackPanel>
+
+                                        <!-- Tabs Summary -->
                                         <StackPanel Orientation="Horizontal" Margin="0,2,0,2" Visibility="{Binding HasTabs, Converter={StaticResource BoolToVisibilityConverter}}">
-                                            <TextBlock Text="{Binding TabsSummary, StringFormat='🌐 {0}'}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="450" />
+                                            <TextBlock Text="&#xE774;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding TabsSummary}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="450" VerticalAlignment="Center" />
                                         </StackPanel>
+
                                         <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
                                     </StackPanel>
 
-                                    <!-- Reorder buttons -->
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,16,0">
-                                        <Button Style="{StaticResource GhostButtonStyle}" Content="▲" Padding="6,3" 
+                                    <!-- Reorder buttons (Vector Chevrons, No Arrows) -->
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,16,0" VerticalAlignment="Center">
+                                        <Button Style="{StaticResource GhostButtonStyle}" Padding="8,4" Margin="0,0,2,0"
                                                 Command="{Binding DataContext.MoveAppUpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" ToolTip="Move Up in Launch Sequence" />
-                                        <Button Style="{StaticResource GhostButtonStyle}" Content="▼" Padding="6,3" 
+                                                CommandParameter="{Binding}" ToolTip="Move Up in Launch Sequence">
+                                            <TextBlock Text="&#xE70E;" FontFamily="{StaticResource SymbolFont}" FontSize="11" />
+                                        </Button>
+                                        <Button Style="{StaticResource GhostButtonStyle}" Padding="8,4" 
                                                 Command="{Binding DataContext.MoveAppDownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" ToolTip="Move Down in Launch Sequence" />
+                                                CommandParameter="{Binding}" ToolTip="Move Down in Launch Sequence">
+                                            <TextBlock Text="&#xE70D;" FontFamily="{StaticResource SymbolFont}" FontSize="11" />
+                                        </Button>
                                     </StackPanel>
 
                                     <!-- Action Buttons -->
-                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                        <Button Style="{StaticResource SecondaryButtonStyle}" Content="▶ Test Launch" Padding="10,5" Margin="0,0,8,0"
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Style="{StaticResource SecondaryButtonStyle}" Padding="10,6" Margin="0,0,8,0"
                                                 Command="{Binding DataContext.TestLaunchCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" />
-                                        <Button Style="{StaticResource DangerButtonStyle}" Content="Remove" Padding="10,5"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="&#xE768;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="Test Launch" FontSize="11.5" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
+                                        
+                                        <Button Style="{StaticResource DangerButtonStyle}" Padding="10,6"
                                                 Command="{Binding DataContext.RemoveAppCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                CommandParameter="{Binding}" />
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="&#xE74D;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="Remove" FontSize="11.5" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Button>
                                     </StackPanel>
                                 </Grid>
 
                                 <!-- Middle row: Window Position & Monitor details -->
-                                <Border Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="6" Padding="12,8" Margin="0,0,0,12">
+                                <Border Grid.Row="1" Background="{DynamicResource WindowBackgroundBrush}" CornerRadius="8" Padding="14,10" Margin="0,0,0,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Target Window Placement:" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <TextBlock Text="Target Window Placement:" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,2" />
                                             <TextBlock Text="{Binding WindowBoundsText}" FontSize="12" FontWeight="Medium" />
                                         </StackPanel>
                                         <StackPanel Grid.Column="1">
-                                            <TextBlock Text="Monitor Assignment:" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <TextBlock Text="Monitor Assignment:" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,2" />
                                             <TextBlock Text="{Binding MonitorText}" FontSize="12" FontWeight="Medium" />
                                         </StackPanel>
                                     </Grid>
@@ -174,12 +212,12 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" Margin="0,0,12,0">
-                                        <TextBlock Text="Launch Arguments" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,3" />
+                                        <TextBlock Text="Launch Arguments" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
                                         <TextBox Text="{Binding LaunchArguments, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Startup Delay (ms)" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,3" />
+                                        <TextBlock Text="Startup Delay (ms)" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,0,4" />
                                         <TextBox Text="{Binding LaunchDelayMs, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                 </Grid>

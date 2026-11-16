@@ -35,7 +35,11 @@
             <Border Visibility="{Binding Sessions.Count, Converter={StaticResource InvertedBoolToVisibilityConverter}}"
                     Style="{StaticResource CardBorderStyle}" Padding="32">
                 <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="📜 No restoration history yet" FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,6" />
+                    <Border Width="48" Height="48" CornerRadius="24" Background="{DynamicResource SurfaceBackgroundBrush}" 
+                            BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Margin="0,0,0,12" HorizontalAlignment="Center">
+                        <TextBlock Text="&#xE81C;" FontFamily="{StaticResource SymbolFont}" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource AccentLightBrush}" />
+                    </Border>
+                    <TextBlock Text="No restoration history yet" FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,6" />
                     <TextBlock Text="When you restore workspaces, timestamps, duration, and status logs will appear here." 
                                FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
                 </StackPanel>
@@ -91,7 +95,7 @@
                                                         <Setter.Value>
                                                             <ControlTemplate TargetType="ToggleButton">
                                                                 <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                                                                    <TextBlock Text="Details ▼" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    <TextBlock Text="Details" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                                 </Border>
                                                                 <ControlTemplate.Triggers>
                                                                     <Trigger Property="IsChecked" Value="True">

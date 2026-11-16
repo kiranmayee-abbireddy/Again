@@ -76,7 +76,12 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Button Style="{StaticResource GhostButtonStyle}" Content="Select All" Command="{Binding SelectAllCommand}" Margin="0,0,6,0" />
                     <Button Style="{StaticResource GhostButtonStyle}" Content="Deselect All" Command="{Binding DeselectAllCommand}" Margin="0,0,8,0" />
-                    <Button Style="{StaticResource SecondaryButtonStyle}" Content="🔄 Rescan" Command="{Binding ScanWindowsCommand}" Padding="10,5" />
+                    <Button Style="{StaticResource SecondaryButtonStyle}" Command="{Binding ScanWindowsCommand}" Padding="12,6">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="&#xE72C;" FontFamily="{StaticResource SymbolFont}" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
+                            <TextBlock Text="Rescan Windows" FontSize="12" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
 
@@ -100,17 +105,24 @@
                                         <Border Visibility="{Binding HasBrowserProfile, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                                                 CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding BrowserProfile, StringFormat='👤 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" />
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="&#xE77B;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding BrowserProfile}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                            </StackPanel>
                                         </Border>
                                         <Border Visibility="{Binding HasFolderViewPath, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 Background="{DynamicResource SurfaceBackgroundBrush}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"
                                                 CornerRadius="4" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding FolderViewPath, StringFormat='📁 {0}'}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" />
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="&#xE8B7;" FontFamily="{StaticResource SymbolFont}" FontSize="10" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding FolderViewPath}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="280" VerticalAlignment="Center" />
+                                            </StackPanel>
                                         </Border>
                                     </StackPanel>
                                     
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,2" Visibility="{Binding HasTabs, Converter={StaticResource BoolToVisibilityConverter}}">
-                                        <TextBlock Text="{Binding TabsSummary, StringFormat='🌐 {0}'}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="500" />
+                                        <TextBlock Text="&#xE774;" FontFamily="{StaticResource SymbolFont}" FontSize="11" Margin="0,0,4,0" Foreground="{DynamicResource AccentLightBrush}" VerticalAlignment="Center" />
+                                        <TextBlock Text="{Binding TabsSummary}" FontSize="11" Foreground="{DynamicResource AccentLightBrush}" TextTrimming="CharacterEllipsis" MaxWidth="500" VerticalAlignment="Center" />
                                     </StackPanel>
 
                                     <TextBlock Text="{Binding ExecutablePath}" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" TextTrimming="CharacterEllipsis" />
